@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import {css, keyframes} from '@emotion/react'
-import GameView from '@gamepark/board-game-template/GameView'
+import GameView from '@gamepark/mosquito-show/GameView'
 import {Letterbox} from '@gamepark/react-components'
 
 type Props = {

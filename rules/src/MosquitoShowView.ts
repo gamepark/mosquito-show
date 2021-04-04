@@ -9,7 +9,7 @@ import {spendGold} from './moves/SpendGold'
  * This class is useful when the game has "IncompleteInformation" (or "SecretInformation").
  * It allows to handle, in a different way than the backend side, the moves that involve hidden information.
  */
-export default class MyBoardGameView implements Game<GameView, MoveView> {
+export default class MosquitoShowView implements Game<GameView, MoveView> {
   state: GameView
 
   constructor(state: GameView) {
