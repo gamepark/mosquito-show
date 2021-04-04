@@ -5,8 +5,6 @@ import PlayerState from './PlayerState'
  */
 type GameState = {
   players: PlayerState[]
-  round: number
-  deck: number[]
 }
 
 export default GameState

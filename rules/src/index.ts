@@ -1,2 +1,2 @@
-export {default} from './MyBoardGame'
-export {MyBoardGameOptionsDescription} from './MyBoardGameOptions'
+export {default} from './MosquitoShow'
+export {MosquitoShowOptionsDescription} from './MosquitoShowOptions'

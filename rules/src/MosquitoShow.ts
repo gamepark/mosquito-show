@@ -6,8 +6,9 @@ import Move from './moves/Move'
 import MoveType from './moves/MoveType'
 import MoveView from './moves/MoveView'
 import {spendGold} from './moves/SpendGold'
-import {isGameOptions, MyBoardGameOptions} from './MyBoardGameOptions'
+import {isGameOptions, MosquitoShowOptions} from './MosquitoShowOptions'
 import PlayerColor from './PlayerColor'
+import Animal from './material/Animal'
 
 /**
  * Your Board Game rules must extend either "SequentialGame" or "SimultaneousGame".
@@ -16,7 +17,7 @@ import PlayerColor from './PlayerColor'
  * If the game contains information that some players know, but the other players does not, it must implement "SecretInformation" instead.
  * Later on, you can also implement "Competitive", "Undo", "TimeLimit" and "Eliminations" to add further features to the game.
  */
-export default class MyBoardGame extends SequentialGame<GameState, Move, PlayerColor>
+export default class MosquitoShow extends SequentialGame<GameState, Move, PlayerColor>
   implements SecretInformation<GameState, GameView, Move, MoveView, PlayerColor> {
   /**
    * This constructor is called when the game "restarts" from a previously saved state.
@@ -27,14 +28,14 @@ export default class MyBoardGame extends SequentialGame<GameState, Move, PlayerC
    * This constructor is called when a new game is created. If your game has options, or a variable number of players, it will be provided here.
    * @param options The options of the new game
    */
-  constructor(options: MyBoardGameOptions)
+  constructor(options: MosquitoShowOptions)
   /**
    * In here you must code the construction of your class. Use a "typeguard" to distinguish a new game from a restored game.
    * @param arg The state of the game, or the options when starting a new game
    */
-  constructor(arg: GameState | MyBoardGameOptions) {
+  constructor(arg: GameState | MosquitoShowOptions) {
     if (isGameOptions(arg)) {
-      super({players: arg.players.map(player => ({color: player.id})), round: 1, deck: []})
+      super({players: arg.players.map(player => ({color: player.id, availableMosquitoEffects: [], chosenAnimal: Animal.Toucan, ownedGoldenMosquitos: 0}))})
     } else {
       super(arg)
     }
@@ -113,11 +114,11 @@ export default class MyBoardGame extends SequentialGame<GameState, Move, PlayerC
   }
 
   /**
-   * If you game has incomplete information, you must hide some of the game's state to the players and spectators.
+   * If your game has incomplete information, you must hide some of the game's state to the players and spectators.
    * @return What a person can see from the game state
    */
   getView(): GameView {
-    return {...this.state, deck: this.state.deck.length}
+    return {...this.state, deck: this.state.players.length}
   }
 
   /**
@@ -128,7 +129,7 @@ export default class MyBoardGame extends SequentialGame<GameState, Move, PlayerC
   getPlayerView(playerId: PlayerColor): GameView {
     console.log(playerId)
     // Here we could, for example, return a "playerView" with only the number of cards in hand for the other player only.
-    return {...this.state, deck: this.state.deck.length}
+    return {...this.state, deck: this.state.players.length}
   }
 
   /**
@@ -155,7 +156,7 @@ export default class MyBoardGame extends SequentialGame<GameState, Move, PlayerC
   getPlayerMoveView(move: Move, playerId: PlayerColor): MoveView {
     console.log(playerId)
     if (move.type === MoveType.DrawCard && move.playerId === playerId) {
-      return {...move, card: this.state.deck[0]}
+      return {...move}
     }
     return move
   }
