@@ -1,7 +1,7 @@
 import {css, Global} from '@emotion/react'
-import MyBoardGame from '@gamepark/board-game-template/MyBoardGame'
-import {MyBoardGameOptionsDescription} from '@gamepark/board-game-template/MyBoardGameOptions'
-import MyBoardGameView from '@gamepark/board-game-template/MyBoardGameView'
+import MosquitoShow from '@gamepark/mosquito-show/MosquitoShow'
+import {MosquitoShowOptionsDescription} from '@gamepark/mosquito-show/MosquitoShowOptions'
+import MosquitoShowView from '@gamepark/mosquito-show/MosquitoShowView'
 import {GameProvider, setupTranslation} from '@gamepark/react-client'
 import normalize from 'emotion-normalize'
 import {StrictMode} from 'react'
@@ -59,7 +59,7 @@ const style = css`
 
 ReactDOM.render(
   <StrictMode>
-    <GameProvider game="my-board-game" Rules={MyBoardGame} RulesView={MyBoardGameView} optionsDescription={MyBoardGameOptionsDescription}>
+    <GameProvider game="my-board-game" Rules={MosquitoShow} RulesView={MosquitoShowView} optionsDescription={MosquitoShowOptionsDescription}>
       <App/>
     </GameProvider>
     <Global styles={[normalize, style]}/>

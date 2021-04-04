@@ -20,7 +20,8 @@ export type MosquitoShowOptions = GameOptions<{}, MosquitoShowPlayerOptions>
  * @return true if arg is a Game options
  */
 export function isGameOptions(arg: GameState | MosquitoShowOptions): arg is MosquitoShowOptions {
-  return true; // TODO: implement Typeguard to identify ne game (like typeof (arg as GameState).deck === 'undefined')
+  console.log(arg)
+  return true // TODO: implement Typeguard to identify ne game (like typeof (arg as GameState).deck === 'undefined')
 }
 
 /**

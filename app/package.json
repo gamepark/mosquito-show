@@ -1,5 +1,5 @@
 {
-  "name": "@gamepark/board-game-template-app",
+  "name": "@gamepark/mosquito-show-app",
   "version": "0.0.0",
   "private": true,
   "description": "React application",
@@ -7,8 +7,8 @@
   "license": "ISC",
   "dependencies": {
     "@emotion/react": "^11.1.5",
-    "@gamepark/react-client": "~4.1.0",
-    "@gamepark/react-components": "~4.0.0",
+    "@gamepark/react-client": "~4.5.0",
+    "@gamepark/react-components": "~4.6.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
