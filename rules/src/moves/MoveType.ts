@@ -3,7 +3,7 @@
  * Even though it is not strictly required to use a type like that, it helps a lot in practice!
  */
 enum MoveType {
-  SpendGold, DrawCard
+  ChooseAnimal, Eat, MoveAnimal, MosquitoEffect
 }
 
 export default MoveType

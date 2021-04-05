@@ -3,6 +3,9 @@ import MoveType from "./MoveType"
 /**
  * A "Move" is the combination of all the types of moves that exists in you game
  */
- type MosquitoEffect = {type: typeof MoveType.MosquitoEffect}
+ type ChooseAnimal = {type: typeof MoveType.ChooseAnimal}
  
- export default MosquitoEffect
+ export default ChooseAnimal
+
+
+ export function doSomething(){} 

@@ -1,14 +1,11 @@
-import {SecretInformation, SequentialGame} from '@gamepark/rules-api'
+import { SecretInformation, SequentialGame } from '@gamepark/rules-api'
 import GameState from './GameState'
 import GameView from './GameView'
-import {drawCard} from './moves/DrawCard'
+import { doSomething } from './moves/ChooseAnimal'
 import Move from './moves/Move'
 import MoveType from './moves/MoveType'
 import MoveView from './moves/MoveView'
-import {spendGold} from './moves/SpendGold'
-import {isGameOptions, MosquitoShowOptions} from './MosquitoShowOptions'
 import PlayerColor from './PlayerColor'
-import Animal from './material/Animal'
 
 /**
  * Your Board Game rules must extend either "SequentialGame" or "SimultaneousGame".
@@ -28,17 +25,17 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * This constructor is called when a new game is created. If your game has options, or a variable number of players, it will be provided here.
    * @param options The options of the new game
    */
-  constructor(options: MosquitoShowOptions)
+  // constructor(options: MosquitoShowOptions)
   /**
    * In here you must code the construction of your class. Use a "typeguard" to distinguish a new game from a restored game.
    * @param arg The state of the game, or the options when starting a new game
    */
-  constructor(arg: GameState | MosquitoShowOptions) {
-    if (isGameOptions(arg)) {
-      super({players: arg.players.map(player => ({color: player.id, availableMosquitoEffects: [], chosenAnimal: Animal.Toucan, ownedGoldenMosquitos: 0}))})
-    } else {
-      super(arg)
-    }
+  constructor(arg: GameState) {
+    // if (isGameOptions(arg)) {
+    //   super({players: arg.players.map(player => ({color: player.id, availableMosquitoEffects: [], chosenAnimal: Animal.Toucan, ownedGoldenMosquitos: 0}))})
+    // } else {
+       super(arg)
+    // }
   }
 
   /**
@@ -69,8 +66,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   getLegalMoves(): Move[] {
     return [
-      {type: MoveType.SpendGold, playerId: this.getActivePlayer()!, quantity: 5},
-      {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
+      // {type: MoveType.SpendGold, playerId: this.getActivePlayer()!, quantity: 5},
+      // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
     ]
   }
 
@@ -81,10 +78,10 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   play(move: Move): void {
     switch (move.type) {
-      case MoveType.SpendGold:
-        return spendGold(this.state, move)
-      case MoveType.DrawCard:
-        return drawCard(this.state, move)
+       case MoveType.ChooseAnimal:
+         return doSomething()
+      // case MoveType.DrawCard:
+      //   return drawCard(this.state, move)
     }
   }
 
@@ -155,9 +152,9 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   getPlayerMoveView(move: Move, playerId: PlayerColor): MoveView {
     console.log(playerId)
-    if (move.type === MoveType.DrawCard && move.playerId === playerId) {
-      return {...move}
-    }
+    // if (move.type === MoveType.DrawCard && move.playerId === playerId) {
+    //   return {...move}
+    // }
     return move
   }
 }

@@ -1,6 +1,10 @@
 /**
  * A "Move" is the combination of all the types of moves that exists in you game
  */
- type Eat = {}
+
+import MoveType from "./MoveType"
+
+ type Eat = {type: typeof MoveType.Eat}
  
  export default Eat
+ 
