@@ -1,4 +1,4 @@
-import FieldElement from "./FieldElement"
+import FieldElement from "./fields/FieldElement"
 
 export default class GameBoard {
     field: FieldElement[][] = []
