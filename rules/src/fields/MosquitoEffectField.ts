@@ -1,5 +1,4 @@
 import MosquitoEffectToken from "../material/MosquitoEffect";
-import MosquitoEffect from "../material/MosquitoEffect";
 import FieldElement from "./FieldElement";
 
 class MosquitoEffectField implements FieldElement {
