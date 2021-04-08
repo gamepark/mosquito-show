@@ -34,8 +34,8 @@ export const MosquitoShowOptionsDescription: OptionsDescription<{}, MosquitoShow
       type: OptionType.LIST,
       getLabel: (t: TFunction) => t('Empire'),
       values: Object.values(PlayerColor),
-      getValueLabel: (empire: PlayerColor, t: TFunction) => {
-        switch (empire) {
+      getValueLabel: (player: PlayerColor, t: TFunction) => {
+        switch (player) {
           case PlayerColor.Blue:
             return t('Blue player')
           case PlayerColor.Orange:

@@ -4,7 +4,6 @@ import GameView from './GameView'
 import { doSomething } from './moves/ChooseAnimal'
 import Move from './moves/Move'
 import MoveType from './moves/MoveType'
-import MoveView from './moves/MoveView'
 import PlayerColor from './PlayerColor'
 
 /**
@@ -14,8 +13,7 @@ import PlayerColor from './PlayerColor'
  * If the game contains information that some players know, but the other players does not, it must implement "SecretInformation" instead.
  * Later on, you can also implement "Competitive", "Undo", "TimeLimit" and "Eliminations" to add further features to the game.
  */
-export default class MosquitoShow extends SequentialGame<GameState, Move, PlayerColor>
-  implements SecretInformation<GameState, GameView, Move, MoveView, PlayerColor> {
+export default class MosquitoShow extends SequentialGame<GameState, Move, PlayerColor>{
   /**
    * This constructor is called when the game "restarts" from a previously saved state.
    * @param state The state of the game
@@ -34,7 +32,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     // if (isGameOptions(arg)) {
     //   super({players: arg.players.map(player => ({color: player.id, availableMosquitoEffects: [], chosenAnimal: Animal.Toucan, ownedGoldenMosquitos: 0}))})
     // } else {
-       super(arg)
+    super(arg)
     // }
   }
 
@@ -78,8 +76,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   play(move: Move): void {
     switch (move.type) {
-       case MoveType.ChooseAnimal:
-         return doSomething()
+      case MoveType.ChooseAnimal:
+        return doSomething()
       // case MoveType.DrawCard:
       //   return drawCard(this.state, move)
     }
@@ -115,7 +113,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return What a person can see from the game state
    */
   getView(): GameView {
-    return {...this.state, deck: this.state.players.length}
+    return { ...this.state, board: this.state.board }
   }
 
   /**
@@ -126,35 +124,6 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
   getPlayerView(playerId: PlayerColor): GameView {
     console.log(playerId)
     // Here we could, for example, return a "playerView" with only the number of cards in hand for the other player only.
-    return {...this.state, deck: this.state.players.length}
-  }
-
-  /**
-   * If you game has incomplete information, sometime you need to alter a Move before it is sent to the players and spectator.
-   * For example, if a card is revealed, the id of the revealed card should be ADDED to the Move in the MoveView
-   * Sometime, you will hide information: for example if a player secretly choose a card, you will hide the card to the other players or spectators.
-   *
-   * @param move The move that has been played
-   * @return What a person should know about the move that was played
-   */
-  getMoveView(move: Move): MoveView {
-    return move
-  }
-
-  /**
-   * If you game has secret information, sometime you need to alter a Move depending on which player it is.
-   * For example, if a card is drawn, the id of the revealed card should be ADDED to the Move in the MoveView, but only for the played that draws!
-   * Sometime, you will hide information: for example if a player secretly choose a card, you will hide the card to the other players or spectators.
-   *
-   * @param move The move that has been played
-   * @param playerId Identifier of the player seeing the move
-   * @return What a person should know about the move that was played
-   */
-  getPlayerMoveView(move: Move, playerId: PlayerColor): MoveView {
-    console.log(playerId)
-    // if (move.type === MoveType.DrawCard && move.playerId === playerId) {
-    //   return {...move}
-    // }
-    return move
+    return { ...this.state, board: this.state.board }
   }
 }
