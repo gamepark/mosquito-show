@@ -3,7 +3,6 @@ import GameBoard from './GameBoard'
 import GameState from './GameState'
 import GameView from './GameView'
 import Move from './moves/Move'
-import MoveType from './moves/MoveType'
 import PlayerColor from './PlayerColor'
 
 /**
