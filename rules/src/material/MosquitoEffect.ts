@@ -1,8 +1,8 @@
-enum MosquitoEffectBack {
-    Grey = 'Grey', Blue = 'Blue', Red = 'Red', White = 'White'
+export enum MosquitoEffectBack {
+    Grey = 'Grey', Blue = 'Blue', Red = 'Red', White = 'White', Golden = 'Golden'
 }
 
-enum MosquitoEffectFront {
+export enum MosquitoEffectFront {
   WaterLilyFlower = 'WaterLilyFlower', WaterLily = 'WaterLily'
 }
 
