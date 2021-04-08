@@ -27,7 +27,6 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     // } else {
     super(arg)
     arg.board = this.initializeGameBoard()
-    // 2. Setze die Stacks
     // 3. Lasse die Spieler Figuren auswählen.
 
     // }
