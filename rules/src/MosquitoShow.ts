@@ -1,7 +1,7 @@
-import { SecretInformation, SequentialGame } from '@gamepark/rules-api'
+import { SequentialGame } from '@gamepark/rules-api'
+import GameBoard from './GameBoard'
 import GameState from './GameState'
 import GameView from './GameView'
-import { doSomething } from './moves/ChooseAnimal'
 import Move from './moves/Move'
 import MoveType from './moves/MoveType'
 import PlayerColor from './PlayerColor'
@@ -18,22 +18,22 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * This constructor is called when the game "restarts" from a previously saved state.
    * @param state The state of the game
    */
-  constructor(state: GameState)
-  /**
-   * This constructor is called when a new game is created. If your game has options, or a variable number of players, it will be provided here.
-   * @param options The options of the new game
-   */
-  // constructor(options: MosquitoShowOptions)
-  /**
-   * In here you must code the construction of your class. Use a "typeguard" to distinguish a new game from a restored game.
-   * @param arg The state of the game, or the options when starting a new game
-   */
+
+
   constructor(arg: GameState) {
     // if (isGameOptions(arg)) {
     //   super({players: arg.players.map(player => ({color: player.id, availableMosquitoEffects: [], chosenAnimal: Animal.Toucan, ownedGoldenMosquitos: 0}))})
     // } else {
     super(arg)
+    arg.board = this.initializeGameBoard()
+    // 2. Setze die Stacks
+    // 3. Lasse die Spieler Figuren auswählen.
+
     // }
+  }
+
+  initializeGameBoard(): GameBoard {
+    return new GameBoard()
   }
 
   /**
@@ -77,7 +77,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
   play(move: Move): void {
     switch (move.type) {
       case MoveType.ChooseAnimal:
-        return doSomething()
+        return selectAnimal(this.state)
       // case MoveType.DrawCard:
       //   return drawCard(this.state, move)
     }
