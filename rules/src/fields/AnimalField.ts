@@ -1,9 +1,9 @@
-import Chameleon from "../animals/Chameleon";
-import Toucan from "../animals/Toucan";
+
+import Animal from "../animals/Animal";
 import FieldElement from "./FieldElement";
 
 class AnimalField implements FieldElement {
-    animalOnField: Chameleon | Toucan | null;
+    animalOnField: Animal | null;
 
     constructor(){
         this.animalOnField = null;

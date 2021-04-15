@@ -1,6 +1,9 @@
-type Position = {
+export default class Position {
     x: number;
     y: number;
-}
 
-export default Position
+    constructor(x: number, y: number){
+        this.x = x;
+        this.y = y;
+    }
+}

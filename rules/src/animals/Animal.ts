@@ -1,5 +1,16 @@
-enum Animal {
-    Toucan = 'Toucan', Chameleon = 'Chameleon'
+import PlayerColor from "../PlayerColor";
+
+
+export default class Animal {
+  playerId: PlayerColor
+  animalType: AnimalType
+
+  constructor(playeColor: PlayerColor, animalType: AnimalType) {
+    this.playerId = playeColor;
+    this.animalType = animalType
   }
-  
-  export default Animal
+}
+
+enum AnimalType {
+  Toucan = 'Toucan', Chameleon = 'Chameleon'
+}
