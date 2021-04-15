@@ -1,5 +1,4 @@
 import GameBoard from './GameBoard'
-import GameState from './GameState'
 
 /**
  * In here, you describe what a GameView will look like at any time during a game.

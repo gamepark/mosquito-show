@@ -1,9 +1,6 @@
-import {Game} from '@gamepark/rules-api'
+import { Game } from '@gamepark/rules-api'
 import GameView from './GameView'
-import {drawCardInPlayerView, drawCardInView, isDrawCardView} from './moves/DrawCard'
-import MoveType from './moves/MoveType'
 import MoveView from './moves/MoveView'
-import {spendGold} from './moves/SpendGold'
 
 /**
  * This class is useful when the game has "IncompleteInformation" (or "SecretInformation").
@@ -35,14 +32,14 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
    */
   play(move: MoveView): void {
     switch (move.type) {
-      case MoveType.SpendGold:
+ /*      case MoveType.SpendGold:
         return spendGold(this.state, move)
       case MoveType.DrawCard:
         if (isDrawCardView(move)) {
           return drawCardInPlayerView(this.state, move)
         } else {
           return drawCardInView(this.state, move)
-        }
+        } */
     }
   }
 
