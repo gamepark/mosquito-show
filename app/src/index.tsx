@@ -8,6 +8,7 @@ import {StrictMode} from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import translations from './translations.json'
+import { Images } from './material/Resources';
 
 setupTranslation(translations)
 
@@ -54,6 +55,8 @@ const style = css`
       height: 100%;
       background-color: rgba(0, 0, 0, 0.7);
     }
+
+    background-image: url(${Images.BoardFront});
   }
 `
 

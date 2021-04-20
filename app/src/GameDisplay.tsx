@@ -21,6 +21,10 @@ export default function GameDisplay({game}: Props) {
   )
 }
 
+export {
+  GameDisplay
+}
+
 const fadeIn = keyframes`
   from, 50% {
     opacity: 0;
