@@ -2,6 +2,7 @@
 import {css, keyframes} from '@emotion/react'
 import GameView from '@gamepark/mosquito-show/GameView'
 import {Letterbox} from '@gamepark/react-components'
+import { Images} from './material/Resources';
 
 type Props = {
   game: GameView
@@ -10,6 +11,8 @@ type Props = {
 export default function GameDisplay({game}: Props) {
   return (
     <Letterbox css={letterBoxStyle} top={0}>
+      <div css={ gameBoard } style={{backgroundImage: `url(${Images.BoardFront})`}}>
+      </div>
       <div css={css`position: absolute;
         top: 50%;
         left: 50%;
@@ -36,4 +39,13 @@ const fadeIn = keyframes`
 
 const letterBoxStyle = css`
   animation: ${fadeIn} 3s ease-in forwards;
+`
+
+const gameBoard = css`
+  position: absolute;
+  background-size: 100% 100%;
+  height: 50%;
+  width: 50%;
+  top: 20%;
+  left: 20%;
 `

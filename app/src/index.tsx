@@ -56,13 +56,13 @@ const style = css`
       background-color: rgba(0, 0, 0, 0.7);
     }
 
-    background-image: url(${Images.BoardFront});
+    background-image: url(${Images.BoardBack});
   }
 `
 
 ReactDOM.render(
   <StrictMode>
-    <GameProvider game="my-board-game" Rules={MosquitoShow} RulesView={MosquitoShowView} optionsDescription={MosquitoShowOptionsDescription}>
+    <GameProvider game="MosquitoShow" Rules={MosquitoShow} RulesView={MosquitoShowView} optionsDescription={MosquitoShowOptionsDescription}>
       <App/>
     </GameProvider>
     <Global styles={[normalize, style]}/>
