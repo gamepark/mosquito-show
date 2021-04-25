@@ -5,15 +5,15 @@ import ImagesLoader from './util/ImagesLoader'
 import { Images} from './material/Resources';
 import { useEffect, useState } from 'react'
 import { LoadingScreen } from '@gamepark/react-components'
-import { FullscreenDialog, Menu, useGame } from '@gamepark/react-client';
+import { FullscreenDialog, Menu} from '@gamepark/react-client';
 import MosquitoShowBox from './material/logo.png';
 import { css } from '@emotion/react';
-import GameState from '@gamepark/mosquito-show/GameState';
+// import GameState from '@gamepark/mosquito-show/GameState';
 import { GameDisplay } from './GameDisplay'
 
 
 export default function App() {
-  const game = useGame<GameState>()
+  // const game = useGame<GameState>()
 
   const [isJustDisplayed, setJustDisplayed] = useState(true);
   const [isImagesLoading, setImagesLoading] = useState(true);
@@ -26,7 +26,7 @@ export default function App() {
   return (
     <DndProvider options={HTML5ToTouch}>
     <LoadingScreen display={loading} gameBox={ MosquitoShowBox } author={["Bruno Cathala", "Andrea Mainini"]} artist="Camille Chaussy" publisher="Origames" css={ css`font-weight:normal; letter-spacing: 0.15em;` }  />
-    {!loading && <GameDisplay game={game!}/>}
+    {!loading && <GameDisplay/>}
     <ImagesLoader images={Object.values(Images)} onImagesLoad={() => setImagesLoading(false)}/>
     <Menu/>
     <FullscreenDialog/>
