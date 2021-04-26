@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import { DndProvider } from 'react-dnd-multi-backend'
-import HTML5ToTouch from 'react-dnd-multi-backend/dist/cjs/HTML5toTouch'
-import ImagesLoader from './util/ImagesLoader'
-import { Images} from './material/Resources';
-import { useEffect, useState } from 'react'
-import { LoadingScreen } from '@gamepark/react-components'
-import { FullscreenDialog, Menu} from '@gamepark/react-client';
-import MosquitoShowBox from './material/logo.png';
 import { css } from '@emotion/react';
+import { FullscreenDialog, Menu } from '@gamepark/react-client';
+import { LoadingScreen } from '@gamepark/react-components';
+import { useEffect, useState } from 'react';
+import { DndProvider } from 'react-dnd-multi-backend';
+import HTML5ToTouch from 'react-dnd-multi-backend/dist/cjs/HTML5toTouch';
 // import GameState from '@gamepark/mosquito-show/GameState';
-import { GameDisplay } from './GameDisplay'
+import { GameDisplay } from './GameDisplay';
+import MosquitoShowBox from './material/logo.png';
+import { Images } from './material/Resources';
+import ImagesLoader from './util/ImagesLoader';
 
 
 export default function App() {
