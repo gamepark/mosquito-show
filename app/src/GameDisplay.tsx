@@ -1,18 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react';
-// import GameView from '@gamepark/mosquito-show/GameView'
+import GameBoard from '@gamepark/mosquito-show/GameBoard';
 import { Letterbox } from '@gamepark/react-components';
 import { Board } from './material/board/Board';
 
-// type Props = {
-//   game: GameView
-// }
+ type Props = {
+  game: GameBoard | undefined
+ }
 
-const GameDisplay: React.FC<any> = () => {
+const GameDisplay: React.FC<Props> = ({game}: Props) => {
   return (
     <Letterbox css={letterBoxStyle}>
       <div css={ gameBoard }>
-        <Board/>
+        <Board gameboard={game}/>
       </div>
     </Letterbox>
   )
