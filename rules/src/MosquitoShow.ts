@@ -1,8 +1,11 @@
 import { SequentialGame } from '@gamepark/rules-api'
+import Animal from './animals/Animal'
+import Position from './common/Position'
 import GameBoard from './GameBoard'
 import GameState from './GameState'
 import GameView from './GameView'
 import Move from './moves/Move'
+import MoveType from './moves/MoveType'
 import PlayerColor from './PlayerColor'
 
 /**
@@ -28,6 +31,10 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     // 3. Lasse die Spieler Figuren auswählen.
 
     // }
+  }
+
+  isLegalMove(playerId: PlayerColor, move: Move){
+    return true;
   }
 
   initializeGameBoard(): GameBoard {
@@ -62,7 +69,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   getLegalMoves(): Move[] {
     return [
-      // {type: MoveType.SpendGold, playerId: this.getActivePlayer()!, quantity: 5},
+       {type: MoveType.ChooseAnimal, playerId: PlayerColor.Orange,  position: new Position(0, 0), animal: new Animal(PlayerColor.Orange) }
       // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
     ]
   }
@@ -74,7 +81,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   play(move: Move): void {
     switch (move.type) {
-      // case MoveType.ChooseAnimal:
+       case MoveType.ChooseAnimal:
+         console.log("Play")
       //   return selectAnimal(this.state)
       // case MoveType.DrawCard:
       //   return drawCard(this.state, move)

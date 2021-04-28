@@ -2,6 +2,7 @@
 import { css } from '@emotion/react';
 import GameBoard from '@gamepark/mosquito-show/GameBoard';
 import { FunctionComponent } from 'react';
+import { Animal } from '../fieldelement/Animal';
 import { Mosquito } from '../fieldelement/Mosquito';
 import { Images } from '../Resources';
 
@@ -17,10 +18,9 @@ const Board: FunctionComponent<BoardProps> = ({ gameboard }: BoardProps) => {
         if (column % 2 == 1) {
             return <Mosquito column={column} row={row} />
         } else {
-            if (typeof gameboard !== "undefined" && gameboard !== null ) {
-                // if(typeof gameboard[column][row] !== "undefined" && gameboard[column][row] instanceof AnimalField){
-                // return <Animal animalFieldelement={ gameboard[column][row]} />
-                // }
+            if (typeof gameboard !== "undefined" && gameboard !== null) {
+                console.log(gameboard.field[column][row])
+                return <Animal animalFieldelement={gameboard.field[column][row]} gameboard={gameboard} row={row} column={column}/>
             }
             return "";
         }
