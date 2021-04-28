@@ -22,10 +22,11 @@ export default function App() {
     setTimeout(() => setJustDisplayed(false), 2000)
   }, [])
 
-  const loading = isImagesLoading || isJustDisplayed
+  const loading =  !game || isImagesLoading || isJustDisplayed;  
   return (
     <DndProvider options={HTML5ToTouch}>
-    <LoadingScreen display={loading} gameBox={ MosquitoShowBox } author={["Bruno Cathala", "Andrea Mainini"]} artist="Camille Chaussy" publisher="Origames" css={ css`font-weight:normal; letter-spacing: 0.15em;` }  />
+    <LoadingScreen display={loading} gameBox={ MosquitoShowBox } author={["Bruno Cathala", "Andrea Mainini"]} artist="Camille 
+    Chaussy" publisher="Origames" css={ css`font-weight:normal; letter-spacing: 0.15em;` }  />
     {!loading && <GameDisplay game={game?.board}/>}
     <ImagesLoader images={Object.values(Images)} onImagesLoad={() => setImagesLoading(false)}/>
     <Menu/>

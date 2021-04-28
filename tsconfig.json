@@ -9,7 +9,7 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

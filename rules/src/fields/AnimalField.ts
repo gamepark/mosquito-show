@@ -1,12 +1,13 @@
 
 import Animal from "../animals/Animal";
+import PlayerColor from "../PlayerColor";
 import FieldElement from "./FieldElement";
 
 class AnimalField implements FieldElement {
     animalOnField: Animal | null;
 
     constructor(){
-        this.animalOnField = null;
+        this.animalOnField = new Animal(PlayerColor.Orange);
     }
 
     isEmpty(): boolean {

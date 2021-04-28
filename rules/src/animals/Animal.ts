@@ -5,12 +5,12 @@ export default class Animal {
   playerId: PlayerColor
   animalType: AnimalType
 
-  constructor(playeColor: PlayerColor, animalType: AnimalType) {
+  constructor(playeColor: PlayerColor) {
     this.playerId = playeColor;
-    this.animalType = animalType
+    this.animalType = AnimalType.Toucan
   }
 }
 
-enum AnimalType {
+ enum AnimalType {
   Toucan = 'Toucan', Chameleon = 'Chameleon'
 }
