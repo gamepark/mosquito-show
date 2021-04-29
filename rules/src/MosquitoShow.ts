@@ -4,6 +4,7 @@ import Position from './common/Position'
 import GameBoard from './GameBoard'
 import GameState from './GameState'
 import GameView from './GameView'
+import { selectAnimal } from './moves/ChooseAnimal'
 import Move from './moves/Move'
 import MoveType from './moves/MoveType'
 import PlayerColor from './PlayerColor'
@@ -82,8 +83,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
   play(move: Move): void {
     switch (move.type) {
        case MoveType.ChooseAnimal:
-         console.log("Play")
-      //   return selectAnimal(this.state)
+         return selectAnimal(move, this.state)
       // case MoveType.DrawCard:
       //   return drawCard(this.state, move)
     }

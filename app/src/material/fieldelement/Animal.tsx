@@ -24,13 +24,11 @@ const Animal: FunctionComponent<AnimalProp> = ({ animalFieldelement, gameboard, 
     function setAnimalOnField() {
         var animal = new AnimalClass(PlayerColor.Orange);
         play({ type: MoveType.ChooseAnimal, playerId: PlayerColor.Orange, position: new Position(column, row), animal: animal })
-
-
-        // gameboard.field[column][row] =
     }
 
 
-    function test() {
+    function drawAnimals() {
+        console.log(animalFieldelement)
         if (animalFieldelement !== null && animalFieldelement.animalOnField !== null) {
             return <div css={boardStyle} style={{ backgroundImage: `url(${Images.Chamelon})` }}></div>
         } else {
@@ -41,9 +39,7 @@ const Animal: FunctionComponent<AnimalProp> = ({ animalFieldelement, gameboard, 
     }
 
     return (
-
-        test()
-
+        drawAnimals()
     )
 }
 
@@ -58,4 +54,3 @@ const boardStyle = css`
     width: 100%;
     background-size: contain;
 `
-
