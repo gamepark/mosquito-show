@@ -1,45 +1,26 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import AnimalClass from '@gamepark/mosquito-show/animals/Animal';
-import Position from '@gamepark/mosquito-show/common/Position';
-import AnimalField from '@gamepark/mosquito-show/fields/AnimalField';
-import GameBoard from '@gamepark/mosquito-show/GameBoard';
-import Move from '@gamepark/mosquito-show/moves/Move';
-import MoveType from '@gamepark/mosquito-show/moves/MoveType';
-import PlayerColor from '@gamepark/mosquito-show/PlayerColor';
-import { usePlay } from '@gamepark/react-client';
+import AnimalType from '@gamepark/mosquito-show/animals/AnimalType';
 import { FunctionComponent } from 'react';
 import { Images } from '../Resources';
 
 type AnimalProp = {
-    animalFieldelement: AnimalField;
-    gameboard: GameBoard
-    row: number
-    column: number
+    figure: AnimalType
 }
 
-const Animal: FunctionComponent<AnimalProp> = ({ animalFieldelement, gameboard, row, column }: AnimalProp) => {
-    const play = usePlay<Move>()
+const Animal: FunctionComponent<AnimalProp> = ({ figure }: AnimalProp) => {
 
-    function setAnimalOnField() {
-        var animal = new AnimalClass(PlayerColor.Orange);
-        play({ type: MoveType.ChooseAnimal, playerId: PlayerColor.Orange, position: new Position(column, row), animal: animal })
-    }
-
-
-    function drawAnimals() {
-        console.log(animalFieldelement)
-        if (animalFieldelement !== null && animalFieldelement.animalOnField !== null) {
-            return <div css={boardStyle} style={{ backgroundImage: `url(${Images.Chamelon})` }}></div>
-        } else {
-            return <div onClick={setAnimalOnField}>
-            </div>
+    function getAnimal() {
+        if (figure === AnimalType.Chameleon) {
+            return <div css={boardStyle} style={{ backgroundImage: `url(${Images.Chamelon})` }} />
+        } else if (figure === AnimalType.Toucan) {
+            return <div css={boardStyle} style={{ backgroundImage: `url(${Images.blueMosquito})` }} />
         }
-
+        return <div/>
     }
 
     return (
-        drawAnimals()
+        getAnimal()
     )
 }
 
@@ -53,4 +34,6 @@ const boardStyle = css`
     height: 100%;
     width: 100%;
     background-size: contain;
+    background-repeat: no-repeat;
 `
+

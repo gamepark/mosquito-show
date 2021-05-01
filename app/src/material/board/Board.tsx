@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import AnimalType from '@gamepark/mosquito-show/animals/AnimalType';
 import GameBoard from '@gamepark/mosquito-show/GameBoard';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { Animal } from '../fieldelement/Animal';
 import { Mosquito } from '../fieldelement/Mosquito';
 import { Images } from '../Resources';
@@ -12,15 +13,20 @@ type BoardProps = {
 
 const Board: FunctionComponent<BoardProps> = ({ gameboard }: BoardProps) => {
     const column = [0, 1, 2, 3, 4, 5, 6]
-    // const row = [0, 1, 2, 3, 4, 5, 6]
+
+    const [isCamelonDrawn, setChamelonDraw] = useState({ column: -1, row: -1 })
+    // const [isTucanDrawn, setTucanDraw] = useState({ column: -1, row: -1 })
 
     function createAnimalsAndMosquitoStack(column: number, row: number) {
         if (column % 2 == 1) {
             return <Mosquito column={column} row={row} />
         } else {
             if (typeof gameboard !== "undefined" && gameboard !== null) {
-                console.log(gameboard.field[column][row])
-                return <Animal animalFieldelement={gameboard.field[column][row]} gameboard={gameboard} row={row} column={column}/>
+                if (isCamelonDrawn.column === column && isCamelonDrawn.row === row) {
+                    return <Animal figure={AnimalType.Chameleon} />
+                } else {
+                    return <div onClick={() => { setChamelonDraw({ column, row }) }} />
+                }
             }
             return "";
         }
