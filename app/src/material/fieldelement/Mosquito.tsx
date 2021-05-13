@@ -11,7 +11,7 @@ type MosquitoProp = {
 const Mosquito: FunctionComponent<MosquitoProp> = ({column, row}:MosquitoProp) => {
     
     function test() {
-        if (column == 3 && row == 3 ) {
+        if (column === 3 && row === 3 ) {
             return <div css={boardStyle} style={{ backgroundImage: `url(${Images.blueMosquito})` }}></div>
         } else {
             return <div />;

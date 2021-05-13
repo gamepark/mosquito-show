@@ -65,8 +65,8 @@ const Board: FunctionComponent<BoardProps> = ({ gameboard }: BoardProps) => {
     // }
 
     function createAnimalsAndMosquitoStack(column: number, row: number) {
-        if (column % 2 == 1 || row % 2 == 1) {
-            if (column % 2 == 1 && row % 2 == 1) {
+        if (column % 2 === 1 || row % 2 === 1) {
+            if (column % 2 === 1 && row % 2 === 1) {
                 return <Mosquito column={column} row={row} />
             }
             return <div />
