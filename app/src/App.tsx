@@ -28,10 +28,10 @@ export default function App() {
     <DndProvider options={HTML5ToTouch}>
       <LoadingScreen display={loading} gameBox={MosquitoShowBox} author={["Bruno Cathala", "Andrea Mainini"]} artist="Camille 
     Chaussy" publisher="Origames" css={css`font-weight:normal; letter-spacing: 0.15em;`} />
-      <Header/>
+      {!loading && <Header/>}
       {!loading && <GameDisplay game={game?.board} />}
       <ImagesLoader images={Object.values(Images)} onImagesLoad={() => setImagesLoading(false)} />
-      <Menu />
+      <Menu /> 
       <FullscreenDialog />
     </DndProvider>
   )

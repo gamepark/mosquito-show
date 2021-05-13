@@ -1,11 +1,12 @@
 import { SequentialGame } from '@gamepark/rules-api'
 import Animal from './animals/Animal'
 import Position from './common/Position'
-import GameBoard from './GameBoard'
 import GameState from './GameState'
 import GameView from './GameView'
+import { isGameOptions } from './MosquitoShowOptions'
 import { selectAnimal } from './moves/ChooseAnimal'
 import Move from './moves/Move'
+import { moveAnimal } from './moves/MoveAnimal'
 import MoveType from './moves/MoveType'
 import PlayerColor from './PlayerColor'
 
@@ -24,23 +25,21 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
 
 
   constructor(arg: GameState) {
-    // if (isGameOptions(arg)) {
-    //   super({players: arg.players.map(player => ({color: player.id, availableMosquitoEffects: [], chosenAnimal: Animal.Toucan, ownedGoldenMosquitos: 0}))})
-    // } else {
-    super(arg)
-    arg.board = this.initializeGameBoard()
-    // 3. Lasse die Spieler Figuren auswählen.
-
-    // }
+    if (isGameOptions(arg)) {
+      // super({
+      //   players: setupPlayers(arg),
+      //   deck: shuffle(Array.from(developmentCards.keys())),
+      //   discard: [],
+      //   round: 1,
+      //   phase: Phase.Draft
+      // })
+      super(arg)
+    } else {
+      super(arg)
+    }
   }
 
-  isLegalMove(playerId: PlayerColor, move: Move){
-    return true;
-  }
 
-  initializeGameBoard(): GameBoard {
-    return new GameBoard()
-  }
 
   /**
    * @return True when game is over
@@ -70,7 +69,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   getLegalMoves(): Move[] {
     return [
-       {type: MoveType.ChooseAnimal, playerId: PlayerColor.Orange,  position: new Position(0, 0), animal: new Animal(PlayerColor.Orange) }
+      { type: MoveType.ChooseAnimal, playerId: PlayerColor.Orange, position: new Position(0, 0), animal: new Animal(PlayerColor.Orange) }
       // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
     ]
   }
@@ -82,8 +81,11 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   play(move: Move): void {
     switch (move.type) {
-       case MoveType.ChooseAnimal:
-         return selectAnimal(move, this.state)
+      case MoveType.ChooseAnimal:
+        selectAnimal(move, this.state)
+        break;
+      case MoveType.MoveAnimal:
+        moveAnimal(move, this.state)
       // case MoveType.DrawCard:
       //   return drawCard(this.state, move)
     }
@@ -133,3 +135,4 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     return { ...this.state, board: this.state.board }
   }
 }
+

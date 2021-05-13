@@ -4,9 +4,11 @@ import FieldElement from "./FieldElement";
 
 class AnimalField implements FieldElement {
     animalOnField: Animal | null;
+    selected: boolean;
 
     constructor(){
         this.animalOnField = null;
+        this.selected = false;
     }
 
     isEmpty(): boolean {

@@ -1,6 +1,5 @@
 import Animal from "../animals/Animal"
 import Position from "../common/Position"
-import AnimalField from "../fields/AnimalField"
 import GameState from "../GameState"
 import GameView from "../GameView"
 import PlayerColor from "../PlayerColor"
@@ -19,10 +18,6 @@ type ChooseAnimal = {
 export default ChooseAnimal
 
 
-export function selectAnimal(move:  ChooseAnimal, state: GameState | GameView) { 
-   if(state.board.field[move.position.x][move.position.y] instanceof AnimalField){
-      let animalField = state.board.field[move.position.x][move.position.y] as AnimalField;
-      animalField.animalOnField = move.animal
-   }
-   // TODO ERROR Frontend, when animal on mosquito effect
+export const selectAnimal = (move:  ChooseAnimal, state: GameState | GameView): void => { 
+   state.board.field[move.position.x][move.position.y].selected = !state.board.field[move.position.x][move.position.y].selected
 }

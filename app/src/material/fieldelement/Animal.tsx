@@ -12,9 +12,9 @@ const Animal: FunctionComponent<AnimalProp> = ({ figure }: AnimalProp) => {
 
     function getAnimal() {
         if (figure === AnimalType.Chameleon) {
-            return <div css={boardStyle} style={{ backgroundImage: `url(${Images.Chamelon})` }} />
+            return <div css={boardStyle} style={{ backgroundImage: `url(${Images.Chamelon_Blue})` }} />
         } else if (figure === AnimalType.Toucan) {
-            return <div css={boardStyle} style={{ backgroundImage: `url(${Images.blueMosquito})` }} />
+            return <div css={boardStyle} style={{ backgroundImage: `url(${Images.Tucan_Blue})` }} />
         }
         return <div/>
     }

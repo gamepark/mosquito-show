@@ -14,7 +14,7 @@ export default function Header() {
 
 
 const style = css`
-  position: absolute;
+  position: center;
   display: flex;
   width: 100%;
   height: 7em;
