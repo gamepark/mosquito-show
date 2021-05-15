@@ -32,6 +32,7 @@ const marked = css`
     display: inline-grid;
     height: 50%;
     width: 50%;
+    filter: invert(100%); 
     background-size: contain;
     background-repeat: no-repeat;
 `
@@ -39,8 +40,8 @@ const marked = css`
 const boardStyle = css`
     position: relative;
     display: inline-grid;
-    height: 100%;
-    width: 100%;
+    height: 50%;
+    width: 50%;
     background-size: contain;
     background-repeat: no-repeat;
 `
