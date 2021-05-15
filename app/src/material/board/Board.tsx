@@ -21,48 +21,9 @@ const Board: FunctionComponent<BoardProps> = ({ gameboard }: BoardProps) => {
 
     const column = [0, 1, 2, 3, 4, 5, 6]
 
-    const [isCamelonDrawn, setChamelonDraw] = useState({ column: 0, row: 0, selected: false })
-    const [isTucanDrawn, setTucanDraw] = useState({ column: 6, row: 6, selected: false })
+    const [isCamelonDrawn, setChamelonDraw] = useState({ column: -1, row: -1, selected: false })
+    const [isTucanDrawn, setTucanDraw] = useState({ column: -1, row: -1, selected: false })
 
-
-
-    // function drawChamelon(column: number, row: number) {
-    //     if (isCamelonDrawn.column === column && isCamelonDrawn.row === row) {
-    //         return <div onClick={() => {
-    //             play({ type: MoveType.ChooseAnimal, playerId: PlayerColor.Orange, position: new Position(column, row), animal: new AnimalClass(PlayerColor.Orange) })
-    //             setChamelonDraw({ column, row, selected: !isCamelonDrawn.selected });
-    //         }}>
-    //             {!isCamelonDrawn.selected && <Animal figure={AnimalType.Chameleon} />}
-    //             {isCamelonDrawn.selected && !isTucanDrawn.selected && <Animal figure={AnimalType.Toucan} />}</div>
-    //     } else {
-    //         return <div onClick={() => {
-    //             if (isCamelonDrawn.selected) {
-    //                 console.log(column, row)
-    //                 play({ type: MoveType.MoveAnimal, playerId: PlayerColor.Orange, position: new Position(column, row), animal: new AnimalClass(PlayerColor.Orange) })
-    //                 setChamelonDraw({ column, row, selected: false })
-    //             }
-    //         }} />
-    //     }
-    // }
-
-    // function drawTucan(column: number, row: number) {
-    //     if (isTucanDrawn.column === column && isTucanDrawn.row === row) {
-    //         return <div onClick={() => {
-    //             play({ type: MoveType.ChooseAnimal, playerId: PlayerColor.Orange, position: new Position(column, row), animal: new AnimalClass(PlayerColor.Orange) })
-    //             setTucanDraw({ column, row, selected: !isCamelonDrawn.selected });
-    //         }}>
-    //             {!isTucanDrawn.selected && <Animal figure={AnimalType.Chameleon} />}
-    //             {isTucanDrawn.selected && !isCamelonDrawn.selected && <Animal figure={AnimalType.Toucan} />}</div>
-    //     } else {
-    //         return <div onClick={() => {
-    //             if (isTucanDrawn.selected) {
-    //                 console.log(column, row)
-    //                 play({ type: MoveType.MoveAnimal, playerId: PlayerColor.Orange, position: new Position(column, row), animal: new AnimalClass(PlayerColor.Orange) })
-    //                 setTucanDraw({ column, row, selected: false })
-    //             }
-    //         }} />
-    //     }
-    // }
 
     function createAnimalsAndMosquitoStack(column: number, row: number) {
         if (column % 2 === 1 || row % 2 === 1) {
@@ -88,13 +49,12 @@ const Board: FunctionComponent<BoardProps> = ({ gameboard }: BoardProps) => {
                         {isTucanDrawn.selected && !isCamelonDrawn.selected && <Animal figure={AnimalType.Toucan} />}</div>
                 } else {
                     return <div onClick={() => {
+                        console.log(gameboard)
                         if (isTucanDrawn.selected) {
-                            console.log(column, row)
                             play({ type: MoveType.MoveAnimal, playerId: PlayerColor.Orange, position: new Position(column, row), animal: new AnimalClass(PlayerColor.Orange) })
                             setTucanDraw({ column, row, selected: false })
                         }
                         if (isCamelonDrawn.selected) {
-                            console.log(column, row)
                             play({ type: MoveType.MoveAnimal, playerId: PlayerColor.Orange, position: new Position(column, row), animal: new AnimalClass(PlayerColor.Orange) })
                             setChamelonDraw({ column, row, selected: false })
                         }
@@ -134,10 +94,11 @@ const boardStyle = css`
     position: relative;
     display: grid;
     height: 100%;
-    max-height: 67.5%;
+    max-height: 100%;
     width: 100%;
-    max-width: 38%;
+    max-width: 100%;
     background-size: contain;
+    background-repeat: no-repeat;
 `
 
 

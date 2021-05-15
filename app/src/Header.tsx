@@ -1,9 +1,12 @@
 import { css } from '@emotion/react';
+import GameState from '@gamepark/mosquito-show/GameState';
 
+type Props = {
+  loading: boolean
+  game: GameState
+}
 
-
-export default function Header() {
-
+export default function Header({loading, game}: Props) {
 
   return (
     <header css={style}>

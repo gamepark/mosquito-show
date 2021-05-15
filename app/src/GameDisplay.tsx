@@ -11,8 +11,10 @@ import { Board } from './material/board/Board';
 const GameDisplay: React.FC<Props> = ({game}: Props) => {
   return (
     <Letterbox css={letterBoxStyle}>
-      <div css={ gameBoard }>
-        <Board gameboard={game}/>
+      <div css={ [display,boardGrid ]}>
+        <div></div>
+        <div css={gameBoard} ><Board gameboard={game}/></div>
+        <div></div>
       </div>
     </Letterbox>
   )
@@ -35,19 +37,22 @@ const letterBoxStyle = css`
   animation: ${fadeIn} 3s ease-in forwards;
 `
 
-const gameBoard = css`
-  perspective: 100em;
+const display = css`
   height: 100%;
   width: 100%;
-  display: flex;
+  display: grid;
   align-items: center;
   justify-content: center;
 `
-// const gameBoard = css`
-//   position: absolute;
-//   background-size: 100% 100%;
-//   height: 50%;
-//   width: 50%;
-//   top: 20%;
-//   left: 20%;
-// `
+
+const gameBoard = css`
+position: relative;
+display: inline-grid;
+height: 100%;
+width: 100%;
+`
+const boardGrid = css`
+    display: grid;
+    grid-template-columns: 22% 56% 22%;
+    grid-template-rows: 100%;
+`
