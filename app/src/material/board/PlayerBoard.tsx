@@ -10,10 +10,10 @@ type PlayerBoardProps = {
     color: PlayerColor;
 }
 
-const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({  color }: PlayerBoardProps) => {
+const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ color }: PlayerBoardProps) => {
 
-    const [inHover, setHover] = useState(false);
-
+    const [selectTucan, setTucanSelected] = useState(false);
+    const [selectChamelon, setChamelonSelected] = useState(false);
 
     function getImageChamelon(): String {
         switch (color) {
@@ -33,14 +33,17 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({  color }: PlayerBoar
         }
     }
 
+    function play(tucan: boolean , chamelon: boolean){
+        setTucanSelected(tucan); 
+        setChamelonSelected(chamelon); 
+    }
+
     return <div css={outbox}>
         <div css={animals}>
         </div>
         <div css={animals}>
-            <div css={() => { return inHover ? marked : boardStyle }} onMouseEnter={() => setHover(true)}
-                onMouseLeave={() => setHover(false)} style={{ backgroundImage: `url(${getImageChamelon()})` }} />
-            <div css={() => { return inHover ? marked : boardStyle }} onMouseEnter={() => setHover(true)}
-                onMouseLeave={() => setHover(false)} style={{ backgroundImage: `url(${getImageTucan()})` }} />
+            <div css={() => { return selectChamelon ? marked : boardStyle }} onClick={() => { play(false,!selectChamelon); }} style={{ backgroundImage: `url(${getImageChamelon()})` }} />
+            <div css={() => { return selectTucan ? marked : boardStyle }} onClick={() => { play(!selectTucan,false)} } style={{ backgroundImage: `url(${getImageTucan()})` }} />
         </div>
     </div>
 }
