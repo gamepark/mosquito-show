@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react';
 import GameBoard from '@gamepark/mosquito-show/GameBoard';
+import PlayerColor from '@gamepark/mosquito-show/PlayerColor';
 import { Letterbox } from '@gamepark/react-components';
 import { Board } from './material/board/Board';
 import { PlayerBoard } from './material/board/PlayerBoard';
@@ -13,9 +14,9 @@ const GameDisplay: React.FC<Props> = ({ game }: Props) => {
   return (
     <Letterbox css={letterBoxStyle}>
       <div css={[display, boardGrid]}>
-        <div css={playerBoard}><PlayerBoard /></div>
+        <div css={playerBoard}><PlayerBoard color={PlayerColor.Blue}/></div>
         <div css={gameBoard} ><Board gameboard={game} /></div>
-        <div css={playerBoard}><PlayerBoard /></div>
+        <div css={playerBoard}><PlayerBoard  color={PlayerColor.Orange} /></div>
       </div>
     </Letterbox>
   )
