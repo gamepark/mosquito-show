@@ -3,18 +3,19 @@ import { css, keyframes } from '@emotion/react';
 import GameBoard from '@gamepark/mosquito-show/GameBoard';
 import { Letterbox } from '@gamepark/react-components';
 import { Board } from './material/board/Board';
+import { PlayerBoard } from './material/board/PlayerBoard';
 
- type Props = {
+type Props = {
   game: GameBoard | undefined
- }
+}
 
-const GameDisplay: React.FC<Props> = ({game}: Props) => {
+const GameDisplay: React.FC<Props> = ({ game }: Props) => {
   return (
     <Letterbox css={letterBoxStyle}>
-      <div css={ [display,boardGrid ]}>
-        <div></div>
-        <div css={gameBoard} ><Board gameboard={game}/></div>
-        <div></div>
+      <div css={[display, boardGrid]}>
+        <div css={playerBoard}><PlayerBoard /></div>
+        <div css={gameBoard} ><Board gameboard={game} /></div>
+        <div css={playerBoard}><PlayerBoard /></div>
       </div>
     </Letterbox>
   )
@@ -46,6 +47,13 @@ const display = css`
 `
 
 const gameBoard = css`
+position: relative;
+display: inline-grid;
+height: 100%;
+width: 100%;
+`
+
+const playerBoard = css`
 position: relative;
 display: inline-grid;
 height: 100%;
