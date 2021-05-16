@@ -12,7 +12,7 @@ const Mosquito: FunctionComponent<MosquitoProp> = ({column, row}:MosquitoProp) =
     
     function test() {
         if (column === 3 && row === 3 ) {
-            return <div css={boardStyle} style={{ backgroundImage: `url(${Images.BlueMosquito})` }}></div>
+            return <div css={boardStyle}></div>
         } else {
             return <div />;
         }
@@ -30,9 +30,12 @@ export {
 const boardStyle = css`
     position: relative;
     display: inline-grid;
-    height: 100%;
-    width: 100%;
     background-size: contain;
     background-repeat: no-repeat;
+    border-radius: 50%;
+    border: none;
+    background: url(${Images.BlueMosquito});
+    background-position: center;
+    background-size: cover;
 `
 
