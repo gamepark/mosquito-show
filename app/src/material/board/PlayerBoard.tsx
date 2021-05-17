@@ -2,15 +2,17 @@
 import { css } from '@emotion/react';
 import GameBoard from '@gamepark/mosquito-show/GameBoard';
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor';
+import PlayerState from '@gamepark/mosquito-show/PlayerState';
 import { FunctionComponent, useState } from 'react';
 import { Images } from '../Resources';
 
 type PlayerBoardProps = {
     gameboard?: GameBoard | undefined;
+    playerstate?: PlayerState[] | undefined;
     color: PlayerColor;
 }
 
-const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ color }: PlayerBoardProps) => {
+const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ color , playerstate}: PlayerBoardProps) => {
 
     const [selectTucan, setTucanSelected] = useState(false);
     const [selectChamelon, setChamelonSelected] = useState(false);
