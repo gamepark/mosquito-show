@@ -84,11 +84,18 @@ export {
     Board
 };
 
+// const boardGrid = css`
+//     display: grid;
+//     grid-template-columns: 21% 6% 20% 6% 20% 6% 21%;
+//     grid-template-rows: 21% 6% 20% 6% 20% 6% 21%;
+// `
+
 const boardGrid = css`
     display: grid;
-    grid-template-columns: 21% 6% 20% 6% 20% 6% 21%;
-    grid-template-rows: 21% 6% 20% 6% 20% 6% 21%;
+    grid-template-columns: 20% 8% 18% 8% 18% 8% 20%;
+    grid-template-rows: 20% 8% 18% 8% 18% 8% 20%;
 `
+
 
 const boardStyle = css`
     position: relative;
