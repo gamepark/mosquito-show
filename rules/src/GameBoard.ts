@@ -2,10 +2,9 @@ import AnimalField from "./fields/AnimalField";
 import MosquitoEffectField from "./fields/MosquitoEffectField";
 
 type GameBoard = {
-    animalfield: AnimalField[] 
+    animalfield: AnimalField[][]
     mosquitoFields: MosquitoEffectField[][]
-    coordinatesAnimals: number []
-  }
+}
 
 export default GameBoard 
     // field: FieldElement|null[][] = []
@@ -106,4 +105,3 @@ export default GameBoard
     // getFieldElement(): FieldElement|null[][] {
     //     return this.field;
     // }
-}

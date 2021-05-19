@@ -1,10 +1,11 @@
+import AnimalType from "../animals/AnimalType"
 import PlayerColor from "../PlayerColor"
 import Coordinates from "./Coordinates"
 
 
 type AnimalField = {
     id: number
-    type: number
+    type: AnimalType
     color: PlayerColor
   } & Coordinates
 

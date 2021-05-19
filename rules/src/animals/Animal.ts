@@ -1,4 +1,5 @@
 import PlayerColor from "../PlayerColor";
+import AnimalType from "./AnimalType";
 
 
 export default class Animal {
@@ -11,6 +12,3 @@ export default class Animal {
   }
 }
 
- enum AnimalType {
-  Toucan = 'Toucan', Chameleon = 'Chameleon'
-}

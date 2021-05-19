@@ -1,10 +1,10 @@
-import Animal from './animals/Animal';
-import MosquitoEffect from './material/MosquitoEffect';
+import AnimalType from './animals/AnimalType';
+import Effect from './fields/Effect';
 import PlayerColor from './PlayerColor';
 
 export default interface PlayerState {
   color: PlayerColor,
   ownedGoldenMosquitos: number,
-  availableMosquitoEffects: MosquitoEffect[],
-  animal: Animal[]
+  availableMosquitoEffects: Effect[],
+  animal: AnimalType[]
 }
