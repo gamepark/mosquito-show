@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import Coordinates from '@gamepark/mosquito-show/fields/Coordinates';
 import GameBoard from '@gamepark/mosquito-show/GameBoard';
 import { FunctionComponent } from 'react';
 import { Images } from '../Resources';
@@ -59,6 +60,7 @@ const Board: FunctionComponent<BoardProps> = ({ gameboard }: BoardProps) => {
 
     return (
         <div css={boardStyle} style={{ backgroundImage: `url(${Images.BoardFront})` }}>
+            <div css={tokenPosition({x: 1,y: 1})} style={{ backgroundImage: `url(${Images.BlueMosquito})` }}></div>
             {/* <div css={boardGrid}>
                 {column.map((column) => createAnimalsAndMosquitoStack(column, 0))}
                 {column.map((column) => createAnimalsAndMosquitoStack(column, 1))}
@@ -122,10 +124,10 @@ left: 2%
 //   top: ${10 + coords.y * PASTURE_SIZE}%;
 // `;
 
-// const tokenPosition = (coords: Coordinates) => css`
-//   height: ${TOKEN_SIZE}%;
-//   width: ${9 / 16 * TOKEN_SIZE}%;
-//   position: absolute;
-//   left: ${10 + coords.x * 9 / 16 * TOKEN_SIZE}%;
-//   top: ${10 + coords.y * TOKEN_SIZE}%;
-// `;
+const tokenPosition = (coords: Coordinates) => css`
+  height: 10%;
+  width: ${9 / 16 * 10}%;
+  position: absolute;
+  left: ${10 + coords.x * 10/ 9}%;
+  top: ${10 + coords.y * 10}%;
+`;
