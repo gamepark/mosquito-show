@@ -60,7 +60,15 @@ const Board: FunctionComponent<BoardProps> = ({ gameboard }: BoardProps) => {
 
     return (
         <div css={boardStyle} style={{ backgroundImage: `url(${Images.BoardFront})` }}>
-            <div css={tokenPosition({x: 1,y: 1})} style={{ backgroundImage: `url(${Images.BlueMosquito})` }}></div>
+            <div css={tokenPosition({x: 1,y: 1})}  style={{ backgroundImage: `url(${Images.BlueMosquito})`} }></div>
+            <div css={tokenPosition({x: 2,y: 1})}  style={{ backgroundImage: `url(${Images.GoldenMosquito})`} }></div>
+            <div css={tokenPosition({x: 3,y: 1})}  style={{ backgroundImage: `url(${Images.GreyMosquito})`} }></div>
+            <div css={tokenPosition({x: 1,y: 2})}  style={{ backgroundImage: `url(${Images.BlueMosquito})`} }></div>
+            <div css={tokenPosition({x: 2,y: 2})}  style={{ backgroundImage: `url(${Images.GoldenMosquito})`} }></div>
+            <div css={tokenPosition({x: 3,y: 2})}  style={{ backgroundImage: `url(${Images.GreyMosquito})`} }></div>
+            <div css={tokenPosition({x: 1,y: 3})}  style={{ backgroundImage: `url(${Images.BlueMosquito})`} }></div>
+            <div css={tokenPosition({x: 2,y: 3})}  style={{ backgroundImage: `url(${Images.GoldenMosquito})`} }></div>
+            <div css={tokenPosition({x: 3,y: 3})}  style={{ backgroundImage: `url(${Images.GreyMosquito})`} }></div>
             {/* <div css={boardGrid}>
                 {column.map((column) => createAnimalsAndMosquitoStack(column, 0))}
                 {column.map((column) => createAnimalsAndMosquitoStack(column, 1))}
@@ -125,9 +133,13 @@ left: 2%
 // `;
 
 const tokenPosition = (coords: Coordinates) => css`
-  height: 10%;
-  width: ${9 / 16 * 10}%;
+  height: 12%;
+  width: 12%;
   position: absolute;
-  left: ${10 + coords.x * 10/ 9}%;
-  top: ${10 + coords.y * 10}%;
+  left: ${15 + coords.x * 3* (coords.x* coords.x)}%;
+  top: ${8 + coords.y * 10*coords.y}%;
+  border-radius: 50%;
+  border: none;
+  background-position: center;
+  background-size: cover;
 `;
