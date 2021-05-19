@@ -1,4 +1,5 @@
 import GameBoard from './GameBoard'
+import PlayerColor from './PlayerColor'
 import PlayerState from './PlayerState'
 
 /**
@@ -6,6 +7,7 @@ import PlayerState from './PlayerState'
  */
 type GameState = {
   players: PlayerState[],
+  activPlayer : PlayerColor,
   board: GameBoard
 }
 
