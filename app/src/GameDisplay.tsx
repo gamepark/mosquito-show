@@ -12,6 +12,7 @@ type Props = {
 }
 
 const GameDisplay: React.FC<Props> = ({ game }: Props) => {
+
   return (
     <Letterbox css={letterBoxStyle}>
       <div css={[display, boardGrid]}>

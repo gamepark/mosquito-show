@@ -6,5 +6,5 @@ export default interface PlayerState {
   color: PlayerColor,
   ownedGoldenMosquitos: number,
   availableMosquitoEffects: MosquitoEffect[],
-  chosenAnimal: Animal
+  animal: Animal[]
 }

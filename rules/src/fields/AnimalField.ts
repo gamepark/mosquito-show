@@ -1,24 +1,30 @@
+import PlayerColor from "../PlayerColor"
+import Coordinates from "./Coordinates"
 
-import Animal from "../animals/Animal";
-import FieldElement from "./FieldElement";
 
-class AnimalField implements FieldElement {
-    animalOnField: Animal | null;
-    selected: boolean;
+type AnimalField = {
+    id: number
+    type: number
+    color: PlayerColor
+  } & Coordinates
 
-    constructor(){
-        this.animalOnField = null;
-        this.selected = false;
-    }
+// class AnimalField implements FieldElement {
+//     animalOnField: Animal | null;
+//     selected: boolean;
 
-    isEmpty(): boolean {
-        return this.animalOnField === null;
-    }
+//     constructor(){
+//         this.animalOnField = null;
+//         this.selected = false;
+//     }
 
-     setAnimalOnField(animalonfield : Animal){
-        this.animalOnField = animalonfield
-    }
+//     isEmpty(): boolean {
+//         return this.animalOnField === null;
+//     }
+
+//      setAnimalOnField(animalonfield : Animal){
+//         this.animalOnField = animalonfield
+//     }
     
-}
+// }
 
 export default AnimalField

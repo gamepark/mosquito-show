@@ -1,13 +1,19 @@
-import MosquitoEffectToken from "../material/MosquitoEffect";
-import FieldElement from "./FieldElement";
+import Coordinates from "./Coordinates"
+import Effect from "./Effect"
 
-class MosquitoEffectField implements FieldElement {
-    pile: MosquitoEffectToken[] = [];
 
-    isEmpty(): boolean {
-        return this.pile.length === 0;
-    }
+type MosquitoEffectField = {
+    id: number
+    effect: Effect[]
+  } & Coordinates
 
-}
+// class MosquitoEffectField implements FieldElement {
+//     pile: MosquitoEffectToken[] = [];
+
+//     isEmpty(): boolean {
+//         return this.pile.length === 0;
+//     }
+
+// }
 
 export default MosquitoEffectField

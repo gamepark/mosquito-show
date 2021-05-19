@@ -1,8 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import Animal from '@gamepark/mosquito-show/animals/Animal';
 import GameBoard from '@gamepark/mosquito-show/GameBoard';
+import MoveType from '@gamepark/mosquito-show/moves/MoveType';
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor';
 import PlayerState from '@gamepark/mosquito-show/PlayerState';
+import { usePlay } from '@gamepark/react-client';
 import { FunctionComponent, useState } from 'react';
 import { Images } from '../Resources';
 
@@ -13,7 +16,7 @@ type PlayerBoardProps = {
 }
 
 const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ color , playerstate}: PlayerBoardProps) => {
-
+    const play = usePlay();
     const [selectTucan, setTucanSelected] = useState(false);
     const [selectChamelon, setChamelonSelected] = useState(false);
 
@@ -35,17 +38,27 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ color , playerstate}
         }
     }
 
-    function play(tucan: boolean , chamelon: boolean){
+    function playMove(tucan: boolean , chamelon: boolean){
+      
         setTucanSelected(tucan); 
-        setChamelonSelected(chamelon); 
+        setChamelonSelected(chamelon);
+
+        if(tucan){
+
+        } else if (chamelon){
+
+        }
+        // playerstate?.filter[color].
+        
+        play({ type: MoveType.ChooseAnimal, playerId: PlayerColor.Orange , animal: new Animal(color) });
     }
 
     return <div css={outbox}>
         <div css={animals}>
         </div>
         <div css={animals}>
-            <div css={() => { return selectChamelon ? marked : boardStyle }} onClick={() => { play(false,!selectChamelon); }} style={{ backgroundImage: `url(${getImageChamelon()})` }} />
-            <div css={() => { return selectTucan ? marked : boardStyle }} onClick={() => { play(!selectTucan,false)} } style={{ backgroundImage: `url(${getImageTucan()})` }} />
+            <div css={() => { return selectChamelon ? marked : boardStyle }} onClick={() => { playMove(false,!selectChamelon); }} style={{ backgroundImage: `url(${getImageChamelon()})` }} />
+            <div css={() => { return selectTucan ? marked : boardStyle }} onClick={() => { playMove(!selectTucan,false)} } style={{ backgroundImage: `url(${getImageTucan()})` }} />
         </div>
     </div>
 }
