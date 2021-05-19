@@ -156,11 +156,11 @@ const animalPosition = (coords: Coordinates) => css`
 
 
 const tokenPosition = (coords: Coordinates) => css`
-  height: 13%;
-  width: 13%;
+  height: 10%;
+  width: 10%;
   position: absolute;
-  left: ${17 + ((coords.x-1)*26.5)}%;
-  top: ${17 + ((coords.y-1)*25.5)}%; 
+  left: ${19 + ((coords.x-1)*25.7)}%;
+  top: ${19 + ((coords.y-1)*25.5)}%; 
   border-radius: 50%;
   border: none;
   background-position: center;
