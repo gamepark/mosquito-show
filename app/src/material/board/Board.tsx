@@ -60,6 +60,24 @@ const Board: FunctionComponent<BoardProps> = ({ gameboard }: BoardProps) => {
 
     return (
         <div css={boardStyle} style={{ backgroundImage: `url(${Images.BoardFront})` }}>
+            <div css={animalPosition({x: 1,y: 1})}  style={{ backgroundImage: `url(${Images.Tucan_Blue})`} }></div>
+            <div css={animalPosition({x: 2,y: 1})}  style={{ backgroundImage: `url(${Images.Tucan_Blue})`} }></div>
+            <div css={animalPosition({x: 3,y: 1})}  style={{ backgroundImage: `url(${Images.Tucan_Blue})`} }></div>
+            <div css={animalPosition({x: 4,y: 1})}  style={{ backgroundImage: `url(${Images.Chamelon_Orange})`} }></div>
+            <div css={animalPosition({x: 1,y: 2})}  style={{ backgroundImage: `url(${Images.Chamelon_Orange})`} }></div>
+            <div css={animalPosition({x: 2,y: 2})}  style={{ backgroundImage: `url(${Images.Chamelon_Orange})`} }></div>
+            <div css={animalPosition({x: 3,y: 2})}  style={{ backgroundImage: `url(${Images.Chamelon_Orange})`} }></div>
+            <div css={animalPosition({x: 4,y: 2})}  style={{ backgroundImage: `url(${Images.Chamelon_Orange})`} }></div>
+            <div css={animalPosition({x: 1,y: 3})}  style={{ backgroundImage: `url(${Images.Chamelon_Blue})`} }></div>
+            <div css={animalPosition({x: 2,y: 3})}  style={{ backgroundImage: `url(${Images.Chamelon_Blue})`} }></div>
+            <div css={animalPosition({x: 3,y: 3})}  style={{ backgroundImage: `url(${Images.Chamelon_Blue})`} }></div>
+            <div css={animalPosition({x: 4,y: 3})}  style={{ backgroundImage: `url(${Images.Chamelon_Blue})`} }></div>
+            <div css={animalPosition({x: 1,y: 4})}  style={{ backgroundImage: `url(${Images.Tucan_Orange})`} }></div>
+            <div css={animalPosition({x: 2,y: 4})}  style={{ backgroundImage: `url(${Images.Tucan_Orange})`} }></div>
+            <div css={animalPosition({x: 3,y: 4})}  style={{ backgroundImage: `url(${Images.Tucan_Orange})`} }></div>
+            <div css={animalPosition({x: 4,y: 4})}  style={{ backgroundImage: `url(${Images.Tucan_Orange})`} }></div>
+
+
             <div css={tokenPosition({x: 1,y: 1})}  style={{ backgroundImage: `url(${Images.BlueMosquito})`} }></div>
             <div css={tokenPosition({x: 2,y: 1})}  style={{ backgroundImage: `url(${Images.GoldenMosquito})`} }></div>
             <div css={tokenPosition({x: 3,y: 1})}  style={{ backgroundImage: `url(${Images.GreyMosquito})`} }></div>
@@ -124,13 +142,17 @@ left: 2%
 `
 
 
-// const pasturePosition = (coords: Coordinates) => css`
-//   height: ${PASTURE_SIZE}%;
-//   width: ${9 / 16 * PASTURE_SIZE}%;
-//   position: absolute;
-//   left: ${10 + coords.x * 9 / 16 * PASTURE_SIZE}%;
-//   top: ${10 + coords.y * PASTURE_SIZE}%;
-// `;
+const animalPosition = (coords: Coordinates) => css`
+  height: 13%;
+  width: 13%;
+  position: absolute;
+  left: ${5 + ((coords.x-1)*25.5)}%;
+  top: ${5 + ((coords.y-1)*25.5)}%; 
+  border-radius: 50%;
+  border: none;
+  background-position: center;
+  background-size: cover;
+`;
 
 
 const tokenPosition = (coords: Coordinates) => css`
