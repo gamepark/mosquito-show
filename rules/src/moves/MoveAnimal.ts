@@ -17,7 +17,7 @@ type MoveAnimal = {
 
 
 export const moveAnimal = (move: MoveAnimal, state: GameState | GameView): void => {
-    state.board.field[move.position.x][move.position.y].animalOnField = move.animal
+    // state.board.field[move.position.x][move.position.y].animalOnField = move.animal
 }
 
 export default MoveAnimal
