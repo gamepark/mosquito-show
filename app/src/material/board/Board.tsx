@@ -132,12 +132,13 @@ left: 2%
 //   top: ${10 + coords.y * PASTURE_SIZE}%;
 // `;
 
+
 const tokenPosition = (coords: Coordinates) => css`
-  height: 12%;
-  width: 12%;
+  height: 13%;
+  width: 13%;
   position: absolute;
-  left: ${15 + coords.x * 3* (coords.x* coords.x)}%;
-  top: ${8 + coords.y * 10*coords.y}%;
+  left: ${17 + ((coords.x-1)*26.5)}%;
+  top: ${17 + ((coords.y-1)*25.5)}%; 
   border-radius: 50%;
   border: none;
   background-position: center;
