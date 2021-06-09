@@ -13,11 +13,11 @@ type Props = {
 
 const GameDisplay: React.FC<Props> = ({ game }: Props) => {
 
-  return (
+  return (  
     <Letterbox css={letterBoxStyle}>
       <div css={[display, boardGrid]}>
         <div css={playerBoard}><PlayerBoard playerstate={game?.players} color={PlayerColor.Blue}/></div>
-        <div css={gameBoard} ><Board gameboard={game?.board} /></div>
+        <div css={gameBoard} ><Board state={game} /></div>
         <div css={playerBoard}><PlayerBoard  playerstate={game?.players} color={PlayerColor.Orange} /></div>
       </div>
     </Letterbox>

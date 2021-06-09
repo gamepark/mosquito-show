@@ -1,15 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates';
-import GameBoard from '@gamepark/mosquito-show/GameBoard';
+import GameState from '@gamepark/mosquito-show/GameState';
 import { FunctionComponent } from 'react';
+import { Animal } from '../fieldelement/Animal';
 import { Images } from '../Resources';
 
 type BoardProps = {
-    gameboard?: GameBoard | undefined;
+    state: GameState | undefined;
 }
 
-const Board: FunctionComponent<BoardProps> = ({ gameboard }: BoardProps) => {
+const Board: FunctionComponent<BoardProps> = ({ state }: BoardProps) => {
     // const play = usePlay();
 
     // const column = [0, 1, 2, 3, 4, 5, 6]
@@ -62,8 +63,8 @@ const Board: FunctionComponent<BoardProps> = ({ gameboard }: BoardProps) => {
         <div css={boardStyle} style={{ backgroundImage: `url(${Images.BoardFront})` }}>
             <div css={animalPosition({x: 1,y: 1})}  style={{ backgroundImage: `url(${Images.Tucan_Blue})`} }></div>
             <div css={animalPosition({x: 2,y: 1})}  style={{ backgroundImage: `url(${Images.Tucan_Blue})`} }></div>
-            <div css={animalPosition({x: 3,y: 1})}  style={{ backgroundImage: `url(${Images.Tucan_Blue})`} }></div>
-            <div css={animalPosition({x: 4,y: 1})}  style={{ backgroundImage: `url(${Images.Chamelon_Orange})`} }></div>
+            <Animal state={state}></Animal>
+            {/* <div css={animalPosition({x: 4,y: 1})}  style={{ backgroundImage: `url(${Images.Chamelon_Orange})`} }></div>
             <div css={animalPosition({x: 1,y: 2})}  style={{ backgroundImage: `url(${Images.Chamelon_Orange})`} }></div>
             <div css={animalPosition({x: 2,y: 2})}  style={{ backgroundImage: `url(${Images.Chamelon_Orange})`} }></div>
             <div css={animalPosition({x: 3,y: 2})}  style={{ backgroundImage: `url(${Images.Chamelon_Orange})`} }></div>
@@ -75,7 +76,7 @@ const Board: FunctionComponent<BoardProps> = ({ gameboard }: BoardProps) => {
             <div css={animalPosition({x: 1,y: 4})}  style={{ backgroundImage: `url(${Images.Tucan_Orange})`} }></div>
             <div css={animalPosition({x: 2,y: 4})}  style={{ backgroundImage: `url(${Images.Tucan_Orange})`} }></div>
             <div css={animalPosition({x: 3,y: 4})}  style={{ backgroundImage: `url(${Images.Tucan_Orange})`} }></div>
-            <div css={animalPosition({x: 4,y: 4})}  style={{ backgroundImage: `url(${Images.Tucan_Orange})`} }></div>
+            <div css={animalPosition({x: 4,y: 4})}  style={{ backgroundImage: `url(${Images.Tucan_Orange})`} }></div> */}
 
 
             <div css={tokenPosition({x: 1,y: 1})}  style={{ backgroundImage: `url(${Images.BlueMosquito})`} }></div>
@@ -87,15 +88,6 @@ const Board: FunctionComponent<BoardProps> = ({ gameboard }: BoardProps) => {
             <div css={tokenPosition({x: 1,y: 3})}  style={{ backgroundImage: `url(${Images.BlueMosquito})`} }></div>
             <div css={tokenPosition({x: 2,y: 3})}  style={{ backgroundImage: `url(${Images.GoldenMosquito})`} }></div>
             <div css={tokenPosition({x: 3,y: 3})}  style={{ backgroundImage: `url(${Images.GreyMosquito})`} }></div>
-            {/* <div css={boardGrid}>
-                {column.map((column) => createAnimalsAndMosquitoStack(column, 0))}
-                {column.map((column) => createAnimalsAndMosquitoStack(column, 1))}
-                {column.map((column) => createAnimalsAndMosquitoStack(column, 2))}
-                {column.map((column) => createAnimalsAndMosquitoStack(column, 3))}
-                {column.map((column) => createAnimalsAndMosquitoStack(column, 4))}
-                {column.map((column) => createAnimalsAndMosquitoStack(column, 5))}
-                {column.map((column) => createAnimalsAndMosquitoStack(column, 6))}
-            </div> */}
         </div>
     )
 }

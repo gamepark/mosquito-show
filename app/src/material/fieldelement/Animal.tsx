@@ -1,26 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import AnimalType from '@gamepark/mosquito-show/animals/AnimalType';
+import Coordinates from '@gamepark/mosquito-show/fields/Coordinates';
+import GameState from '@gamepark/mosquito-show/GameState';
 import { FunctionComponent } from 'react';
 import { Images } from '../Resources';
 
 type AnimalProp = {
-    figure: AnimalType
+    state: GameState | undefined;
 }
 
-const Animal: FunctionComponent<AnimalProp> = ({ figure }: AnimalProp) => {
+const Animal: FunctionComponent<AnimalProp> = ({ state }: AnimalProp) => {
 
-    function getAnimal() {
-        if (figure === AnimalType.Chameleon) {
-            return <div css={boardStyle} style={{ backgroundImage: `url(${Images.Chamelon_Blue})` }} />
-        } else if (figure === AnimalType.Toucan) {
-            return <div css={boardStyle} style={{ backgroundImage: `url(${Images.Tucan_Blue})` }} />
-        }
-        return <div/>
-    }
 
     return (
-        getAnimal()
+        <div css={animalPosition({x: 3,y: 1})} style={{ backgroundImage: `url(${Images.Tucan_Blue})`} }></div>
     )
 }
 
@@ -28,12 +21,15 @@ export {
     Animal
 };
 
-const boardStyle = css`
-    position: relative;
-    display: inline-grid;
-    height: 100%;
-    width: 100%;
-    background-size: contain;
-    background-repeat: no-repeat;
-`
+const animalPosition = (coords: Coordinates) => css`
+  height: 13%;
+  width: 13%;
+  position: absolute;
+  left: ${5 + ((coords.x-1)*25.5)}%;
+  top: ${5 + ((coords.y-1)*25.5)}%; 
+  border-radius: 50%;
+  border: none;
+  background-position: center;
+  background-size: cover;
+`;
 
