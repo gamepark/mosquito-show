@@ -12,15 +12,13 @@ type ChooseAnimal = {
 export default ChooseAnimal
 
 export const selectAnimal = (move:  ChooseAnimal, state:  GameView): void => { 
-    // var possible  = new Array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)
-    // var animalfields = state.board.animalfield
-    // var length = animalfields.length;
-    // for(var i=0; i <length;i++){
-    //     possible.push(animalfields[i].id);
-    // }
+    state.possibleFields = []
+    if(state.selectedAnimalId == undefined){
+        return;
+    }
     let coo: Coordinates = {
         x: 1,
         y: 1
     };
-    state.possibleFields?.push(coo)
+    state.possibleFields.push(coo)
 }

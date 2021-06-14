@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import GameBoard from '@gamepark/mosquito-show/GameBoard';
+import MoveType from '@gamepark/mosquito-show/moves/MoveType';
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor';
 import PlayerState from '@gamepark/mosquito-show/PlayerState';
+import { usePlay } from '@gamepark/react-client';
 import { FunctionComponent, useState } from 'react';
 import { Images } from '../Resources';
 
@@ -13,7 +15,7 @@ type PlayerBoardProps = {
 }
 
 const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ color , playerstate}: PlayerBoardProps) => {
-    // const play = usePlay();
+    const play = usePlay();
     const [selectTucan, setTucanSelected] = useState(false);
     const [selectChamelon, setChamelonSelected] = useState(false);
 
@@ -47,7 +49,8 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ color , playerstate}
         }
         // playerstate?.filter[color].
         
-        // play({ type: MoveType.ChooseAnimal, playerId: PlayerColor.Orange , animal: new Animal(color) });
+        play({ type: MoveType.ChooseAnimal });
+
     }
 
     return <div css={outbox}>

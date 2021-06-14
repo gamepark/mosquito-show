@@ -13,7 +13,9 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
   state: GameView
 
   constructor(state: GameView) {
-    this.state = state
+    
+    this.state =  state
+    state.possibleFields = []
   }
   
   /**

@@ -31,6 +31,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         ],
           activPlayer : PlayerColor.Blue,
           board: { animalfield: [], mosquitoFields: []}
+
        })
     } else {
       super(arg)
@@ -53,7 +54,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return The identifier of the player whose turn it is
    */
   getActivePlayer(): PlayerColor | undefined {
-    return undefined // You must return undefined only when game is over, otherwise the game will be blocked.
+    return PlayerColor.Orange // You must return undefined only when game is over, otherwise the game will be blocked.
   }
 
   /**
@@ -82,8 +83,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     switch (move.type) {
       case MoveType.MoveAnimal:
         moveAnimal(move, this.state)
-      // case MoveType.DrawCard:
-      //   return drawCard(this.state, move)
+        break;
     }
   }
 
@@ -109,7 +109,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
      *   }
      * }
      */
-    return
+    return 
   }
 
   /**
