@@ -1,5 +1,8 @@
 import { Game } from '@gamepark/rules-api'
 import GameView from './GameView'
+import { selectAnimal } from './moves/ChooseAnimal'
+import Move from './moves/Move'
+import MoveType from './moves/MoveType'
 import MoveView from './moves/MoveView'
 
 /**
@@ -12,7 +15,7 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
   constructor(state: GameView) {
     this.state = state
   }
-
+  
   /**
    * In this method, inside the view, we must return any move that the frontend can fully anticipate.
    * The reason why it should be anticipated instead of waiting for the backend to provide with all the automatic consequences is latency.
@@ -21,8 +24,16 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
    * @return A MoveView which can be completely anticipated by the player or the spectator
    */
   getAutomaticMove(): void | MoveView {
-    return
+    return 
   }
+
+  getLegalMoves(): Move[] {
+    return [
+      { type: MoveType.ChooseAnimal}
+      // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
+    ]
+  }
+
 
   /**
    * This is where a move is reproduced on the browser of a player. Most move will be treated the exact same way on both server and client side,
@@ -32,14 +43,9 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
    */
   play(move: MoveView): void {
     switch (move.type) {
- /*      case MoveType.SpendGold:
-        return spendGold(this.state, move)
-      case MoveType.DrawCard:
-        if (isDrawCardView(move)) {
-          return drawCardInPlayerView(this.state, move)
-        } else {
-          return drawCardInView(this.state, move)
-        } */
+      case MoveType.ChooseAnimal:
+        selectAnimal(move, this.state)
+        break;
     }
   }
 

@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react';
-import GameState from '@gamepark/mosquito-show/GameState';
+import GameView from '@gamepark/mosquito-show/GameView';
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor';
 import { Letterbox } from '@gamepark/react-components';
 import { Board } from './material/board/Board';
 import { PlayerBoard } from './material/board/PlayerBoard';
 
 type Props = {
-  game: GameState | undefined
+  game: GameView | undefined
 
 }
 

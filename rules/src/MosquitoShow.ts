@@ -1,10 +1,8 @@
 import { SequentialGame } from '@gamepark/rules-api'
-import Animal from './animals/Animal'
 import AnimalType from './animals/AnimalType'
 import GameState from './GameState'
 import GameView from './GameView'
 import { isGameOptions } from './MosquitoShowOptions'
-import { selectAnimal } from './moves/ChooseAnimal'
 import Move from './moves/Move'
 import { moveAnimal } from './moves/MoveAnimal'
 import MoveType from './moves/MoveType'
@@ -70,7 +68,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   getLegalMoves(): Move[] {
     return [
-      { type: MoveType.ChooseAnimal, playerId: PlayerColor.Blue, animal: new Animal(PlayerColor.Orange) }
+      { type: MoveType.ChooseAnimal}
       // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
     ]
   }
@@ -82,9 +80,6 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   play(move: Move): void {
     switch (move.type) {
-      case MoveType.ChooseAnimal:
-        selectAnimal(move, this.state)
-        break;
       case MoveType.MoveAnimal:
         moveAnimal(move, this.state)
       // case MoveType.DrawCard:
