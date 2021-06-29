@@ -21,9 +21,9 @@ export const selectAnimal = (move:  ChooseAnimal, state:  GameView): void => {
     for(let i = 1; i <= 16; i++){
         state.possibleFields.push(i);
     }
-    for(let j = 1; j <= fieldIds.length; j++ ){
-        var deleteElement = fieldIds[j].id
-        state.possibleFields = state.possibleFields.slice(deleteElement,1);
+    for(let j = 0; j < fieldIds.length; j++ ){
+        var deleteElement = fieldIds[j].fieldId
+        delete state.possibleFields[deleteElement-1]
         
     }
  

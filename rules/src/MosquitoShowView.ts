@@ -2,6 +2,7 @@ import { Game } from '@gamepark/rules-api'
 import GameView from './GameView'
 import { selectAnimal } from './moves/ChooseAnimal'
 import Move from './moves/Move'
+import { moveAnimal } from './moves/MoveAnimal'
 import MoveType from './moves/MoveType'
 import MoveView from './moves/MoveView'
 
@@ -30,7 +31,9 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
 
   getLegalMoves(): Move[] {
     return [
-      { type: MoveType.ChooseAnimal, selectAnimalId: 1}
+      { type: MoveType.ChooseAnimal, selectAnimalId: 1},
+      { type: MoveType.MoveAnimal, animalId: 1,  fieldId: 1},
+      { type: MoveType.MoveAnimal, animalId: 1,  fieldId: 2}
       // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
     ]
   }
@@ -46,6 +49,9 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
     switch (move.type) {
       case MoveType.ChooseAnimal:
         selectAnimal(move, this.state)
+        break;
+      case MoveType.MoveAnimal:
+        moveAnimal(move, this.state)
         break;
     }
   }
