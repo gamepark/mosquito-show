@@ -1,4 +1,3 @@
-import Coordinates from "../fields/Coordinates";
 import GameView from "../GameView";
 import MoveType from "./MoveType";
 
@@ -7,18 +6,25 @@ import MoveType from "./MoveType";
  */
 type ChooseAnimal = {
     type: typeof MoveType.ChooseAnimal
+    selectAnimalId: number
 }
 
 export default ChooseAnimal
 
 export const selectAnimal = (move:  ChooseAnimal, state:  GameView): void => { 
     state.possibleFields = []
-    if(state.selectedAnimalId == undefined){
-        return;
+    state.selectedAnimalId = move.selectAnimalId
+    var fieldIds = state.board.animalfield
+    // if(fieldIds == undefined){
+    //     return;
+    // }
+    for(let i = 1; i <= 16; i++){
+        state.possibleFields.push(i);
     }
-    let coo: Coordinates = {
-        x: 1,
-        y: 1
-    };
-    state.possibleFields.push(coo)
+    for(let j = 1; j <= fieldIds.length; j++ ){
+        var deleteElement = fieldIds[j].id
+        state.possibleFields = state.possibleFields.slice(deleteElement,1);
+        
+    }
+ 
 }

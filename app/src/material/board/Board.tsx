@@ -16,11 +16,10 @@ const Board: FunctionComponent<BoardProps> = ({ state }: BoardProps) => {
 
     const animals = []
 
-    for (var x = 1; x < 5; x++) {
-        for (var y = 1; y < 5; y++)
+    for (var id = 1; id <= 16; id++) {
             animals.push(
-                <Animal xc={x} yc={y} state={state}></Animal>
-            )
+                <Animal id={id} state={state}></Animal>
+            )      
     }
 
 

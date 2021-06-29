@@ -43,13 +43,13 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ color , playerstate}
         setChamelonSelected(chamelon);
 
         if(tucan){
-
+            let id = color == PlayerColor.Orange ? 1 : 2;
+            play({ type: MoveType.ChooseAnimal,  selectAnimalId: id, color: PlayerColor});
         } else if (chamelon){
-
+            let id = color == PlayerColor.Orange ? 3 : 4;
+            play({ type: MoveType.ChooseAnimal,  selectAnimalId: id, color: PlayerColor});
         }
         // playerstate?.filter[color].
-        
-        play({ type: MoveType.ChooseAnimal });
 
     }
 

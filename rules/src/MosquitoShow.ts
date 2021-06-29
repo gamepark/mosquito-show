@@ -69,7 +69,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   getLegalMoves(): Move[] {
     return [
-      { type: MoveType.ChooseAnimal}
+      { type: MoveType.ChooseAnimal, selectAnimalId: 1}
       // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
     ]
   }

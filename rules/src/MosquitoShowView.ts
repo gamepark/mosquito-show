@@ -13,7 +13,6 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
   state: GameView
 
   constructor(state: GameView) {
-    
     this.state =  state
     state.possibleFields = []
   }
@@ -31,7 +30,7 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
 
   getLegalMoves(): Move[] {
     return [
-      { type: MoveType.ChooseAnimal}
+      { type: MoveType.ChooseAnimal, selectAnimalId: 1}
       // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
     ]
   }

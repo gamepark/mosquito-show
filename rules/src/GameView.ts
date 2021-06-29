@@ -1,4 +1,3 @@
-import Coordinates from './fields/Coordinates'
 import GameState from './GameState'
 
 /**
@@ -8,6 +7,6 @@ import GameState from './GameState'
 // Here is a example of a "Game View": the deck content is hidden, instead it is replaced with the number of cards remaining inside
 type GameView = Omit<GameState, ''> & {
   selectedAnimalId?: number;
-  possibleFields?: Coordinates[]
+  possibleFields?: number []
 }
 export default GameView
