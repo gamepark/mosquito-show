@@ -39,7 +39,16 @@ const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
                 let animals = state.board.animalfield
                 for (let i = 0; i < animals.length; i++) {
                     if (id == animals[i].fieldId) {
-                        return <div css={animalPosition(animals[i].fieldId)} style={{ backgroundImage: `url(${Images.Tucan_Blue})` }} />
+                        let animalId = animals[i].animalId
+                        if (animalId == 1) {
+                            return <div css={animalPosition(animals[i].fieldId)} style={{ backgroundImage: `url(${Images.Tucan_Orange})` }} />
+                        } else if (animalId == 2) {
+                            return <div css={animalPosition(animals[i].fieldId)} style={{ backgroundImage: `url(${Images.Tucan_Blue})` }} />
+                        } else if (animalId == 3) {
+                            return <div css={animalPosition(animals[i].fieldId)} style={{ backgroundImage: `url(${Images.Chamelon_Orange})` }} />
+                        } else if (animalId == 4) {
+                            return <div css={animalPosition(animals[i].fieldId)} style={{ backgroundImage: `url(${Images.Chamelon_Blue})` }} />
+                        }
                     }
                 }
             }

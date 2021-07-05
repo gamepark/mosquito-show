@@ -16,9 +16,9 @@ const GameDisplay: React.FC<Props> = ({ game }: Props) => {
   return (  
     <Letterbox css={letterBoxStyle}>
       <div css={[display, boardGrid]}>
-        <div css={playerBoard}><PlayerBoard playerstate={game?.players} color={PlayerColor.Blue}/></div>
+        <div css={playerBoard}><PlayerBoard playerstate={game?.players} color={PlayerColor.Blue} gameboard={game?.board}/></div>
         <div css={gameBoard} ><Board state={game} /></div>
-        <div css={playerBoard}><PlayerBoard  playerstate={game?.players} color={PlayerColor.Orange} /></div>
+        <div css={playerBoard}><PlayerBoard  playerstate={game?.players} color={PlayerColor.Orange} gameboard={game?.board}/></div>
       </div>
     </Letterbox>
   )
