@@ -19,5 +19,4 @@ export default PlaceAnimal
 
 
 export const selectAnimal = (move:  PlaceAnimal, state: GameState | GameView): void => { 
-   state.board.field[move.position.x][move.position.y].selected = !state.board.field[move.position.x][move.position.y].selected
 }

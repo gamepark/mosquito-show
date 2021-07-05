@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import GameView from '@gamepark/mosquito-show/GameView';
 import MoveType from '@gamepark/mosquito-show/moves/MoveType';
 import { usePlay } from '@gamepark/react-client';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { Images } from '../Resources';
 
 type AnimalProp = {
@@ -14,11 +14,31 @@ type AnimalProp = {
 const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
     const play = usePlay();
 
-    // function yeah() {
-    //     play({ type: MoveType.ChooseAnimal });
-    // }
+    const [selectTucan1, setTucanSelected1] = useState(false);
+    const [selectChamelon1, setChamelonSelected1] = useState(false);
+
     function moveTo(id: number) {
+        setTucanSelected1(false)
+        setChamelonSelected1(false)
         play({ type: MoveType.MoveAnimal, fieldId: id, animalId: state?.selectedAnimalId })
+     
+    }
+
+    function chooseAnimal(fieldId: number, animalId: number) {
+        if (animalId == 1 || animalId == 2) {
+            setTucanSelected1(!selectTucan1)
+        }
+        if (animalId == 3 || animalId == 4) {
+            setChamelonSelected1(!selectChamelon1)
+        }
+        play({ type: MoveType.ChooseAnimal, selectAnimalId: animalId })
+    }
+
+    function isSelected(isSelect: boolean) {
+        if (isSelect) {
+            return 100;
+        }
+        return 0;
     }
 
     function possibleFields() {
@@ -41,13 +61,13 @@ const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
                     if (id == animals[i].fieldId) {
                         let animalId = animals[i].animalId
                         if (animalId == 1) {
-                            return <div css={animalPosition(animals[i].fieldId)} style={{ backgroundImage: `url(${Images.Tucan_Orange})` }} />
+                            return <div css={animalPosition(animals[i].fieldId, isSelected(selectTucan1))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Orange})` }} />
                         } else if (animalId == 2) {
-                            return <div css={animalPosition(animals[i].fieldId)} style={{ backgroundImage: `url(${Images.Tucan_Blue})` }} />
+                            return <div css={animalPosition(animals[i].fieldId, isSelected(selectTucan1))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Blue})` }} />
                         } else if (animalId == 3) {
-                            return <div css={animalPosition(animals[i].fieldId)} style={{ backgroundImage: `url(${Images.Chamelon_Orange})` }} />
+                            return <div css={animalPosition(animals[i].fieldId, isSelected(selectChamelon1))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Orange})` }} />
                         } else if (animalId == 4) {
-                            return <div css={animalPosition(animals[i].fieldId)} style={{ backgroundImage: `url(${Images.Chamelon_Blue})` }} />
+                            return <div css={animalPosition(animals[i].fieldId, isSelected(selectChamelon1))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Blue})` }} />
                         }
                     }
                 }
@@ -67,12 +87,13 @@ export {
     Animal
 };
 
-const animalPosition = (id: number) => css`
+const animalPosition = (id: number, invert: number) => css`
 height: 13%;
 width: 13%;
 position: absolute;
 left: ${5 + (((id - 1) % 4) * 25.5)}%;
 top: ${5 + ((Math.floor((id - 1) / 4)) * 25.5)}%; 
+filter: invert(${invert}%); 
 border-radius: 50%;
 border: none;
 background-position: center;

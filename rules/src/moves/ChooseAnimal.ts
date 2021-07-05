@@ -15,9 +15,7 @@ export const selectAnimal = (move:  ChooseAnimal, state:  GameView): void => {
     state.possibleFields = []
     state.selectedAnimalId = move.selectAnimalId
     var fieldIds = state.board.animalfield
-    // if(fieldIds == undefined){
-    //     return;
-    // }
+
     for(let i = 1; i <= 16; i++){
         state.possibleFields.push(i);
     }

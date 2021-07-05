@@ -4,7 +4,6 @@ import GameState from './GameState'
 import GameView from './GameView'
 import { isGameOptions } from './MosquitoShowOptions'
 import Move from './moves/Move'
-import { moveAnimal } from './moves/MoveAnimal'
 import MoveType from './moves/MoveType'
 import PlayerColor from './PlayerColor'
 
@@ -81,9 +80,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   play(move: Move): void {
     switch (move.type) {
-      case MoveType.MoveAnimal:
-        moveAnimal(move, this.state)
-        break;
+    
     }
   }
 
