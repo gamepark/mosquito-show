@@ -37,7 +37,48 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
     }
 
     function moveTucan() {
-
+        state.possibleFields = []
+        var currentAnimalField = getCurrentAnimalField()
+        var currentFieldIdBeforeMove
+        var currentFieldIdAfterMove
+        if (currentAnimalField != undefined) {
+            // left bottom
+            currentFieldIdBeforeMove = currentAnimalField.fieldId
+            for(let i = 0; i<3; i++){
+                currentFieldIdAfterMove = currentFieldIdBeforeMove + 3
+                if(currentFieldIdAfterMove <= 16 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) != Math.ceil(currentFieldIdAfterMove/4)){
+                    state.possibleFields.push(currentFieldIdAfterMove)
+                    currentFieldIdBeforeMove = currentFieldIdAfterMove
+                }
+            }
+            // left up
+            currentFieldIdBeforeMove = currentAnimalField.fieldId
+            for(let i = 0; i<3; i++){
+                currentFieldIdAfterMove = currentFieldIdBeforeMove -5
+                if(currentFieldIdAfterMove >0 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) != Math.ceil(currentFieldIdAfterMove/4)){
+                    state.possibleFields.push(currentFieldIdAfterMove)
+                    currentFieldIdBeforeMove = currentFieldIdAfterMove
+                }
+            }
+            // right up
+            currentFieldIdBeforeMove = currentAnimalField.fieldId
+            for(let i = 0; i<3; i++){
+                currentFieldIdAfterMove = currentFieldIdBeforeMove - 3
+                if(currentFieldIdAfterMove >0 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) != Math.ceil(currentFieldIdAfterMove/4)){
+                    state.possibleFields.push(currentFieldIdAfterMove)
+                    currentFieldIdBeforeMove = currentFieldIdAfterMove
+                }
+            }
+            // right bottom
+            currentFieldIdBeforeMove = currentAnimalField.fieldId
+            for(let i = 0; i<3; i++){
+                currentFieldIdAfterMove = currentFieldIdBeforeMove + 5
+                if(currentFieldIdAfterMove <= 16 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) != Math.ceil(currentFieldIdAfterMove/4)){
+                    state.possibleFields.push(currentFieldIdAfterMove)
+                    currentFieldIdBeforeMove = currentFieldIdAfterMove
+                }
+            }
+        }
     }
 
     function moveChameleon() {
@@ -74,5 +115,14 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
             }
         }
         return undefined
+    }
+
+    function isAnimalOnField(fieldId : number){
+        for (let j = 0; j < animalFieldIds.length; j++) {
+            if (animalFieldIds[j].fieldId == fieldId) {
+                return true
+            }
+        }
+        return false;
     }
 }
