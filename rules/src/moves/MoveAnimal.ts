@@ -10,19 +10,22 @@ type MoveAnimal = {
 
 
 export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
-    // First combi 
     let field = {animalId: move.animalId,  fieldId: move.fieldId}
-   // let animals = state.board.animalfield
-    // if(animals != undefined){
-    //     for (let i = 0; i < animals.length; i++) {
-    //         if(animals[i].animalId == move.animalId){
-    //             animals[i] = field;
-    //         }
-    //     }
-    // }
-    state.board.animalfield.push(field)
+    let animals = state.board.animalfield
+    let fieldSet = false
+    if(animals != undefined){
+        for (let i = 0; i < animals.length; i++) {
+            if(animals[i].animalId == move.animalId){
+                animals[i] = field;
+                fieldSet = true;
+                break;
+            }
+        }
+    }
+    if(!fieldSet){
+        state.board.animalfield.push(field)
+    }
     state.possibleFields = []
-    // Delete all marks
 }
 
 export default MoveAnimal
