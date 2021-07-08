@@ -25,7 +25,7 @@ export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
     if(!fieldSet){
         state.board.animalfield.push(field)
     }
-    state.possibleFields = []
+    state.possibleAnimalFields = []
 }
 
 export default MoveAnimal

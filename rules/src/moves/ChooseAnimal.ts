@@ -9,7 +9,7 @@ type ChooseAnimal = {
 export default ChooseAnimal
 
 export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
-    state.possibleFields = []
+    state.possibleAnimalFields = []
     var selectedAnimalId = move.selectAnimalId
     state.selectedAnimalId = selectedAnimalId
     var animalFieldIds = state.board.animalfield
@@ -24,20 +24,20 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
     }
     else {
         for (let i = 1; i <= 16; i++) {
-            state.possibleFields.push(i)
+            state.possibleAnimalFields.push(i)
         }
         for (let j = 0; j < animalFieldIds.length; j++) {
             var deleteElement = animalFieldIds[j].fieldId
-            delete state.possibleFields[deleteElement - 1]
+            delete state.possibleAnimalFields[deleteElement - 1]
             if (animalFieldIds[j].animalId == selectedAnimalId) {
-                state.possibleFields = []
+                state.possibleAnimalFields = []
                 break
             }
         }
     }
 
     function moveTucan() {
-        state.possibleFields = []
+        state.possibleAnimalFields = []
         var currentAnimalField = getCurrentAnimalField()
         var currentFieldIdBeforeMove
         var currentFieldIdAfterMove
@@ -47,7 +47,7 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
             for(let i = 0; i<3; i++){
                 currentFieldIdAfterMove = currentFieldIdBeforeMove + 3
                 if(currentFieldIdAfterMove <= 16 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) != Math.ceil(currentFieldIdAfterMove/4)){
-                    state.possibleFields.push(currentFieldIdAfterMove)
+                    state.possibleAnimalFields.push(currentFieldIdAfterMove)
                     currentFieldIdBeforeMove = currentFieldIdAfterMove
                 }
             }
@@ -56,7 +56,7 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
             for(let i = 0; i<3; i++){
                 currentFieldIdAfterMove = currentFieldIdBeforeMove -5
                 if(currentFieldIdAfterMove >0 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) != Math.ceil(currentFieldIdAfterMove/4)){
-                    state.possibleFields.push(currentFieldIdAfterMove)
+                    state.possibleAnimalFields.push(currentFieldIdAfterMove)
                     currentFieldIdBeforeMove = currentFieldIdAfterMove
                 }
             }
@@ -65,7 +65,7 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
             for(let i = 0; i<3; i++){
                 currentFieldIdAfterMove = currentFieldIdBeforeMove - 3
                 if(currentFieldIdAfterMove >0 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) != Math.ceil(currentFieldIdAfterMove/4)){
-                    state.possibleFields.push(currentFieldIdAfterMove)
+                    state.possibleAnimalFields.push(currentFieldIdAfterMove)
                     currentFieldIdBeforeMove = currentFieldIdAfterMove
                 }
             }
@@ -74,7 +74,7 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
             for(let i = 0; i<3; i++){
                 currentFieldIdAfterMove = currentFieldIdBeforeMove + 5
                 if(currentFieldIdAfterMove <= 16 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) != Math.ceil(currentFieldIdAfterMove/4)){
-                    state.possibleFields.push(currentFieldIdAfterMove)
+                    state.possibleAnimalFields.push(currentFieldIdAfterMove)
                     currentFieldIdBeforeMove = currentFieldIdAfterMove
                 }
             }
@@ -82,27 +82,27 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
     }
 
     function moveChameleon() {
-        state.possibleFields = []
+        state.possibleAnimalFields = []
         var currentAnimalField = getCurrentAnimalField()
         if (currentAnimalField != undefined) {
             var currentAnimalFieldId = currentAnimalField.fieldId
             if (currentAnimalFieldId - 4 > 0) {
-                state.possibleFields.push(currentAnimalFieldId - 4)
+                state.possibleAnimalFields.push(currentAnimalFieldId - 4)
             }
             if (currentAnimalFieldId + 4 <= 16) {
-                state.possibleFields.push(currentAnimalFieldId + 4)
+                state.possibleAnimalFields.push(currentAnimalFieldId + 4)
             }
             if (currentAnimalFieldId - 1 > 0 && Math.ceil((currentAnimalFieldId - 1) / 4) == Math.ceil((currentAnimalFieldId) / 4)) {
-                state.possibleFields.push(currentAnimalFieldId - 1)
+                state.possibleAnimalFields.push(currentAnimalFieldId - 1)
             }
             if (currentAnimalFieldId + 1 <= 16 && Math.ceil((currentAnimalFieldId + 1) / 4) == Math.ceil((currentAnimalFieldId) / 4)) {
-                state.possibleFields.push(currentAnimalFieldId + 1)
+                state.possibleAnimalFields.push(currentAnimalFieldId + 1)
             }
 
             for (let j = 0; j < animalFieldIds.length; j++) {
                 var deleteElement = animalFieldIds[j].fieldId
-                if(state.possibleFields.includes(deleteElement)){
-                    delete state.possibleFields[state.possibleFields.indexOf(deleteElement)]
+                if(state.possibleAnimalFields.includes(deleteElement)){
+                    delete state.possibleAnimalFields[state.possibleAnimalFields.indexOf(deleteElement)]
                 }
             }
         }
