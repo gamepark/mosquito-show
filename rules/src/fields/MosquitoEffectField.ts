@@ -3,7 +3,7 @@ import Effect from "./Effect"
 
 type MosquitoEffectField = {
     id: number
-    effect: Effect[]
+    effects: Effect[]
   }
 
 export default MosquitoEffectField

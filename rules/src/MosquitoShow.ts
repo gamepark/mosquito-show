@@ -6,6 +6,7 @@ import { isGameOptions } from './MosquitoShowOptions'
 import Move from './moves/Move'
 import MoveType from './moves/MoveType'
 import PlayerColor from './PlayerColor'
+import { createEffectFields } from './utils/BoardUtils'
 
 /**
  * Your Board Game rules must extend either "SequentialGame" or "SimultaneousGame".
@@ -28,17 +29,14 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
           players: [{color : PlayerColor.Blue, ownedGoldenMosquitos: 0, availableMosquitoEffects: [],animal: [AnimalType.Toucan,AnimalType.Chameleon]},
           {color : PlayerColor.Orange, ownedGoldenMosquitos: 0, availableMosquitoEffects: [],animal: [AnimalType.Toucan,AnimalType.Chameleon]}
         ],
-          activPlayer : PlayerColor.Blue,
-          board: { animalfield: [], mosquitoFields: []}
-
-       })
-    } else {
-      super(arg)
-    
+          activPlayer : PlayerColor.Orange,
+          board: { animalfield: [], mosquitoFields: createEffectFields()}
+        })
+        console.log('test')
+      } else {
+        super(arg)    
+      }
     }
-  }
-
-
 
   /**
    * @return True when game is over

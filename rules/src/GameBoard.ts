@@ -3,7 +3,7 @@ import MosquitoEffectField from "./fields/MosquitoEffectField";
 
 type GameBoard = {
     animalfield: AnimalField[]
-    mosquitoFields: MosquitoEffectField[][]
+    mosquitoFields: MosquitoEffectField[]
 }
 
 export default GameBoard 

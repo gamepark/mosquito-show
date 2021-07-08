@@ -7,8 +7,8 @@ import { FunctionComponent, useState } from 'react';
 import { Images } from '../Resources';
 
 type AnimalProp = {
-    id: number;
-    state: GameView | undefined;
+    id: number
+    state: GameView | undefined
 }
 
 const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
@@ -42,11 +42,8 @@ const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
     }
 
     function possibleFields() {
-        // if(state == undefined){
-        //     return <div />
-        // }
         if (state != undefined) {
-            var possibleFields = state.possibleFields;
+            var possibleFields = state.possibleAnimalFields
             if (possibleFields != undefined) {
                 for (var val of possibleFields) {
 

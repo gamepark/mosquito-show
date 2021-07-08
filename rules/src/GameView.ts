@@ -8,6 +8,6 @@ import GameState from './GameState'
 type GameView = Omit<GameState, ''> & {
   selectedAnimalId?: number
   possibleAnimalFields?: number []
-  possibleMosquitoEffectFields?: number []
+  possibleEffectFields?: number []
 }
 export default GameView

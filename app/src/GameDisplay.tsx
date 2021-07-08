@@ -7,7 +7,7 @@ import { Board } from './material/board/Board';
 import { PlayerBoard } from './material/board/PlayerBoard';
 
 type Props = {
-  game: GameView | undefined
+  game: GameView
 
 }
 
