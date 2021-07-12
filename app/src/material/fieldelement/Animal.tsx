@@ -8,7 +8,7 @@ import { Images } from '../Resources';
 
 type AnimalProp = {
     id: number
-    state: GameView | undefined
+    state: GameView
 }
 
 const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
@@ -34,8 +34,8 @@ const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
         play({ type: MoveType.ChooseAnimal, selectAnimalId: animalId })
     }
 
-    function isSelected(isSelect: boolean) {
-        if (isSelect) {
+    function isSelected(selectedAnimalId: number) {
+        if (state.selectedAnimalId === selectedAnimalId) {
             return 100;
         }
         return 0;
@@ -58,13 +58,13 @@ const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
                     if (id === animals[i].fieldId) {
                         let animalId = animals[i].animalId
                         if (animalId === 1) {
-                            return <div css={animalPosition(animals[i].fieldId, isSelected(selectTucan1))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Orange})` }} />
+                            return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Orange})` }} />
                         } else if (animalId === 2) {
-                            return <div css={animalPosition(animals[i].fieldId, isSelected(selectTucan1))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Blue})` }} />
+                            return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Blue})` }} />
                         } else if (animalId === 3) {
-                            return <div css={animalPosition(animals[i].fieldId, isSelected(selectChamelon1))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Orange})` }} />
+                            return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Orange})` }} />
                         } else if (animalId === 4) {
-                            return <div css={animalPosition(animals[i].fieldId, isSelected(selectChamelon1))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Blue})` }} />
+                            return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Blue})` }} />
                         }
                     }
                 }

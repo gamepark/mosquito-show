@@ -55,7 +55,7 @@ const createEffectFields = ():MosquitoEffectField[] => {
       var effectsForField: Effect[] = []
       for(let j=0; j<3; j++){
         let currentEffect = effects.pop()
-        if(currentEffect!= undefined && effectFieldIds[i] !== 19){
+        if(currentEffect!= undefined){
           effectsForField.push(currentEffect)
         }
       }
