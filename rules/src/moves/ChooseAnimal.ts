@@ -39,15 +39,19 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
     function moveTucan() {
         state.possibleAnimalFields = []
         var currentAnimalField = getCurrentAnimalField()
-        var currentFieldIdBeforeMove
-        var currentFieldIdAfterMove
+        var currentFieldIdBeforeMove : number
+        var currentFieldIdAfterMove : number
+        var mosquitoEffectField
         if (currentAnimalField != undefined) {
             // left bottom
             currentFieldIdBeforeMove = currentAnimalField.fieldId
             for(let i = 0; i<3; i++){
                 currentFieldIdAfterMove = currentFieldIdBeforeMove + 3
-                
-                if(currentFieldIdAfterMove <= 16 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) != Math.ceil(currentFieldIdAfterMove/4)){
+                mosquitoEffectField = state.board.mosquitoFields.find(i => i.id === (currentFieldIdBeforeMove + currentFieldIdAfterMove))
+                if(mosquitoEffectField !== undefined && mosquitoEffectField.effects.length === 0){
+                    break;
+                }
+                if(currentFieldIdAfterMove <= 16 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) + 1 == Math.ceil(currentFieldIdAfterMove/4)){
                     state.possibleAnimalFields.push(currentFieldIdAfterMove)
                     currentFieldIdBeforeMove = currentFieldIdAfterMove
                 }
@@ -56,7 +60,11 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
             currentFieldIdBeforeMove = currentAnimalField.fieldId
             for(let i = 0; i<3; i++){
                 currentFieldIdAfterMove = currentFieldIdBeforeMove -5
-                if(currentFieldIdAfterMove >0 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) != Math.ceil(currentFieldIdAfterMove/4)){
+                mosquitoEffectField = state.board.mosquitoFields.find(i => i.id === (currentFieldIdBeforeMove + currentFieldIdAfterMove))
+                if(mosquitoEffectField !== undefined && mosquitoEffectField.effects.length === 0){
+                    break;
+                }
+                if(currentFieldIdAfterMove >0 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) == Math.ceil(currentFieldIdAfterMove/4) + 1){
                     state.possibleAnimalFields.push(currentFieldIdAfterMove)
                     currentFieldIdBeforeMove = currentFieldIdAfterMove
                 }
@@ -65,7 +73,11 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
             currentFieldIdBeforeMove = currentAnimalField.fieldId
             for(let i = 0; i<3; i++){
                 currentFieldIdAfterMove = currentFieldIdBeforeMove - 3
-                if(currentFieldIdAfterMove >0 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) != Math.ceil(currentFieldIdAfterMove/4)){
+                mosquitoEffectField = state.board.mosquitoFields.find(i => i.id === (currentFieldIdBeforeMove + currentFieldIdAfterMove))
+                if(mosquitoEffectField !== undefined && mosquitoEffectField.effects.length === 0){
+                    break;
+                }
+                if(currentFieldIdAfterMove >0 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) == Math.ceil(currentFieldIdAfterMove/4) + 1){
                     state.possibleAnimalFields.push(currentFieldIdAfterMove)
                     currentFieldIdBeforeMove = currentFieldIdAfterMove
                 }
@@ -74,7 +86,11 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
             currentFieldIdBeforeMove = currentAnimalField.fieldId
             for(let i = 0; i<3; i++){
                 currentFieldIdAfterMove = currentFieldIdBeforeMove + 5
-                if(currentFieldIdAfterMove <= 16 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) != Math.ceil(currentFieldIdAfterMove/4)){
+                mosquitoEffectField = state.board.mosquitoFields.find(i => i.id === (currentFieldIdBeforeMove + currentFieldIdAfterMove))
+                if(mosquitoEffectField !== undefined && mosquitoEffectField.effects.length === 0){
+                    break;
+                }
+                if(currentFieldIdAfterMove <= 16 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) + 1 == Math.ceil(currentFieldIdAfterMove/4)){
                     state.possibleAnimalFields.push(currentFieldIdAfterMove)
                     currentFieldIdBeforeMove = currentFieldIdAfterMove
                 }
