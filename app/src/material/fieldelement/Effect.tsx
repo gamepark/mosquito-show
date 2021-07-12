@@ -15,16 +15,16 @@ const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: 
 
     function possibleEffectFields() {
         var possibleEffectFields = state.possibleEffectFields
-        if (possibleEffectFields != undefined) {
+        if (possibleEffectFields !== undefined) {
             for (var val of possibleEffectFields) {
-                if (val == mosquitoEffectField.id) {
+                if (val === mosquitoEffectField.id) {
                     return <div css={highlightEffectPosition(mosquitoEffectField.id)} ></div>
                 }
             }
         }
         if(mosquitoEffectField.effects.length>0){
             var effect = mosquitoEffectField.effects[0];
-            if(effect.back == 1){
+            if(effect.back === 1){
                 return <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: `url(${Images.WaterlillyFlower})` }}></div>
             } else {
                 var effectImageUrl

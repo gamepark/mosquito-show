@@ -43,10 +43,10 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ color, gameboard, pl
         setChamelonSelected(chamelon);
 
         if (tucan) {
-            let id = color == PlayerColor.Orange ? 1 : 2;
+            let id = color === PlayerColor.Orange ? 1 : 2;
             play({ type: MoveType.ChooseAnimal, selectAnimalId: id, color: PlayerColor });
         } else if (chamelon) {
-            let id = color == PlayerColor.Orange ? 3 : 4;
+            let id = color === PlayerColor.Orange ? 3 : 4;
             play({ type: MoveType.ChooseAnimal, selectAnimalId: id, color: PlayerColor });
         }
         // playerstate?.filter[color].
@@ -54,10 +54,10 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ color, gameboard, pl
     }
 
     function chamelonVisible() {
-        if (gameboard != undefined && gameboard.animalfield != undefined) {
+        if (gameboard !== undefined && gameboard.animalfield !== undefined) {
             for (let i = 0; i < gameboard.animalfield.length; i++) {
                 let field = gameboard.animalfield[i]
-                if((field.animalId == 4 && color == PlayerColor.Blue)|| (field.animalId == 3 && color == PlayerColor.Orange)){
+                if((field.animalId === 4 && color === PlayerColor.Blue)|| (field.animalId === 3 && color === PlayerColor.Orange)){
                     return false;
                 }
             }
@@ -66,10 +66,10 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ color, gameboard, pl
     }
 
     function tucanVisible() {
-        if (gameboard != undefined && gameboard.animalfield != undefined) {
+        if (gameboard !== undefined && gameboard.animalfield !== undefined) {
             for (let i = 0; i < gameboard.animalfield.length; i++) {
                 let field = gameboard.animalfield[i]
-                if((field.animalId == 2 && color == PlayerColor.Blue)|| (field.animalId == 1 && color == PlayerColor.Orange)){
+                if((field.animalId === 2 && color === PlayerColor.Blue)|| (field.animalId === 1 && color === PlayerColor.Orange)){
                     return false;
                 }
             }
