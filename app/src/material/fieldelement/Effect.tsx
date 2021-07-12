@@ -18,7 +18,10 @@ const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: 
         if (possibleEffectFields !== undefined) {
             for (var val of possibleEffectFields) {
                 if (val === mosquitoEffectField.id) {
-                    return <div css={highlightEffectPosition(mosquitoEffectField.id)} ></div>
+                    return <div>
+                        <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: `url(${Images.WhiteMosquito})` }}></div>
+                        <div css={highlightEffectPosition(mosquitoEffectField.id)} ></div>
+                        </div>
                 }
             }
         }
@@ -74,8 +77,8 @@ const highlightEffectPosition = (id: number) => css`
     height: 13%;
     width: 13%;
     position: absolute;
-    left: ${5 + (((id - 1) % 4) * 25.5)}%;
-    top: ${5 + ((Math.floor((id - 1) / 4)) * 25.5)}%; 
+    left: ${32 + (((id % 7) - (Math.floor(id / 7))) * 13)}%;
+    top: ${-7 + ((Math.floor(id / 7)) * 25.5)}%; 
     border-radius: 50%;
     border: 5px solid red; 
     background-position: center;

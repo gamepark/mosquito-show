@@ -16,10 +16,11 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
 
     if (animalFieldIds.length == 4) {
         if (selectedAnimalId == 1 || selectedAnimalId == 2) {
-            moveTucan();
+            moveTucan()
         }
         if (selectedAnimalId == 3 || selectedAnimalId == 4) {
-            moveChameleon();
+            showPossibleMosquitoEffects()
+            moveChameleon()
         }
     }
     else {
@@ -32,6 +33,47 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
             if (animalFieldIds[j].animalId == selectedAnimalId) {
                 state.possibleAnimalFields = []
                 break
+            }
+        }
+    }
+
+    function showPossibleMosquitoEffects(){
+        state.possibleEffectFields = []
+        var currentAnimalField = getCurrentAnimalField()
+        var currentFieldIdBeforeMove : number
+        var currentFieldIdAfterMove : number
+        var mosquitoEffectField
+        if (currentAnimalField != undefined) {
+            // left bottom
+            currentFieldIdBeforeMove = currentAnimalField.fieldId
+            currentFieldIdAfterMove = currentFieldIdBeforeMove + 3
+            mosquitoEffectField = state.board.mosquitoFields.find(i => i.id === (currentFieldIdBeforeMove + currentFieldIdAfterMove))
+            if(mosquitoEffectField !== undefined && mosquitoEffectField.effects.length > 0 && currentFieldIdAfterMove <= 16 && Math.ceil(currentFieldIdBeforeMove/4) + 1 == Math.ceil(currentFieldIdAfterMove/4)){
+                state.possibleEffectFields.push(mosquitoEffectField.id)
+            }
+            
+            // left up
+            currentFieldIdBeforeMove = currentAnimalField.fieldId
+            currentFieldIdAfterMove = currentFieldIdBeforeMove -5
+            mosquitoEffectField = state.board.mosquitoFields.find(i => i.id === (currentFieldIdBeforeMove + currentFieldIdAfterMove))
+            if(mosquitoEffectField !== undefined && mosquitoEffectField.effects.length > 0 && currentFieldIdAfterMove >0 && Math.ceil(currentFieldIdBeforeMove/4) == Math.ceil(currentFieldIdAfterMove/4) + 1){
+                state.possibleEffectFields.push(mosquitoEffectField.id)
+            }
+
+            // right up
+            currentFieldIdBeforeMove = currentAnimalField.fieldId
+            currentFieldIdAfterMove = currentFieldIdBeforeMove - 3
+            mosquitoEffectField = state.board.mosquitoFields.find(i => i.id === (currentFieldIdBeforeMove + currentFieldIdAfterMove))
+            if(mosquitoEffectField !== undefined && mosquitoEffectField.effects.length > 0 && currentFieldIdAfterMove >0 && Math.ceil(currentFieldIdBeforeMove/4) == Math.ceil(currentFieldIdAfterMove/4) + 1){
+                state.possibleEffectFields.push(mosquitoEffectField.id)
+            }
+                
+            // right bottom
+            currentFieldIdBeforeMove = currentAnimalField.fieldId
+            currentFieldIdAfterMove = currentFieldIdBeforeMove + 5
+            mosquitoEffectField = state.board.mosquitoFields.find(i => i.id === (currentFieldIdBeforeMove + currentFieldIdAfterMove))
+            if(mosquitoEffectField !== undefined && mosquitoEffectField.effects.length > 0 && currentFieldIdAfterMove <= 16 && Math.ceil(currentFieldIdBeforeMove/4) + 1 == Math.ceil(currentFieldIdAfterMove/4)){
+                state.possibleEffectFields.push(mosquitoEffectField.id)
             }
         }
     }
@@ -99,30 +141,30 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
     }
 
     function moveChameleon() {
-        state.possibleAnimalFields = []
-        var currentAnimalField = getCurrentAnimalField()
-        if (currentAnimalField != undefined) {
-            var currentAnimalFieldId = currentAnimalField.fieldId
-            if (currentAnimalFieldId - 4 > 0) {
-                state.possibleAnimalFields.push(currentAnimalFieldId - 4)
-            }
-            if (currentAnimalFieldId + 4 <= 16) {
-                state.possibleAnimalFields.push(currentAnimalFieldId + 4)
-            }
-            if (currentAnimalFieldId - 1 > 0 && Math.ceil((currentAnimalFieldId - 1) / 4) == Math.ceil((currentAnimalFieldId) / 4)) {
-                state.possibleAnimalFields.push(currentAnimalFieldId - 1)
-            }
-            if (currentAnimalFieldId + 1 <= 16 && Math.ceil((currentAnimalFieldId + 1) / 4) == Math.ceil((currentAnimalFieldId) / 4)) {
-                state.possibleAnimalFields.push(currentAnimalFieldId + 1)
-            }
+        // state.possibleAnimalFields = []
+        // var currentAnimalField = getCurrentAnimalField()
+        // if (currentAnimalField != undefined) {
+        //     var currentAnimalFieldId = currentAnimalField.fieldId
+        //     if (currentAnimalFieldId - 4 > 0) {
+        //         state.possibleAnimalFields.push(currentAnimalFieldId - 4)
+        //     }
+        //     if (currentAnimalFieldId + 4 <= 16) {
+        //         state.possibleAnimalFields.push(currentAnimalFieldId + 4)
+        //     }
+        //     if (currentAnimalFieldId - 1 > 0 && Math.ceil((currentAnimalFieldId - 1) / 4) == Math.ceil((currentAnimalFieldId) / 4)) {
+        //         state.possibleAnimalFields.push(currentAnimalFieldId - 1)
+        //     }
+        //     if (currentAnimalFieldId + 1 <= 16 && Math.ceil((currentAnimalFieldId + 1) / 4) == Math.ceil((currentAnimalFieldId) / 4)) {
+        //         state.possibleAnimalFields.push(currentAnimalFieldId + 1)
+        //     }
 
-            for (let j = 0; j < animalFieldIds.length; j++) {
-                var deleteElement = animalFieldIds[j].fieldId
-                if(state.possibleAnimalFields.includes(deleteElement)){
-                    delete state.possibleAnimalFields[state.possibleAnimalFields.indexOf(deleteElement)]
-                }
-            }
-        }
+        //     for (let j = 0; j < animalFieldIds.length; j++) {
+        //         var deleteElement = animalFieldIds[j].fieldId
+        //         if(state.possibleAnimalFields.includes(deleteElement)){
+        //             delete state.possibleAnimalFields[state.possibleAnimalFields.indexOf(deleteElement)]
+        //         }
+        //     }
+        // }
     }
 
     function getCurrentAnimalField() {

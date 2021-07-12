@@ -20,8 +20,6 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * This constructor is called when the game "restarts" from a previously saved state.
    * @param state The state of the game
    */
-
-
   constructor(arg: GameState) {
     if (isGameOptions(arg)) {
         // const board = setupGameBoard()
