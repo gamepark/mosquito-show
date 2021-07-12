@@ -47,7 +47,7 @@ const createEffectFields = ():MosquitoEffectField[] => {
       {id: id++, front: 4, back: 1}
       )
     
-    // SHUFFLE
+    shuffle(effects)
 
     var effectFields: MosquitoEffectField[] = []
     var effectFieldIds = [7,9,11,15,17,19,23,25,27]
@@ -64,6 +64,25 @@ const createEffectFields = ():MosquitoEffectField[] => {
     return effectFields;
 }
 
+function shuffle(array : Effect[]) {
+  var currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
 export {
-    createEffectFields
+  createEffectFields
 };
+

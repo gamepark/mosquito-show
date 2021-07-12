@@ -46,6 +46,7 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
             currentFieldIdBeforeMove = currentAnimalField.fieldId
             for(let i = 0; i<3; i++){
                 currentFieldIdAfterMove = currentFieldIdBeforeMove + 3
+                
                 if(currentFieldIdAfterMove <= 16 && !isAnimalOnField(currentFieldIdAfterMove) && Math.ceil(currentFieldIdBeforeMove/4) != Math.ceil(currentFieldIdAfterMove/4)){
                     state.possibleAnimalFields.push(currentFieldIdAfterMove)
                     currentFieldIdBeforeMove = currentFieldIdAfterMove
