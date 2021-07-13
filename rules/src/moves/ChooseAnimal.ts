@@ -16,11 +16,11 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
 
     if (animalFieldIds.length == 4) {
         if (selectedAnimalId == 1 || selectedAnimalId == 2) {
-            moveTucan()
+            showPossibleToucanAnimalFields()
         }
         if (selectedAnimalId == 3 || selectedAnimalId == 4) {
-            showPossibleMosquitoEffects()
-            moveChameleon()
+            showPossibleMosquitoEffectFields()
+            showPossibleChameleonAnimalFields()
         }
     }
     else {
@@ -37,7 +37,7 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
         }
     }
 
-    function showPossibleMosquitoEffects(){
+    function showPossibleMosquitoEffectFields(){
         state.possibleEffectFields = []
         var currentAnimalField = getCurrentAnimalField()
         var currentFieldIdBeforeMove : number
@@ -78,7 +78,7 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
         }
     }
 
-    function moveTucan() {
+    function showPossibleToucanAnimalFields() {
         state.possibleAnimalFields = []
         var currentAnimalField = getCurrentAnimalField()
         var currentFieldIdBeforeMove : number
@@ -140,7 +140,7 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
         }
     }
 
-    function moveChameleon() {
+    function showPossibleChameleonAnimalFields() {
         // state.possibleAnimalFields = []
         // var currentAnimalField = getCurrentAnimalField()
         // if (currentAnimalField != undefined) {
