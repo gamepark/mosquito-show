@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import EffectType from '@gamepark/mosquito-show/fields/Effect';
 import MosquitoEffectField from '@gamepark/mosquito-show/fields/MosquitoEffectField';
 import GameView from '@gamepark/mosquito-show/GameView';
 import { FunctionComponent } from 'react';
@@ -16,46 +17,45 @@ const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: 
     function possibleEffectFields() {
         var possibleEffectFields = state.possibleEffectFields
         if (possibleEffectFields !== undefined) {
-            for (var val of possibleEffectFields) {
-                if (val === mosquitoEffectField.id) {
-                    return <div>
-                        <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: `url(${Images.WhiteMosquito})` }}></div>
-                        <div css={highlightEffectPosition(mosquitoEffectField.id)} ></div>
-                        </div>
+            for (var possibleEffectFieldId of possibleEffectFields) {
+                if ( possibleEffectFieldId === mosquitoEffectField.id) {
+                    if(mosquitoEffectField.effects.length>0){
+                        return <div>
+                                <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: getEffectImageUrl(mosquitoEffectField.effects[0]) }}></div>
+                                <div css={highlightEffectPosition(mosquitoEffectField.id)} ></div>
+                            </div>
+                    }
                 }
             }
         }
         if(mosquitoEffectField.effects.length>0){
-            var effect = mosquitoEffectField.effects[0];
-            if(effect.back === 1){
-                return <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: `url(${Images.WaterlillyFlower})` }}></div>
-            } else {
-                var effectImageUrl
-                switch (effect.front) {
-                    case 1:
-                        effectImageUrl = `url(${Images.GreyMosquito})`
-                        break;
-                    case 2:
-                        effectImageUrl = `url(${Images.BlueMosquito})`
-                        break;
-                    case 3:
-                        effectImageUrl = `url(${Images.RedMosquito})`
-                        break;
-                    case 4:
-                        effectImageUrl = `url(${Images.WhiteMosquito})`
-                        break;
-                    case 5:
-                        effectImageUrl = `url(${Images.GoldenMosquito})`
-                        break;
-                }
-                return <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: effectImageUrl }}></div>
-            }
+            return <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: getEffectImageUrl(mosquitoEffectField.effects[0]) }}></div>
         }
         return <div/>
     }
     return (
         possibleEffectFields()
     )
+
+    function getEffectImageUrl(effect : EffectType){
+        if(effect.back === 1){
+            return `url(${Images.WaterlillyFlower})`
+        } else {
+            switch (effect.front) {
+                case 1:
+                    return `url(${Images.GreyMosquito})`
+                case 2:
+                    return `url(${Images.BlueMosquito})`
+                case 3:
+                    return `url(${Images.RedMosquito})`
+                case 4:
+                    return `url(${Images.WhiteMosquito})`
+                case 5:
+                    return `url(${Images.GoldenMosquito})`
+            }
+            return undefined
+        }
+    }
 }
 
 export {
@@ -74,11 +74,11 @@ export {
 //     background-size: cover;
 // `
 const highlightEffectPosition = (id: number) => css`
-    height: 13%;
-    width: 13%;
+    height: 11%;
+    width: 11%;
     position: absolute;
-    left: ${32 + (((id % 7) - (Math.floor(id / 7))) * 13)}%;
-    top: ${-7 + ((Math.floor(id / 7)) * 25.5)}%; 
+    left: ${31.5 + (((id % 7) - (Math.floor(id / 7))) * 13)}%;
+    top: ${-7.5 + ((Math.floor(id / 7)) * 25.5)}%; 
     border-radius: 50%;
     border: 5px solid red; 
     background-position: center;
