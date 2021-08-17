@@ -27,7 +27,7 @@ const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: 
                 if ( possibleEffectFieldId === mosquitoEffectField.id) {
                     if(mosquitoEffectField.effects.length>0){
                         return <div>
-                                <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: getEffectImageUrl(mosquitoEffectField.effects[0]) }}></div>
+                                <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: getEffectImageUrl(mosquitoEffectField.effects[mosquitoEffectField.effects.length-1]) }}></div>
                                 <div css={highlightEffectPosition(mosquitoEffectField.id)} onClick={() => { chooseEffect(mosquitoEffectField.id) }}></div>
                             </div>
                     }
@@ -35,7 +35,7 @@ const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: 
             }
         }
         if(mosquitoEffectField.effects.length>0){
-            return <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: getEffectImageUrl(mosquitoEffectField.effects[0]) }}></div>
+            return <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: getEffectImageUrl(mosquitoEffectField.effects[mosquitoEffectField.effects.length-1]) }}></div>
         }
         return <div/>
     }
