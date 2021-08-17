@@ -1,6 +1,7 @@
 import { Game } from '@gamepark/rules-api'
 import GameView from './GameView'
 import { selectAnimal } from './moves/ChooseAnimal'
+import { selectMosquitoEffectField } from './moves/Eat'
 import Move from './moves/Move'
 import { moveAnimal } from './moves/MoveAnimal'
 import MoveType from './moves/MoveType'
@@ -53,6 +54,9 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
         break;
       case MoveType.MoveAnimal:
         moveAnimal(move, this.state)
+        break;
+      case MoveType.Eat:
+        selectMosquitoEffectField(move, this.state)
         break;
     }
   }

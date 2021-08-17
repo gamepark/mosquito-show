@@ -3,6 +3,8 @@ import { css } from '@emotion/react';
 import EffectType from '@gamepark/mosquito-show/fields/Effect';
 import MosquitoEffectField from '@gamepark/mosquito-show/fields/MosquitoEffectField';
 import GameView from '@gamepark/mosquito-show/GameView';
+import MoveType from '@gamepark/mosquito-show/moves/MoveType';
+import { usePlay } from '@gamepark/react-client';
 import { FunctionComponent } from 'react';
 import { Images } from '../Resources';
 
@@ -12,7 +14,11 @@ type EffectProps = {
 }
 
 const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: EffectProps) => {
-    // const play = usePlay()
+    const play = usePlay()
+    
+    function chooseEffect(id: number) {
+        play({ type: MoveType.Eat, mosquitoEffectFieldId: id })
+    }
 
     function possibleEffectFields() {
         var possibleEffectFields = state.possibleEffectFields
@@ -22,7 +28,7 @@ const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: 
                     if(mosquitoEffectField.effects.length>0){
                         return <div>
                                 <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: getEffectImageUrl(mosquitoEffectField.effects[0]) }}></div>
-                                <div css={highlightEffectPosition(mosquitoEffectField.id)} ></div>
+                                <div css={highlightEffectPosition(mosquitoEffectField.id)} onClick={() => { chooseEffect(mosquitoEffectField.id) }}></div>
                             </div>
                     }
                 }
@@ -74,26 +80,26 @@ export {
 //     background-size: cover;
 // `
 const highlightEffectPosition = (id: number) => css`
-    height: 11%;
-    width: 11%;
-    position: absolute;
-    left: ${31.5 + (((id % 7) - (Math.floor(id / 7))) * 13)}%;
-    top: ${-7.5 + ((Math.floor(id / 7)) * 25.5)}%; 
-    border-radius: 50%;
-    border: 5px solid red; 
-    background-position: center;
-    background-size: cover;
+height: 11%;
+width: 11%;
+position: absolute;
+left: ${31.5 + (((id % 7) - (Math.floor(id / 7))) * 13)}%;
+top: ${-7.5 + ((Math.floor(id / 7)) * 25.5)}%; 
+border-radius: 50%;
+border: 5px solid red; 
+background-position: center;
+background-size: cover;
 `
 const tokenPosition = (id: number) => css`
-  height: 10%;
-  width: 10%;
-  position: absolute;
-  left: ${32 + (((id % 7) - (Math.floor(id / 7))) * 13)}%;
-  top: ${-7 + ((Math.floor(id / 7)) * 25.5)}%; 
-  border-radius: 50%;
-  border: none;
-  background-position: center;
-  background-size: cover;
+height: 10%;
+width: 10%;
+position: absolute;
+left: ${32 + (((id % 7) - (Math.floor(id / 7))) * 13)}%;
+top: ${-7 + ((Math.floor(id / 7)) * 25.5)}%; 
+border-radius: 50%;
+border: none;
+background-position: center;
+background-size: cover;
 `
 //   left: ${5 + (((id - 1) % 4) * 25.5)}%;
 //   top: ${5 + ((Math.floor((id - 1) / 4)) * 25.5)}%; 
