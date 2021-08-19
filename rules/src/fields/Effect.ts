@@ -2,6 +2,7 @@ type Effect = {
     id: number
     front: number
     back: number
+    revealed: boolean
 }
 
 export default Effect

@@ -47,21 +47,31 @@ const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: 
         if(effect.back === 1){
             return `url(${Images.WaterlillyFlower})`
         } else {
-            switch (effect.front) {
-                case 1:
-                    return `url(${Images.GreyMosquito})`
-                case 2:
-                    return `url(${Images.BlueMosquito})`
-                case 3:
-                    return `url(${Images.RedMosquito})`
-                case 4:
-                    return `url(${Images.WhiteMosquito})`
-                case 5:
-                    return `url(${Images.GoldenMosquito})`
+            if(effect.revealed){
+                switch (effect.front) {
+                    case 1:
+                        return `url(${Images.GreyMosquito})`
+                    case 2:
+                        return `url(${Images.BlueMosquito})`
+                    case 3:
+                        return `url(${Images.RedMosquito})`
+                    case 4:
+                        return `url(${Images.WhiteMosquito})`
+                    case 5:
+                        return `url(${Images.GoldenMosquito})`
+                }
+                return undefined
+            } else{
+                return `url(${Images.Waterlilly})`
             }
-            return undefined
         }
     }
+
+    // function revealWaterlilly(){
+    //     if(mosquitoEffectField.effects.length>0 && !mosquitoEffectField.effects[mosquitoEffectField.effects.length-1].revealed){
+    //         mosquitoEffectField.effects[mosquitoEffectField.effects.length-1].revealed = mosquitoEffectField.effects[mosquitoEffectField.effects.length-1].back === 2
+    //     }
+    // }
 }
 
 export {
