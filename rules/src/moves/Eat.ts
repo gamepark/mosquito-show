@@ -1,4 +1,5 @@
 import Effect from "../fields/Effect"
+import { getActivePlayerState } from "../GameState"
 import GameView from "../GameView"
 import MoveType from "./MoveType"
 
@@ -22,7 +23,7 @@ export const selectMosquitoEffectField = (move: Eat, state:  GameView): void => 
         }
     }
     if(mosquitoEffect !== undefined){
-        console.log(mosquitoEffect.id+","+mosquitoEffect.back+","+mosquitoEffect.front)
+        getActivePlayerState(state)?.availableMosquitoEffects.push(mosquitoEffect)
     }
     state.possibleEffectFields = []
     // let field = {animalId: move.animalId,  fieldId: move.fieldId}

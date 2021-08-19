@@ -43,6 +43,25 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({gameboard, playerstat
         return "undefinedTucan"
     }
 
+    function getTokenImage():String{
+        let effect = playerstate?.availableMosquitoEffects[0]
+        if(effect !== undefined) {
+            switch (effect.front) {
+                case 1:
+                    return Images.GreyMosquito
+                case 2:
+                    return Images.BlueMosquito
+                case 3:
+                    return Images.RedMosquito
+                case 4:
+                    return Images.WhiteMosquito
+                case 5:
+                    return Images.GoldenMosquito
+            }
+        }
+        return "undefinedToken"
+    }
+
     function playMove(tucan: boolean, chamelon: boolean) {
 
         setTucanSelected(tucan);
@@ -85,6 +104,7 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({gameboard, playerstat
 
     return <div css={outbox}>
         <div css={animals}>
+            {<div css={boardStyle} style={{ backgroundImage: `url(${getTokenImage()})` }} />}
         </div>
         <div css={animals}>
             {chamelonVisible() && <div css={() => { return selectChamelon ? marked : boardStyle }} onClick={() => { playMove(false, !selectChamelon); }} style={{ backgroundImage: `url(${getImageChamelon()})` }} />}
@@ -129,5 +149,3 @@ const boardStyle = css`
     background-size: contain;
     background-repeat: no-repeat;
 `
-
-
