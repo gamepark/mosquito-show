@@ -9,42 +9,42 @@ const createEffectFields = ():MosquitoEffectField[] => {
     // Golden : 17 total 5 hidden
     for(let i=0; i<12; i++){
       effects.push(
-        {id: id++, front: 5, back: 2}
+        {id: id++, front: 5, back: 2, revealed: false}
         )
       }
     for(let i=0; i<5; i++){
       effects.push(
-        {id: id++, front: 5, back: 1}
+        {id: id++, front: 5, back: 1, revealed: false}
         )
       }
     // Grey: 4 total 1 hidden
     for(let i=0; i<3; i++){
       effects.push(
-        {id: id++, front: 1, back: 2}
+        {id: id++, front: 1, back: 2, revealed: false}
         )
       }
     effects.push(
-        {id: id++, front: 1, back: 1}
+        {id: id++, front: 1, back: 1, revealed: false}
         )
     // Blue: 3 total 1 hidden
     for(let i=0; i<2; i++){
       effects.push(
-        {id: id++, front: 2, back: 2}
+        {id: id++, front: 2, back: 2, revealed: false}
         )
       }
     effects.push(
-      {id: id++, front: 2, back: 1}
+      {id: id++, front: 2, back: 1, revealed: false}
       )
     // Red: 2 total 1 hidden
     effects.push(
-      {id: id++, front: 3, back: 1}
+      {id: id++, front: 3, back: 1, revealed: false}
       )
     effects.push(
-      {id: id++, front: 3, back: 1}
+      {id: id++, front: 3, back: 1, revealed: false}
       )
     // White: 1 total 1 hidden
     effects.push(
-      {id: id++, front: 4, back: 1}
+      {id: id++, front: 4, back: 1, revealed: false}
       )
     
     shuffle(effects)
@@ -56,6 +56,9 @@ const createEffectFields = ():MosquitoEffectField[] => {
       for(let j=0; j<3; j++){
         let currentEffect = effects.pop()
         if(currentEffect!= undefined){
+          if(j===2){
+            currentEffect.revealed = currentEffect.back === 2
+          }
           effectsForField.push(currentEffect)
         }
       }

@@ -9,32 +9,38 @@ import { FunctionComponent, useState } from 'react';
 import { Images } from '../Resources';
 
 type PlayerBoardProps = {
-    gameboard?: GameBoard | undefined;
-    playerstate?: PlayerState[] | undefined;
-    color: PlayerColor;
+    gameboard?: GameBoard | undefined
+    playerstate?: PlayerState | undefined
 }
 
-const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ color, gameboard, playerstate }: PlayerBoardProps) => {
+const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({gameboard, playerstate }: PlayerBoardProps) => {
     const play = usePlay();
     const [selectTucan, setTucanSelected] = useState(false);
     const [selectChamelon, setChamelonSelected] = useState(false);
+    var color = playerstate?.color
 
     function getImageChamelon(): String {
-        switch (color) {
-            case PlayerColor.Blue:
-                return Images.Chamelon_Blue;
-            case PlayerColor.Orange:
-                return Images.Chamelon_Orange;
+        if(color !== undefined){
+            switch (color) {
+                case PlayerColor.Blue:
+                    return Images.Chamelon_Blue;
+                case PlayerColor.Orange:
+                    return Images.Chamelon_Orange;
+            }
         }
+        return "undefinedChameleon"
     }
 
     function getImageTucan(): String {
-        switch (color) {
-            case PlayerColor.Blue:
-                return Images.Tucan_Blue;
-            case PlayerColor.Orange:
-                return Images.Tucan_Orange;
+        if(color !== undefined){
+            switch (color) {
+                case PlayerColor.Blue:
+                    return Images.Tucan_Blue;
+                case PlayerColor.Orange:
+                    return Images.Tucan_Orange;
+            }
         }
+        return "undefinedTucan"
     }
 
     function playMove(tucan: boolean, chamelon: boolean) {

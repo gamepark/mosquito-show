@@ -28,12 +28,15 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         players: [{ color: PlayerColor.Blue, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], animal: [AnimalType.Toucan, AnimalType.Chameleon] },
         { color: PlayerColor.Orange, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], animal: [AnimalType.Toucan, AnimalType.Chameleon] }
         ],
-        activPlayer: PlayerColor.Blue,
-        board: { animalfield: [], mosquitoFields: createEffectFields() }
-      })
-    } else {
-      super(arg)
-    }
+
+          activePlayer : PlayerColor.Orange,
+          board: { animalfield: [], mosquitoFields: createEffectFields()}
+        })
+      } else {
+        super(arg)    
+      }
+
+    
   }
 
   /**
@@ -49,7 +52,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return The identifier of the player whose turn it is
    */
   getActivePlayer(): PlayerColor | undefined {
-    return this.state.activPlayer
+    return this.state.activePlayer
   }
 
   /**
@@ -64,7 +67,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   getLegalMoves(): Move[] {
     const moves: Move[] = []
-    if (this.state.activPlayer == PlayerColor.Orange) {
+    if (this.state.activePlayer == PlayerColor.Orange) {
       return [
         { type: MoveType.ChooseAnimal, selectAnimalId: 2 },
         { type: MoveType.MoveAnimal, fieldId: 2, animalId: 2 }
@@ -99,10 +102,6 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return The next automatic consequence that should be played in current game state.
    */
   getAutomaticMove(): void | Move {
-
-    // moveAnimlaMove(4,2)
-    // selectAnimalMove(2)
-    // return getPredictableAutomaticMoves(this.state, activePlayer);
   }
 
 
