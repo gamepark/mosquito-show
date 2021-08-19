@@ -1,9 +1,9 @@
 import { Game } from '@gamepark/rules-api'
 import GameView from './GameView'
-import { selectAnimal } from './moves/ChooseAnimal'
+import { selectAnimal, selectAnimalMove } from './moves/ChooseAnimal'
 import { selectMosquitoEffectField } from './moves/Eat'
 import Move from './moves/Move'
-import { moveAnimal } from './moves/MoveAnimal'
+import { moveAnimal, moveAnimlaMove } from './moves/MoveAnimal'
 import MoveType from './moves/MoveType'
 import MoveView from './moves/MoveView'
 
@@ -28,14 +28,14 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
    * @return A MoveView which can be completely anticipated by the player or the spectator
    */
   getAutomaticMove(): void | MoveView {
-    return 
+      moveAnimlaMove(4,1)
+      selectAnimalMove(1)
   }
 
   getLegalMoves(): Move[] {
     return [
-      { type: MoveType.ChooseAnimal, selectAnimalId: 1},
-      { type: MoveType.MoveAnimal, animalId: 1,  fieldId: 1},
-      { type: MoveType.MoveAnimal, animalId: 1,  fieldId: 2}
+     
+      // { type: MoveType.MoveAnimal, animalId: 1,  fieldId: 2}
       // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
     ]
   }
