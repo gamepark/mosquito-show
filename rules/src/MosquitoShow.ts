@@ -23,18 +23,21 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   constructor(arg: GameState) {
     if (isGameOptions(arg)) {
-        // const board = setupGameBoard()
-        super({
-          players: [{color : PlayerColor.Blue, ownedGoldenMosquitos: 0, availableMosquitoEffects: [],animal: [AnimalType.Toucan,AnimalType.Chameleon]},
-          {color : PlayerColor.Orange, ownedGoldenMosquitos: 0, availableMosquitoEffects: [],animal: [AnimalType.Toucan,AnimalType.Chameleon]}
+      // const board = setupGameBoard()
+      super({
+        players: [{ color: PlayerColor.Blue, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], animal: [AnimalType.Toucan, AnimalType.Chameleon] },
+        { color: PlayerColor.Orange, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], animal: [AnimalType.Toucan, AnimalType.Chameleon] }
         ],
+
           activePlayer : PlayerColor.Orange,
           board: { animalfield: [], mosquitoFields: createEffectFields()}
         })
       } else {
         super(arg)    
       }
-    }
+
+    
+  }
 
   /**
    * @return True when game is over
@@ -49,7 +52,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return The identifier of the player whose turn it is
    */
   getActivePlayer(): PlayerColor | undefined {
-    return PlayerColor.Orange // You must return undefined only when game is over, otherwise the game will be blocked.
+    return this.state.activePlayer
   }
 
   /**
@@ -63,10 +66,15 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * - A class that implements "Dummy" to provide a custom Dummy player.
    */
   getLegalMoves(): Move[] {
-    return [
-      { type: MoveType.ChooseAnimal, selectAnimalId: 1}
-      // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
-    ]
+    const moves: Move[] = []
+    if (this.state.activePlayer == PlayerColor.Orange) {
+      return [
+        { type: MoveType.ChooseAnimal, selectAnimalId: 2 },
+        { type: MoveType.MoveAnimal, fieldId: 2, animalId: 2 }
+        // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
+      ]
+    }
+    return moves
   }
 
   /**
@@ -76,7 +84,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   play(move: Move): void {
     switch (move.type) {
-    
+
     }
   }
 
@@ -94,14 +102,9 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return The next automatic consequence that should be played in current game state.
    */
   getAutomaticMove(): void | Move {
-    const activePlayer = this.state.players.find(player => player.color === this.state.activePlayer);
-    if (!activePlayer) {
-      return;
-    }
-    return getPredictableAutomaticMoves(this.state, activePlayer);
   }
- 
- 
+
+
   /**
    * If your game has incomplete information, you must hide some of the game's state to the players and spectators.
    * @return What a person can see from the game state
@@ -121,5 +124,5 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
   }
 }
 
-export function getPredictableAutomaticMoves(state: GameState | GameView, activePlayer: PlayerState): Move  | void {
-}  
+export function getPredictableAutomaticMoves(state: GameState | GameView, activePlayer: PlayerState): Move | void {
+}

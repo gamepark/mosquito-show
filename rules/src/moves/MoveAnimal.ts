@@ -8,6 +8,9 @@ type MoveAnimal = {
     
 }
 
+export const moveAnimlaMove = (fieldId: number, animalId: number): MoveAnimal => ({
+    type: MoveType.MoveAnimal, fieldId, animalId
+})
 
 export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
     let field = {animalId: move.animalId,  fieldId: move.fieldId}

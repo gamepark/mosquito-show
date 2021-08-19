@@ -8,6 +8,11 @@ type ChooseAnimal = {
 
 export default ChooseAnimal
 
+export const selectAnimalMove = (selectAnimalId: number): ChooseAnimal => ({
+    type: MoveType.ChooseAnimal, selectAnimalId
+})
+
+//1,3 blue and 2,4 orange
 export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
     state.possibleAnimalFields = []
     var selectedAnimalId = move.selectAnimalId
