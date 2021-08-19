@@ -6,6 +6,7 @@ import { isGameOptions } from './MosquitoShowOptions'
 import Move from './moves/Move'
 import MoveType from './moves/MoveType'
 import PlayerColor from './PlayerColor'
+import PlayerState from './PlayerState'
 import { createEffectFields } from './utils/BoardUtils'
 
 /**
@@ -93,17 +94,14 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return The next automatic consequence that should be played in current game state.
    */
   getAutomaticMove(): void | Move {
-    /**
-     * Example:
-     * for (const player of this.state.players) {
-     *   if (player.mustDraw) {
-     *     return {type: MoveType.DrawCard, playerId: player.color}
-     *   }
-     * }
-     */
-    return 
+    const activePlayer = this.state.players.find(player => player.color === this.state.activPlayer);
+    if (!activePlayer) {
+      return;
+    }
+    return getPredictableAutomaticMoves(this.state, activePlayer);
   }
-
+ 
+ 
   /**
    * If your game has incomplete information, you must hide some of the game's state to the players and spectators.
    * @return What a person can see from the game state
@@ -118,9 +116,10 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return what the player can see
    */
   getPlayerView(playerId: PlayerColor): GameView {
-    console.log(playerId)
     // Here we could, for example, return a "playerView" with only the number of cards in hand for the other player only.
     return { ...this.state, board: this.state.board }
   }
 }
 
+export function getPredictableAutomaticMoves(state: GameState | GameView, activePlayer: PlayerState): Move  | void {
+}  
