@@ -1,5 +1,5 @@
-import {GameOptions, OptionsDescription, OptionType} from '@gamepark/rules-api'
-import {TFunction} from 'i18next'
+import { GameOptions, OptionsDescription, OptionType } from '@gamepark/rules-api'
+import { TFunction } from 'i18next'
 import GameState from './GameState'
 import PlayerColor from './PlayerColor'
 
@@ -20,8 +20,7 @@ export type MosquitoShowOptions = GameOptions<{}, MosquitoShowPlayerOptions>
  * @return true if arg is a Game options
  */
 export function isGameOptions(arg: GameState | MosquitoShowOptions): arg is MosquitoShowOptions {
-  console.log(arg)
-  return true // TODO: implement Typeguard to identify ne game (like typeof (arg as GameState).deck === 'undefined')
+  return (arg as GameState).board === undefined // TODO: implement Typeguard to identify ne game (like typeof (arg as GameState).deck === 'undefined')
 }
 
 /**
@@ -37,9 +36,9 @@ export const MosquitoShowOptionsDescription: OptionsDescription<{}, MosquitoShow
       getValueLabel: (player: PlayerColor, t: TFunction) => {
         switch (player) {
           case PlayerColor.Blue:
-            return t('Blue player')
+            return t('Blue')
           case PlayerColor.Orange:
-            return t('Orange player')
+            return t('Orange')
         }
       }
     }
