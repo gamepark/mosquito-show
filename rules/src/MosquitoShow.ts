@@ -28,7 +28,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
           players: [{color : PlayerColor.Blue, ownedGoldenMosquitos: 0, availableMosquitoEffects: [],animal: [AnimalType.Toucan,AnimalType.Chameleon]},
           {color : PlayerColor.Orange, ownedGoldenMosquitos: 0, availableMosquitoEffects: [],animal: [AnimalType.Toucan,AnimalType.Chameleon]}
         ],
-          activPlayer : PlayerColor.Orange,
+          activePlayer : PlayerColor.Orange,
           board: { animalfield: [], mosquitoFields: createEffectFields()}
         })
       } else {
@@ -94,7 +94,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return The next automatic consequence that should be played in current game state.
    */
   getAutomaticMove(): void | Move {
-    const activePlayer = this.state.players.find(player => player.color === this.state.activPlayer);
+    const activePlayer = this.state.players.find(player => player.color === this.state.activePlayer);
     if (!activePlayer) {
       return;
     }

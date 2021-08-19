@@ -7,7 +7,7 @@ import PlayerState from './PlayerState'
  */
 type GameState = {
   players: PlayerState[],
-  activPlayer : PlayerColor,
+  activePlayer : PlayerColor,
   board: GameBoard
 }
 
