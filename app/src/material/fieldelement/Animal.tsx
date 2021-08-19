@@ -95,19 +95,19 @@ border-radius: 50%;
 border: none;
 background-position: center;
 background-size: cover;
-`;
+`
 
 const highlightPosition = (id: number) => css`
-    height: 13%;
-    width: 13%;
-    position: absolute;
-    left: ${5 + (((id - 1) % 4) * 25.5)}%;
-    top: ${5 + ((Math.floor((id - 1) / 4)) * 25.5)}%; 
-    border-radius: 50%;
-    border: 5px solid red; 
-    background-position: center;
-    background-size: cover;
-    `;
+height: 13%;
+width: 13%;
+position: absolute;
+left: ${5 + (((id - 1) % 4) * 25.5)}%;
+top: ${5 + ((Math.floor((id - 1) / 4)) * 25.5)}%; 
+border-radius: 50%;
+border: 5px solid red; 
+background-position: center;
+background-size: cover;
+`
 
 
 
