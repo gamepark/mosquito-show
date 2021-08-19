@@ -1,4 +1,5 @@
 import GameView from "../GameView";
+import PlayerColor from "../PlayerColor";
 import MoveType from "./MoveType";
 
 type MoveAnimal = {
@@ -29,6 +30,13 @@ export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
         state.board.animalfield.push(field)
     }
     state.possibleAnimalFields = []
+    if(state.activePlayer === PlayerColor.Blue){
+        state.activePlayer = PlayerColor.Orange 
+    }
+    if(state.activePlayer === PlayerColor.Orange){
+        state.activePlayer = PlayerColor.Blue 
+    }
 }
 
 export default MoveAnimal
+
