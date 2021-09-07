@@ -15,6 +15,8 @@ export const selectAnimalMove = (selectAnimalId: number): ChooseAnimal => ({
 
 //1 = Toucan_orgnge, 3 = Chameleon_orange, 2 = Toucan_blue, 4 = Chameleon_blue
 export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
+
+   
     state.possibleAnimalFields = []
     var selectedAnimalId = move.selectAnimalId
     state.selectedAnimalId = selectedAnimalId
@@ -153,6 +155,7 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
                 }
             }
         }
+
     }
 
     function showPossibleChameleonAnimalFields() {

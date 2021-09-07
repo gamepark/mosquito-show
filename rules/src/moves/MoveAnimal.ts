@@ -33,8 +33,7 @@ export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
     state.possibleAnimalFields = []
     if(state.activePlayer === PlayerColor.Blue){
         state.activePlayer = PlayerColor.Orange 
-    }
-    if(state.activePlayer === PlayerColor.Orange){
+    } else if(state.activePlayer === PlayerColor.Orange){
         state.activePlayer = PlayerColor.Blue 
     }
 }
