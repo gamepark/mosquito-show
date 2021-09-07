@@ -66,7 +66,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   getLegalMoves(): Move[] {
     const moves: Move[] = []
-    if (this.state.activePlayer == PlayerColor.Orange) {
+    if (this.state.activePlayer == PlayerColor.Blue) {
       return [
         { type: MoveType.ChooseAnimal, selectAnimalId: 2 },
         { type: MoveType.MoveAnimal, fieldId: 2, animalId: 2 }
@@ -101,6 +101,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return The next automatic consequence that should be played in current game state.
    */
   getAutomaticMove(): void | Move {
+    //selectAnimalMove(1)  
+    //moveAnimlaMove(4,1)
   }
 
 
