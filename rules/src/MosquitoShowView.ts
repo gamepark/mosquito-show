@@ -2,7 +2,7 @@ import { Game } from '@gamepark/rules-api'
 import { getActivePlayerState } from './GameState'
 import GameView from './GameView'
 import { selectAnimal, selectAnimalMove } from './moves/ChooseAnimal'
-import { selectMosquitoEffectField } from './moves/Eat'
+import { eatMove, selectMosquitoEffectField } from './moves/Eat'
 import Move from './moves/Move'
 import { moveAnimal } from './moves/MoveAnimal'
 import MoveType from './moves/MoveType'
@@ -29,12 +29,72 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
    * @return A MoveView which can be completely anticipated by the player or the spectator
    */
   getAutomaticMove(): void | MoveView {
+    // Show possible Chameleon Fields after Eat
     if(this.state.selectedAnimalId == 3 || this.state.selectedAnimalId == 4){
       const activePlayerState = getActivePlayerState(this.state)
       if(activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length >0){
         return selectAnimalMove(this.state.selectedAnimalId)
       }
     }
+    // Eat after moving Toucan
+    if(this.state.selectedAnimalId == 1 || this.state.selectedAnimalId == 2){
+      var activePlayerState = getActivePlayerState(this.state)
+      const currentAnimalField = this.getCurrentAnimalField();
+      var nextToucanPosition : number = -1
+      var effectFieldToEat : number
+      if(activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition == -1){
+        // Initial Move from PlayerBoard
+        activePlayerState.toucanStartPosition = currentAnimalField.fieldId
+      } else if(activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition !== currentAnimalField.fieldId){
+        var upDownIndicator = currentAnimalField.fieldId - activePlayerState.toucanStartPosition
+        if(upDownIndicator % 3 == 0 && upDownIndicator % 5 == 0){
+          if(upDownIndicator > 0){
+            // bottom right
+            nextToucanPosition = activePlayerState.toucanStartPosition + 5
+          }
+          if(upDownIndicator < 0){
+            // up left
+            nextToucanPosition = activePlayerState.toucanStartPosition - 5
+          }
+        } else {
+          if(upDownIndicator > 0 && upDownIndicator % 3 == 0){
+            // bottom left
+            nextToucanPosition = activePlayerState.toucanStartPosition + 3
+          }
+          if(upDownIndicator > 0 && upDownIndicator % 5 == 0){
+            // bottom right
+            nextToucanPosition = activePlayerState.toucanStartPosition + 5
+          }
+          if(upDownIndicator < 0 && upDownIndicator % 3 == 0){
+            // up left
+            nextToucanPosition = activePlayerState.toucanStartPosition - 5
+          }
+          if(upDownIndicator < 0 && upDownIndicator % 5 == 0){
+            // up right
+            nextToucanPosition = activePlayerState.toucanStartPosition - 3
+          }
+        }
+          if(nextToucanPosition !== -1){
+            effectFieldToEat = activePlayerState.toucanStartPosition + nextToucanPosition
+            activePlayerState.toucanStartPosition = nextToucanPosition
+            return eatMove(effectFieldToEat)
+          } else {
+            console.error('Could not get nextToucanPosition')
+        }
+      }
+      console.log(getActivePlayerState(this.state)?.toucanStartPosition)
+    }
+  }
+
+
+  getCurrentAnimalField() {
+    var animalFieldIds = this.state.board.animalfield
+    for (let j = 0; j < animalFieldIds.length; j++) {
+        if (animalFieldIds[j].animalId == this.state.selectedAnimalId) {
+            return animalFieldIds[j]
+        }
+    }
+    return undefined
   }
 
   getLegalMoves(): Move[] {

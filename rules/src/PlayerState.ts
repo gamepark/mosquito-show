@@ -4,5 +4,6 @@ import PlayerColor from './PlayerColor';
 export default interface PlayerState {
   color: PlayerColor,
   ownedGoldenMosquitos: number,
-  availableMosquitoEffects: Effect[]
+  availableMosquitoEffects: Effect[],
+  toucanStartPosition: number
 }
