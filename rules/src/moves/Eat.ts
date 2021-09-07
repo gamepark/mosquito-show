@@ -6,6 +6,7 @@ import MoveType from "./MoveType";
  type Eat = {
      type: typeof MoveType.Eat
      mosquitoEffectFieldId: number
+
     }
 
 export default Eat
@@ -33,6 +34,4 @@ export const selectMosquitoEffectField = (move: Eat, state:  GameView): void => 
         activePlayerState?.availableMosquitoEffects.push(mosquitoEffect)
     }
     state.possibleEffectFields = []
-}
-
- 
+} 

@@ -14,12 +14,13 @@ export const moveAnimlaMove = (fieldId: number, animalId: number): MoveAnimal =>
 })
 
 export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
-    let field = {animalId: move.animalId,  fieldId: move.fieldId}
+    const animalId = move.animalId;
+    let field = {animalId: animalId,  fieldId: move.fieldId}
     let animals = state.board.animalfield
     let fieldSet = false
     if(animals != undefined){
         for (let i = 0; i < animals.length; i++) {
-            if(animals[i].animalId == move.animalId){
+            if(animals[i].animalId == animalId){
                 animals[i] = field;
                 fieldSet = true;
                 break;

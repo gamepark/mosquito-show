@@ -13,7 +13,7 @@ export const selectAnimalMove = (selectAnimalId: number): ChooseAnimal => ({
     type: MoveType.ChooseAnimal, selectAnimalId
 })
 
-//1,3 orange and 2,4 blue
+//1 = Toucan_orgnge, 3 = Chameleon_orange, 2 = Toucan_blue, 4 = Chameleon_blue
 export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
 
    
