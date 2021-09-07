@@ -1,5 +1,4 @@
 import { SequentialGame } from '@gamepark/rules-api'
-import AnimalType from './animals/AnimalType'
 import GameState from './GameState'
 import GameView from './GameView'
 import { isGameOptions } from './MosquitoShowOptions'
@@ -25,8 +24,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     if (isGameOptions(arg)) {
       // const board = setupGameBoard()
       super({
-        players: [{ color: PlayerColor.Blue, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], animal: [AnimalType.Toucan, AnimalType.Chameleon] },
-        { color: PlayerColor.Orange, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], animal: [AnimalType.Toucan, AnimalType.Chameleon] }
+        players: [{ color: PlayerColor.Blue, ownedGoldenMosquitos: 0, availableMosquitoEffects: [] },
+        { color: PlayerColor.Orange, ownedGoldenMosquitos: 0, availableMosquitoEffects: [] }
         ],
 
           activePlayer : PlayerColor.Orange,
