@@ -1,12 +1,18 @@
-import Effect from "../fields/Effect"
-import { getActivePlayerState } from "../GameState"
-import GameView from "../GameView"
-import MoveType from "./MoveType"
+import Effect from "../fields/Effect";
+import { getActivePlayerState } from "../GameState";
+import GameView from "../GameView";
+import MoveType from "./MoveType";
 
  type Eat = {
      type: typeof MoveType.Eat
      mosquitoEffectFieldId: number
     }
+
+export default Eat
+
+export const eatMove = (mosquitoEffectFieldId: number): Eat => ({
+    type: MoveType.Eat, mosquitoEffectFieldId
+})
  
 export const selectMosquitoEffectField = (move: Eat, state:  GameView): void => {
     let mosquitoEffectFields = state.board.mosquitoFields
@@ -22,27 +28,11 @@ export const selectMosquitoEffectField = (move: Eat, state:  GameView): void => 
             }
         }
     }
+    const activePlayerState = getActivePlayerState(state)
     if(mosquitoEffect !== undefined){
-        getActivePlayerState(state)?.availableMosquitoEffects.push(mosquitoEffect)
+        activePlayerState?.availableMosquitoEffects.push(mosquitoEffect)
     }
     state.possibleEffectFields = []
-    // let field = {animalId: move.animalId,  fieldId: move.fieldId}
-    // let animals = state.board.animalfield
-    // let fieldSet = false
-    // if(animals != undefined){
-    //     for (let i = 0; i < animals.length; i++) {
-    //         if(animals[i].animalId == move.animalId){
-    //             animals[i] = field;
-    //             fieldSet = true;
-    //             break;
-    //         }
-    //     }
-    // }
-    // if(!fieldSet){
-    //     state.board.animalfield.push(field)
-    // }
-    // state.possibleAnimalFields = []
 }
 
- export default Eat
  
