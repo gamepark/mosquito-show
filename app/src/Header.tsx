@@ -10,9 +10,14 @@ export default function Header({loading, game}: Props) {
 
   return (
     <header css={style}>
-      <h1 css={titleStyle}>{"Just a text"}</h1>
+      <h1 css={titleStyle}>{getText()}</h1>
     </header>
   )
+
+  function getText(){
+    
+    return "ActivePlayer: "+ game.activePlayer;
+  }
 }
 
 
