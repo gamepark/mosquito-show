@@ -2,6 +2,7 @@
 import { css } from '@emotion/react';
 import GameView from '@gamepark/mosquito-show/GameView';
 import MoveType from '@gamepark/mosquito-show/moves/MoveType';
+import { getColorFromAnimalId } from '@gamepark/mosquito-show/PlayerColor';
 import { usePlay } from '@gamepark/react-client';
 import { FunctionComponent, useState } from 'react';
 import { Images } from '../Resources';
@@ -21,17 +22,21 @@ const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
         setTucanSelected1(false)
         setChamelonSelected1(false)
         play({ type: MoveType.MoveAnimal, fieldId: id, animalId: state?.selectedAnimalId })
-     
+
     }
 
     function chooseAnimal(fieldId: number, animalId: number) {
-        if (animalId === 1 || animalId === 2) {
-            setTucanSelected1(!selectTucan1)
+        const color = getColorFromAnimalId(animalId)
+
+        if (color === state.activePlayer) {
+            if (animalId === 1 || animalId === 2) {
+                setTucanSelected1(!selectTucan1)
+            }
+            if (animalId === 3 || animalId === 4) {
+                setChamelonSelected1(!selectChamelon1)
+            }
+            play({ type: MoveType.ChooseAnimal, selectAnimalId: animalId })
         }
-        if (animalId === 3 || animalId === 4) {
-            setChamelonSelected1(!selectChamelon1)
-        }
-        play({ type: MoveType.ChooseAnimal, selectAnimalId: animalId })
     }
 
     function isSelected(selectedAnimalId: number) {

@@ -11,16 +11,17 @@ import { Images } from '../Resources';
 type PlayerBoardProps = {
     gameboard?: GameBoard | undefined
     playerstate?: PlayerState | undefined
+    activePlayer: PlayerColor
 }
 
-const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({gameboard, playerstate }: PlayerBoardProps) => {
+const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ gameboard, playerstate, activePlayer }: PlayerBoardProps) => {
     const play = usePlay();
     const [selectTucan, setTucanSelected] = useState(false);
     const [selectChamelon, setChamelonSelected] = useState(false);
     var color = playerstate?.color
 
     function getImageChamelon(): String {
-        if(color !== undefined){
+        if (color !== undefined) {
             switch (color) {
                 case PlayerColor.Blue:
                     return Images.Chamelon_Blue;
@@ -32,7 +33,7 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({gameboard, playerstat
     }
 
     function getImageTucan(): String {
-        if(color !== undefined){
+        if (color !== undefined) {
             switch (color) {
                 case PlayerColor.Blue:
                     return Images.Tucan_Blue;
@@ -43,9 +44,9 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({gameboard, playerstat
         return "undefinedTucan"
     }
 
-    function getTokenImage():String{
+    function getTokenImage(): String {
         let effect = playerstate?.availableMosquitoEffects[0]
-        if(effect !== undefined) {
+        if (effect !== undefined) {
             switch (effect.front) {
                 case 1:
                     return Images.GreyMosquito
@@ -63,18 +64,18 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({gameboard, playerstat
     }
 
     function playMove(tucan: boolean, chamelon: boolean) {
+        if (color === activePlayer) {
+            setTucanSelected(tucan);
+            setChamelonSelected(chamelon);
 
-        setTucanSelected(tucan);
-        setChamelonSelected(chamelon);
-
-        if (tucan) {
-            let id = color === PlayerColor.Orange ? 1 : 2;
-            play({ type: MoveType.ChooseAnimal, selectAnimalId: id, color: PlayerColor });
-        } else if (chamelon) {
-            let id = color === PlayerColor.Orange ? 3 : 4;
-            play({ type: MoveType.ChooseAnimal, selectAnimalId: id, color: PlayerColor });
+            if (tucan) {
+                let id = color === PlayerColor.Orange ? 1 : 2;
+                play({ type: MoveType.ChooseAnimal, selectAnimalId: id, color: PlayerColor });
+            } else if (chamelon) {
+                let id = color === PlayerColor.Orange ? 3 : 4;
+                play({ type: MoveType.ChooseAnimal, selectAnimalId: id, color: PlayerColor });
+            }
         }
-        // playerstate?.filter[color].
 
     }
 
@@ -82,7 +83,7 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({gameboard, playerstat
         if (gameboard !== undefined && gameboard.animalfield !== undefined) {
             for (let i = 0; i < gameboard.animalfield.length; i++) {
                 let field = gameboard.animalfield[i]
-                if((field.animalId === 4 && color === PlayerColor.Blue)|| (field.animalId === 3 && color === PlayerColor.Orange)){
+                if ((field.animalId === 4 && color === PlayerColor.Blue) || (field.animalId === 3 && color === PlayerColor.Orange)) {
                     return false;
                 }
             }
@@ -94,7 +95,7 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({gameboard, playerstat
         if (gameboard !== undefined && gameboard.animalfield !== undefined) {
             for (let i = 0; i < gameboard.animalfield.length; i++) {
                 let field = gameboard.animalfield[i]
-                if((field.animalId === 2 && color === PlayerColor.Blue)|| (field.animalId === 1 && color === PlayerColor.Orange)){
+                if ((field.animalId === 2 && color === PlayerColor.Blue) || (field.animalId === 1 && color === PlayerColor.Orange)) {
                     return false;
                 }
             }
