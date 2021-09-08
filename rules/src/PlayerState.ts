@@ -5,5 +5,8 @@ export default interface PlayerState {
   color: PlayerColor,
   ownedGoldenMosquitos: number,
   availableMosquitoEffects: Effect[],
-  toucanStartPosition: number
+  toucanStartPosition: number,
+  chameleonStartPosition: number,
+  toucanBlocked: boolean,
+  chameleonBlocked: boolean
 }
