@@ -1,8 +1,20 @@
+import GameView from "../GameView"
+import PlayerColor from "../PlayerColor"
 import MoveType from "./MoveType"
 
-/**
- * A "Move" is the combination of all the types of moves that exists in you game
- */
- type MosquitoEffect = {type: typeof MoveType.MosquitoEffect}
+type PlayMosquitoEffect = {type: typeof MoveType.PlayMosquitoEffect}
  
- export default MosquitoEffect
+export default PlayMosquitoEffect
+ 
+export const playMosquitoEffectMove = (): PlayMosquitoEffect => ({
+    type: MoveType.PlayMosquitoEffect
+})
+ 
+export const playMosquitoEffect = (move: PlayMosquitoEffect, state:  GameView): void => {
+    if(state.activePlayer === PlayerColor.Blue){
+        state.activePlayer = PlayerColor.Orange 
+    } else if(state.activePlayer === PlayerColor.Orange){
+        state.activePlayer = PlayerColor.Blue 
+    }
+    state.selectedAnimalId = undefined
+} 

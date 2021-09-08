@@ -20,4 +20,12 @@ export function getActivePlayerState(state : GameState) {
   return undefined
 }
 
+export function switchPlayer(state : GameState){
+  if(state.activePlayer === PlayerColor.Blue){
+      state.activePlayer = PlayerColor.Orange 
+  } else if(state.activePlayer === PlayerColor.Orange){
+      state.activePlayer = PlayerColor.Blue 
+  }
+}
+
 export default GameState

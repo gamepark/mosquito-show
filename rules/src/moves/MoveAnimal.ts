@@ -1,3 +1,4 @@
+import { getActivePlayerState } from "../GameState";
 import GameView from "../GameView";
 import PlayerColor from "../PlayerColor";
 import MoveType from "./MoveType";
@@ -27,15 +28,42 @@ export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
             }
         }
     }
+    
+    if(state.selectedAnimalId == 3 || state.selectedAnimalId == 4){
+        // Chameleon Move
+        state.players
+        .filter(p => p.color == state.activePlayer)
+        .forEach(p => {
+            p.chameleonMoved = true
+        })
+    }
     if(!fieldSet){
         state.board.animalfield.push(field)
+        if(state.selectedAnimalId == 1 || state.selectedAnimalId == 2){
+            var activePlayerState = getActivePlayerState(state)
+            if(activePlayerState !== undefined && activePlayerState.toucanStartPosition == -1){
+                // Initial Toucan Move from PlayerBoard
+                state.players
+                .filter(p => p.color == state.activePlayer)
+                .forEach(p => {
+                    p.toucanStartPosition = move.fieldId
+                })
+            }
+        }
+        if(state.activePlayer === PlayerColor.Blue){
+            state.activePlayer = PlayerColor.Orange 
+        } else if(state.activePlayer === PlayerColor.Orange){
+            state.activePlayer = PlayerColor.Blue 
+        }
+        state.selectedAnimalId = undefined
     }
+    
     state.possibleAnimalFields = []
-    if(state.activePlayer === PlayerColor.Blue){
-        state.activePlayer = PlayerColor.Orange 
-    } else if(state.activePlayer === PlayerColor.Orange){
-        state.activePlayer = PlayerColor.Blue 
-    }
+    // if(state.activePlayer === PlayerColor.Blue){
+    //     state.activePlayer = PlayerColor.Orange 
+    // } else if(state.activePlayer === PlayerColor.Orange){
+    //     state.activePlayer = PlayerColor.Blue 
+    // }
 }
 
 export default MoveAnimal

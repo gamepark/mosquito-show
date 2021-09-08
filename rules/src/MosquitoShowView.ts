@@ -7,6 +7,7 @@ import Move from './moves/Move'
 import { moveAnimal } from './moves/MoveAnimal'
 import MoveType from './moves/MoveType'
 import MoveView from './moves/MoveView'
+import { playMosquitoEffect, playMosquitoEffectMove } from './moves/PlayMosquitoEffect'
 
 /**
  * This class is useful when the game has "IncompleteInformation" (or "SecretInformation").
@@ -32,8 +33,11 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
     // Show possible Chameleon Fields after Eat
     if(this.state.selectedAnimalId == 3 || this.state.selectedAnimalId == 4){
       const activePlayerState = getActivePlayerState(this.state)
-      if(activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length >0){
+      if(activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length >0 && !activePlayerState.chameleonMoved){
         return selectAnimalMove(this.state.selectedAnimalId)
+      }
+      if(activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length >0 && activePlayerState.chameleonMoved){
+        return playMosquitoEffectMove()
       }
     }
     // Eat after moving Toucan
@@ -42,10 +46,7 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
       const currentAnimalField = this.getCurrentAnimalField();
       var nextToucanPosition : number = -1
       var effectFieldToEat : number
-      if(activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition == -1){
-        // Initial Move from PlayerBoard
-        activePlayerState.toucanStartPosition = currentAnimalField.fieldId
-      } else if(activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition !== currentAnimalField.fieldId){
+      if(activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition !== currentAnimalField.fieldId){
         var upDownIndicator = currentAnimalField.fieldId - activePlayerState.toucanStartPosition
         if(upDownIndicator % 3 == 0 && upDownIndicator % 5 == 0){
           if(upDownIndicator > 0){
@@ -82,10 +83,12 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
             console.error('Could not get nextToucanPosition')
         }
       }
+      if(activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition === currentAnimalField.fieldId && activePlayerState.availableMosquitoEffects.length > 0){
+        playMosquitoEffectMove()
+      }
       console.log(getActivePlayerState(this.state)?.toucanStartPosition)
     }
   }
-
 
   getCurrentAnimalField() {
     var animalFieldIds = this.state.board.animalfield
@@ -122,6 +125,9 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
         break;
       case MoveType.Eat:
         selectMosquitoEffectField(move, this.state)
+        break;
+      case MoveType.PlayMosquitoEffect:
+        playMosquitoEffect(move, this.state)
         break;
     }
   }

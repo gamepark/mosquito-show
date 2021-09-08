@@ -24,8 +24,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     if (isGameOptions(arg)) {
       // const board = setupGameBoard()
       super({
-        players: [{ color: PlayerColor.Blue, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], toucanStartPosition: -1, chameleonStartPosition: -1, toucanBlocked: false, chameleonBlocked: false },
-        { color: PlayerColor.Orange, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], toucanStartPosition: -1, chameleonStartPosition: -1, toucanBlocked: false, chameleonBlocked: false }
+        players: [{ color: PlayerColor.Blue, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], toucanStartPosition: -1, chameleonMoved: false, toucanBlocked: false, chameleonBlocked: false },
+        { color: PlayerColor.Orange, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], toucanStartPosition: -1, chameleonMoved: false, toucanBlocked: false, chameleonBlocked: false }
         ],
 
           activePlayer : PlayerColor.Orange,
