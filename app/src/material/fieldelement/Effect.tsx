@@ -6,7 +6,7 @@ import GameView from '@gamepark/mosquito-show/GameView';
 import MoveType from '@gamepark/mosquito-show/moves/MoveType';
 import { usePlay } from '@gamepark/react-client';
 import { FunctionComponent } from 'react';
-import { Images } from '../Resources';
+import { Images } from '../Images';
 
 type EffectProps = {
     mosquitoEffectField : MosquitoEffectField

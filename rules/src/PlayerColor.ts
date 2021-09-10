@@ -1,6 +1,6 @@
 enum PlayerColor {
-  Blue = 'Blue',
-  Orange = 'Orange'
+  Blue = 1,
+  Orange = 2
 }
 
 export function getColorFromAnimalId(animalId: number){

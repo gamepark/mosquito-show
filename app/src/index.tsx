@@ -1,14 +1,14 @@
-import {css, Global} from '@emotion/react'
+import { css, Global } from '@emotion/react'
 import MosquitoShow from '@gamepark/mosquito-show/MosquitoShow'
-import {MosquitoShowOptionsDescription} from '@gamepark/mosquito-show/MosquitoShowOptions'
+import { MosquitoShowOptionsSpec } from '@gamepark/mosquito-show/MosquitoShowOptions'
 import MosquitoShowView from '@gamepark/mosquito-show/MosquitoShowView'
-import {GameProvider, setupTranslation} from '@gamepark/react-client'
+import { GameProvider, setupTranslation } from '@gamepark/react-client'
 import normalize from 'emotion-normalize'
-import {StrictMode} from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
+import { Images } from './material/Images'
 import translations from './translations.json'
-import { Images } from './material/Resources';
 
 setupTranslation(translations)
 
@@ -62,7 +62,7 @@ const style = css`
 
 ReactDOM.render(
   <StrictMode>
-    <GameProvider game="MosquitoShow" Rules={MosquitoShow} RulesView={MosquitoShowView} optionsDescription={MosquitoShowOptionsDescription}>
+    <GameProvider game="MosquitoShow" Rules={MosquitoShow} RulesView={MosquitoShowView} optionsSpec={MosquitoShowOptionsSpec}>
       <App/>
     </GameProvider>
     <Global styles={[normalize, style]}/>

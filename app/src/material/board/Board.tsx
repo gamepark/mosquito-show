@@ -4,7 +4,7 @@ import GameView from '@gamepark/mosquito-show/GameView';
 import { FunctionComponent } from 'react';
 import { Animal } from '../fieldelement/Animal';
 import { Effect } from '../fieldelement/Effect';
-import { Images } from '../Resources';
+import { Images } from '../Images';
 
 type BoardProps = {
     state: GameView

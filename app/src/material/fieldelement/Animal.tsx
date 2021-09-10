@@ -5,7 +5,7 @@ import MoveType from '@gamepark/mosquito-show/moves/MoveType';
 import { getColorFromAnimalId } from '@gamepark/mosquito-show/PlayerColor';
 import { usePlay } from '@gamepark/react-client';
 import { FunctionComponent, useState } from 'react';
-import { Images } from '../Resources';
+import { Images } from '../Images';
 
 type AnimalProp = {
     id: number

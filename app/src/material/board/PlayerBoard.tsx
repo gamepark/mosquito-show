@@ -6,7 +6,7 @@ import PlayerColor from '@gamepark/mosquito-show/PlayerColor';
 import PlayerState from '@gamepark/mosquito-show/PlayerState';
 import { usePlay } from '@gamepark/react-client';
 import { FunctionComponent, useState } from 'react';
-import { Images } from '../Resources';
+import { Images } from '../Images';
 
 type PlayerBoardProps = {
     gameboard?: GameBoard | undefined

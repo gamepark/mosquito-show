@@ -2,15 +2,15 @@
 import { css } from '@emotion/react';
 import GameState from '@gamepark/mosquito-show/GameState';
 import { FullscreenDialog, Menu, useGame } from '@gamepark/react-client';
-import { LoadingScreen } from '@gamepark/react-components';
+import { ImagesLoader, LoadingScreen } from '@gamepark/react-components';
 import { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd-multi-backend';
 import HTML5ToTouch from 'react-dnd-multi-backend/dist/cjs/HTML5toTouch';
 import { GameDisplay } from './GameDisplay';
 import Header from './Header';
+import { Images } from './material/Images';
 import MosquitoShowBox from './material/logo.png';
-import { Images } from './material/Resources';
-import ImagesLoader from './util/ImagesLoader';
+//import ImagesLoader from './util/ImagesLoader';
 
 
 export default function App() {

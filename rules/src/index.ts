@@ -1,2 +1,2 @@
-export {default} from './MosquitoShow'
-export {MosquitoShowOptionsDescription} from './MosquitoShowOptions'
+export { default } from './MosquitoShow'
+export { MosquitoShowOptionsSpec } from './MosquitoShowOptions'
