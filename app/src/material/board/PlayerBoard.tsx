@@ -80,9 +80,9 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ gameboard, playersta
     }
 
     function chamelonVisible() {
-        if (gameboard !== undefined && gameboard.animalfield !== undefined) {
-            for (let i = 0; i < gameboard.animalfield.length; i++) {
-                let field = gameboard.animalfield[i]
+        if (gameboard !== undefined && gameboard.animalFields !== undefined) {
+            for (let i = 0; i < gameboard.animalFields.length; i++) {
+                let field = gameboard.animalFields[i]
                 if ((field.animalId === 4 && color === PlayerColor.Blue) || (field.animalId === 3 && color === PlayerColor.Orange)) {
                     return false;
                 }
@@ -92,9 +92,9 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ gameboard, playersta
     }
 
     function tucanVisible() {
-        if (gameboard !== undefined && gameboard.animalfield !== undefined) {
-            for (let i = 0; i < gameboard.animalfield.length; i++) {
-                let field = gameboard.animalfield[i]
+        if (gameboard !== undefined && gameboard.animalFields !== undefined) {
+            for (let i = 0; i < gameboard.animalFields.length; i++) {
+                let field = gameboard.animalFields[i]
                 if ((field.animalId === 2 && color === PlayerColor.Blue) || (field.animalId === 1 && color === PlayerColor.Orange)) {
                     return false;
                 }

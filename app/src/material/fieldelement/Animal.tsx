@@ -57,8 +57,8 @@ const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
                     }
                 }
             }
-            if (state.board.animalfield !== undefined) {
-                let animals = state.board.animalfield
+            if (state.board.animalFields !== undefined) {
+                let animals = state.board.animalFields
                 for (let i = 0; i < animals.length; i++) {
                     if (id === animals[i].fieldId) {
                         let animalId = animals[i].animalId

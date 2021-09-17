@@ -13,14 +13,12 @@ export const selectAnimalMove = (selectAnimalId: number): ChooseAnimal => ({
     type: MoveType.ChooseAnimal, selectAnimalId
 })
 
-//1 = Toucan_orgnge, 3 = Chameleon_orange, 2 = Toucan_blue, 4 = Chameleon_blue
+//1 = Toucan_orange, 3 = Chameleon_orange, 2 = Toucan_blue, 4 = Chameleon_blue
 export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
-
-   
     state.possibleAnimalFields = []
     var selectedAnimalId = move.selectAnimalId
     state.selectedAnimalId = selectedAnimalId
-    var animalFieldIds = state.board.animalfield
+    var animalFieldIds = state.board.animalFields
     
     if (animalFieldIds.length == 4) {
         if (selectedAnimalId == 1 || selectedAnimalId == 2) {
@@ -49,10 +47,10 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
         }
     }
     
-    const activePlayerState = getActivePlayerState(state)
-    if(activePlayerState !== undefined){
-        activePlayerState.availableMosquitoEffects = [];
-    }
+    // const activePlayerState = getActivePlayerState(state)
+    // if(activePlayerState !== undefined){
+    //     activePlayerState.availableMosquitoEffects = [];
+    // }
     
     function showPossibleMosquitoEffectFields(){
         state.possibleEffectFields = []

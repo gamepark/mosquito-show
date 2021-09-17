@@ -17,12 +17,12 @@ export const moveAnimlaMove = (fieldId: number, animalId: number): MoveAnimal =>
 export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
     const animalId = move.animalId;
     let field = {animalId: animalId,  fieldId: move.fieldId}
-    let animals = state.board.animalfield
+    let animalFields = state.board.animalFields
     let fieldSet = false
-    if(animals != undefined){
-        for (let i = 0; i < animals.length; i++) {
-            if(animals[i].animalId == animalId){
-                animals[i] = field;
+    if(animalFields != undefined){
+        for (let i = 0; i < animalFields.length; i++) {
+            if(animalFields[i].animalId == animalId){
+                animalFields[i] = field;
                 fieldSet = true;
                 break;
             }
@@ -38,9 +38,9 @@ export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
         })
     }
     if(!fieldSet){
-        state.board.animalfield.push(field)
+        state.board.animalFields.push(field)
+        var activePlayerState = getActivePlayerState(state)
         if(state.selectedAnimalId == 1 || state.selectedAnimalId == 2){
-            var activePlayerState = getActivePlayerState(state)
             if(activePlayerState !== undefined && activePlayerState.toucanStartPosition == -1){
                 // Initial Toucan Move from PlayerBoard
                 state.players
@@ -49,6 +49,11 @@ export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
                     p.toucanStartPosition = move.fieldId
                 })
             }
+        } else if(state.selectedAnimalId == 3 || state.selectedAnimalId == 4){
+                // Initial Chameleon Move from PlayerBoard
+                if(activePlayerState !== undefined){
+                    activePlayerState.chameleonMoved = false
+                }
         }
         if(state.activePlayer === PlayerColor.Blue){
             state.activePlayer = PlayerColor.Orange 

@@ -33,10 +33,11 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
     // Show possible Chameleon Fields after Eat
     if(this.state.selectedAnimalId == 3 || this.state.selectedAnimalId == 4){
       const activePlayerState = getActivePlayerState(this.state)
-      if(activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length >0 && !activePlayerState.chameleonMoved){
+      if(activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length >0 && !activePlayerState.chameleonMoved && (this.state.possibleAnimalFields === undefined || this.state.possibleAnimalFields.length == 0)){
         return selectAnimalMove(this.state.selectedAnimalId)
       }
       if(activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length >0 && activePlayerState.chameleonMoved){
+        console.log("still something to do")
         return playMosquitoEffectMove()
       }
     }
@@ -84,14 +85,15 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
         }
       }
       if(activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition === currentAnimalField.fieldId && activePlayerState.availableMosquitoEffects.length > 0){
-        playMosquitoEffectMove()
+        console.log("still something to do")
+        // playMosquitoEffectMove()
       }
       console.log(getActivePlayerState(this.state)?.toucanStartPosition)
     }
   }
 
   getCurrentAnimalField() {
-    var animalFieldIds = this.state.board.animalfield
+    var animalFieldIds = this.state.board.animalFields
     for (let j = 0; j < animalFieldIds.length; j++) {
         if (animalFieldIds[j].animalId == this.state.selectedAnimalId) {
             return animalFieldIds[j]
