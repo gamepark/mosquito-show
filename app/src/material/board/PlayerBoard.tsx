@@ -7,6 +7,7 @@ import PlayerState from '@gamepark/mosquito-show/PlayerState';
 import { usePlay } from '@gamepark/react-client';
 import { FunctionComponent, useState } from 'react';
 import { Images } from '../Images';
+import { Token } from '../token/Token';
 
 type PlayerBoardProps = {
     gameboard?: GameBoard | undefined
@@ -15,9 +16,10 @@ type PlayerBoardProps = {
 }
 
 const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ gameboard, playerstate, activePlayer }: PlayerBoardProps) => {
-    const play = usePlay();
-    const [selectTucan, setTucanSelected] = useState(false);
-    const [selectChamelon, setChamelonSelected] = useState(false);
+    const play = usePlay()
+    const [selectTucan, setTucanSelected] = useState(false)
+    const [selectChamelon, setChamelonSelected] = useState(false)
+    const token = []
     var color = playerstate?.color
 
     function getImageChamelon(): String {
@@ -42,25 +44,6 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ gameboard, playersta
             }
         }
         return "undefinedTucan"
-    }
-
-    function getTokenImage(): String {
-        let effect = playerstate?.availableMosquitoEffects[0]
-        if (effect !== undefined) {
-            switch (effect.front) {
-                case 1:
-                    return Images.GreyMosquito
-                case 2:
-                    return Images.BlueMosquito
-                case 3:
-                    return Images.RedMosquito
-                case 4:
-                    return Images.WhiteMosquito
-                case 5:
-                    return Images.GoldenMosquito
-            }
-        }
-        return "undefinedToken"
     }
 
     function playMove(tucan: boolean, chamelon: boolean) {
@@ -103,9 +86,22 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ gameboard, playersta
         return true;
     }
 
+    if(playerstate !== undefined){
+        for (var i = 0; i < playerstate.availableMosquitoEffects.length; i++) {
+            token.push(
+                <Token effect={playerstate.availableMosquitoEffects[i]}></Token>
+                )      
+            }
+    }
+
     return <div css={outbox}>
-        <div css={animals}>
-            {<div css={boardStyle} style={{ backgroundImage: `url(${getTokenImage()})` }} />}
+        <div css={victorypointsRow}>
+            <div css={tokenStyle} style={{ backgroundImage: `url(${Images.GoldenMosquito})` }}></div>
+            <div css={victorypoints}> x </div>
+            <div css={victorypoints}> {playerstate?.ownedGoldenMosquitos}</div>
+        </div>
+        <div css={tokens}>
+            {token}
         </div>
         <div css={animals}>
             {chamelonVisible() && <div css={() => { return selectChamelon ? marked : boardStyle }} onClick={() => { playMove(false, !selectChamelon); }} style={{ backgroundImage: `url(${getImageChamelon()})` }} />}
@@ -118,12 +114,35 @@ export {
     PlayerBoard
 };
 
+const tokenStyle = css`
+    position: relative;
+    display: inline-grid;
+    height: 50%;
+    width: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+`
 
 const animals = css`
     display: grid;
     grid-template-columns: 50% 50%;
     grid-template-rows: 100%;
 `
+const tokens = css`
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows: 100%;
+`
+
+const victorypointsRow = css`
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows: 100%;
+`
+const victorypoints = css`
+    font-size: 70px;
+`
+
 const outbox = css`
     position: absolute;
     display: inline-grid;

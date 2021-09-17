@@ -1,14 +1,18 @@
+import Effect from "../fields/Effect"
 import { getActivePlayerState } from "../GameState"
 import GameView from "../GameView"
 import PlayerColor from "../PlayerColor"
 import MoveType from "./MoveType"
 
-type PlayMosquitoEffect = {type: typeof MoveType.PlayMosquitoEffect}
+type PlayMosquitoEffect = {
+  type: typeof MoveType.PlayMosquitoEffect
+  selectedEffect: Effect
+}
  
 export default PlayMosquitoEffect
  
-export const playMosquitoEffectMove = (): PlayMosquitoEffect => ({
-    type: MoveType.PlayMosquitoEffect
+export const playMosquitoEffectMove = (selectedEffect: Effect): PlayMosquitoEffect => ({
+    type: MoveType.PlayMosquitoEffect, selectedEffect
 })
  
 export const playMosquitoEffect = (move: PlayMosquitoEffect, state:  GameView): void => {
@@ -23,7 +27,7 @@ export const playMosquitoEffect = (move: PlayMosquitoEffect, state:  GameView): 
                 state.activePlayer = PlayerColor.Blue 
             }
         state.selectedAnimalId = undefined
-        activePlayerState.availableMosquitoEffects = [];
+        // activePlayerState.availableMosquitoEffects = [];
         }
       }
     // if(state.activePlayer === PlayerColor.Blue){

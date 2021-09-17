@@ -38,7 +38,7 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
       }
       if(activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length >0 && activePlayerState.chameleonMoved){
         console.log("still something to do")
-        return playMosquitoEffectMove()
+        return playMosquitoEffectMove(activePlayerState.availableMosquitoEffects[0])
       }
     }
     // Eat after moving Toucan
