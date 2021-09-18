@@ -129,18 +129,15 @@ export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): v
     }
   }
 
-
   function handleBlueMosquitoEffect(activePlayerState: PlayerState) {
     state.mosquitoEffect = -1
     handleEffectEnd(activePlayerState)
   }
 
-
   function handleRedMosquitoEffect(activePlayerState: PlayerState) {
     state.mosquitoEffect = -1
     handleEffectEnd(activePlayerState)
   }
-
 
   function handleWhiteMosquitoEffect(activePlayerState: PlayerState) {
     if (move.startMosquitoEffectFieldId == -1) {
@@ -164,7 +161,6 @@ export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): v
       }
     }
   }
-
 
   function handleGoldenMosquitoEffect(activePlayerState: PlayerState) {
     activePlayerState.ownedGoldenMosquitos++
