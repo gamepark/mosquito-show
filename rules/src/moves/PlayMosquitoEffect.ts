@@ -87,8 +87,46 @@ export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): v
   }
 
   function handleGreyMosquitoEffect(activePlayerState: PlayerState) {
-    state.mosquitoEffect = -1
-    handleEffectEnd(activePlayerState)
+    if (move.startMosquitoEffectFieldId == -1) {
+      state.possibleEffectFields = []
+      for (let i = 0; i < state.board.mosquitoFields.length; i++) {
+        const mosquitoEffectField = state.board.mosquitoFields[i];
+        if (mosquitoEffectField.effects.length > 0) {
+          state.possibleEffectFields.push(mosquitoEffectField.id)
+        }
+      }
+    } else if (move.startMosquitoEffectFieldId > -1 && move.targetMosquitoEffectFieldId === -1) {
+      state.mosquitoEffectStartFieldId = move.startMosquitoEffectFieldId
+      state.possibleEffectFields = []
+      for (let i = 0; i < state.board.mosquitoFields.length; i++) {
+        const mosquitoEffectField = state.board.mosquitoFields[i];
+        if (mosquitoEffectField.id !== move.startMosquitoEffectFieldId) {
+          state.possibleEffectFields.push(mosquitoEffectField.id)
+        }
+      }
+    } else if (move.startMosquitoEffectFieldId > -1 && move.targetMosquitoEffectFieldId > -1) {
+      var startField = undefined
+      var targetField = undefined
+      for (let i = 0; i < state.board.mosquitoFields.length; i++) {
+        const mosquitoEffectField = state.board.mosquitoFields[i];
+        if (mosquitoEffectField.id === move.startMosquitoEffectFieldId) {
+          startField = mosquitoEffectField
+        }
+        if (mosquitoEffectField.id === move.targetMosquitoEffectFieldId) {
+          targetField = mosquitoEffectField
+        }
+      }
+      if(startField !== undefined && targetField !== undefined){
+        var chosenEffect = startField.effects.pop()
+        if(chosenEffect !== undefined){
+          targetField.effects.push(chosenEffect)
+        }
+      }
+      state.possibleEffectFields = []
+      state.mosquitoEffect = -1
+      state.mosquitoEffectStartFieldId = -1
+      handleEffectEnd(activePlayerState)
+    }
   }
 
 

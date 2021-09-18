@@ -9,21 +9,29 @@ import { FunctionComponent } from 'react';
 import { Images } from '../Images';
 
 type EffectProps = {
-    mosquitoEffectField : MosquitoEffectField
+    mosquitoEffectField: MosquitoEffectField
     state: GameView
 }
 
 const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: EffectProps) => {
     const play = usePlay()
-    
+
     function chooseEffect(id: number) {
         switch (state.mosquitoEffect) {
             case -1:
                 play({ type: MoveType.Eat, mosquitoEffectFieldId: id })
                 break;
+            case 1:
+                // Grey Moquito Effect
+                if(state.mosquitoEffectStartFieldId === -1){
+                    play({ type: MoveType.PlayMosquitoEffect, selectedEffectIndex: -1, startMosquitoEffectFieldId: id, targetMosquitoEffectFieldId: -1 })
+                } else if (state.mosquitoEffectStartFieldId !== -1){
+                    play({ type: MoveType.PlayMosquitoEffect, selectedEffectIndex: -1, startMosquitoEffectFieldId: state.mosquitoEffectStartFieldId, targetMosquitoEffectFieldId: id })
+                }
+                break;
             case 4:
                 // White Moquito Effect
-                play({ type: MoveType.PlayMosquitoEffect, selectedEffectIndex: -1,  startMosquitoEffectFieldId: id, targetMosquitoEffectFieldId: -1 })
+                play({ type: MoveType.PlayMosquitoEffect, selectedEffectIndex: -1, startMosquitoEffectFieldId: id, targetMosquitoEffectFieldId: -1 })
                 break;
         }
     }
@@ -32,30 +40,30 @@ const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: 
         var possibleEffectFields = state.possibleEffectFields
         if (possibleEffectFields !== undefined) {
             for (var possibleEffectFieldId of possibleEffectFields) {
-                if ( possibleEffectFieldId === mosquitoEffectField.id) {
-                    if(mosquitoEffectField.effects.length>0){
+                if (possibleEffectFieldId === mosquitoEffectField.id) {
+                    if (mosquitoEffectField.effects.length > 0) {
                         return <div>
-                                <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: getEffectImageUrl(mosquitoEffectField.effects[mosquitoEffectField.effects.length-1]) }}></div>
-                                <div css={highlightEffectPosition(mosquitoEffectField.id)} onClick={() => { chooseEffect(mosquitoEffectField.id) }}></div>
-                            </div>
+                            <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: getEffectImageUrl(mosquitoEffectField.effects[mosquitoEffectField.effects.length - 1]) }}></div>
+                            <div css={highlightEffectPosition(mosquitoEffectField.id)} onClick={() => { chooseEffect(mosquitoEffectField.id) }}></div>
+                        </div>
                     }
                 }
             }
         }
-        if(mosquitoEffectField.effects.length>0){
-            return <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: getEffectImageUrl(mosquitoEffectField.effects[mosquitoEffectField.effects.length-1]) }}></div>
+        if (mosquitoEffectField.effects.length > 0) {
+            return <div css={tokenPosition(mosquitoEffectField.id)} style={{ backgroundImage: getEffectImageUrl(mosquitoEffectField.effects[mosquitoEffectField.effects.length - 1]) }}></div>
         }
-        return <div/>
+        return <div />
     }
     return (
         possibleEffectFields()
     )
 
-    function getEffectImageUrl(effect : EffectType){
-        if(effect.back === 1){
+    function getEffectImageUrl(effect: EffectType) {
+        if (effect.back === 1) {
             return `url(${Images.WaterlillyFlower})`
         } else {
-            if(effect.revealed){
+            if (effect.revealed) {
                 switch (effect.front) {
                     case 1:
                         return `url(${Images.GreyMosquito})`
@@ -69,7 +77,7 @@ const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: 
                         return `url(${Images.GoldenMosquito})`
                 }
                 return undefined
-            } else{
+            } else {
                 return `url(${Images.Waterlilly})`
             }
         }

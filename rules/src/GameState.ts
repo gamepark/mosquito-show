@@ -9,7 +9,8 @@ type GameState = {
   players: PlayerState[],
   activePlayer : PlayerColor,
   board: GameBoard,
-  mosquitoEffect: number
+  mosquitoEffect: number,
+  mosquitoEffectStartFieldId: number
 }
 
 export function getActivePlayerState(state : GameState) {
