@@ -19,69 +19,80 @@ const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
     const [selectChamelon1, setChamelonSelected1] = useState(false);
 
     function moveTo(id: number) {
-        setTucanSelected1(false)
-        setChamelonSelected1(false)
-        play({ type: MoveType.MoveAnimal, fieldId: id, animalId: state?.selectedAnimalId })
-
-    }
-
-    function chooseAnimal(fieldId: number, animalId: number) {
-        const color = getColorFromAnimalId(animalId)
-
-        if (color === state.activePlayer) {
-            if (animalId === 1 || animalId === 2) {
-                setTucanSelected1(!selectTucan1)
-            }
-            if (animalId === 3 || animalId === 4) {
-                setChamelonSelected1(!selectChamelon1)
-            }
-            play({ type: MoveType.ChooseAnimal, selectAnimalId: animalId })
-        }
-    }
-
-    function isSelected(selectedAnimalId: number) {
-        if (state.selectedAnimalId === selectedAnimalId) {
-            return 100;
-        }
-        return 0;
-    }
-
-    function possibleFields() {
-        if (state !== undefined) {
-            var possibleFields = state.possibleAnimalFields
-            if (possibleFields !== undefined) {
-                for (var val of possibleFields) {
-
-                    if (val === id) {
-                        return <div css={highlightPosition(id)} onClick={() => { moveTo(id) }} ></div>
-                    }
+        switch (state.mosquitoEffect) {
+            case -1:
+                setTucanSelected1(false)
+                setChamelonSelected1(false)
+                play({ type: MoveType.MoveAnimal, fieldId: id, animalId: state?.selectedAnimalId })
+                break;
+            case 2:
+                // Blue Moquito Effect
+                if (state.mosquitoEffectStartFieldId === -1) {
+                    play({ type: MoveType.PlayMosquitoEffect, selectedEffectIndex: -1, startMosquitoEffectFieldId: id, targetMosquitoEffectFieldId: -1 })
+                } else if (state.mosquitoEffectStartFieldId !== -1) {
+                    play({ type: MoveType.PlayMosquitoEffect, selectedEffectIndex: -1, startMosquitoEffectFieldId: state.mosquitoEffectStartFieldId, targetMosquitoEffectFieldId: id })
                 }
-            }
-            if (state.board.animalFields !== undefined) {
-                let animals = state.board.animalFields
-                for (let i = 0; i < animals.length; i++) {
-                    if (id === animals[i].fieldId) {
-                        let animalId = animals[i].animalId
-                        if (animalId === 1) {
-                            return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Orange})` }} />
-                        } else if (animalId === 2) {
-                            return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Blue})` }} />
-                        } else if (animalId === 3) {
-                            return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Orange})` }} />
-                        } else if (animalId === 4) {
-                            return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Blue})` }} />
-                        }
-                    }
+                break;
+        }
+    }
+
+function chooseAnimal(fieldId: number, animalId: number) {
+    const color = getColorFromAnimalId(animalId)
+
+    if (color === state.activePlayer) {
+        if (animalId === 1 || animalId === 2) {
+            setTucanSelected1(!selectTucan1)
+        }
+        if (animalId === 3 || animalId === 4) {
+            setChamelonSelected1(!selectChamelon1)
+        }
+        play({ type: MoveType.ChooseAnimal, selectAnimalId: animalId })
+    }
+}
+
+function isSelected(selectedAnimalId: number) {
+    if (state.selectedAnimalId === selectedAnimalId) {
+        return 100;
+    }
+    return 0;
+}
+
+function possibleFields() {
+    if (state !== undefined) {
+        var possibleFields = state.possibleAnimalFields
+        if (possibleFields !== undefined) {
+            for (var val of possibleFields) {
+
+                if (val === id) {
+                    return <div css={highlightPosition(id)} onClick={() => { moveTo(id) }} ></div>
                 }
             }
         }
-
-        return <div></div>
-
+        if (state.board.animalFields !== undefined) {
+            let animals = state.board.animalFields
+            for (let i = 0; i < animals.length; i++) {
+                if (id === animals[i].fieldId) {
+                    let animalId = animals[i].animalId
+                    if (animalId === 1) {
+                        return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Orange})` }} />
+                    } else if (animalId === 2) {
+                        return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Blue})` }} />
+                    } else if (animalId === 3) {
+                        return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Orange})` }} />
+                    } else if (animalId === 4) {
+                        return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Blue})` }} />
+                    }
+                }
+            }
+        }
     }
-    return (
-        possibleFields()
-    )
+
+    return <div></div>
+
+}
+return (
+    possibleFields()
+)
 
 }
 

@@ -1,6 +1,6 @@
 import { getActivePlayerState } from "../GameState"
 import GameView from "../GameView"
-import PlayerColor from "../PlayerColor"
+import PlayerColor, { getColorFromAnimalId } from "../PlayerColor"
 import PlayerState from "../PlayerState"
 import MoveType from "./MoveType"
 
@@ -116,9 +116,9 @@ export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): v
           targetField = mosquitoEffectField
         }
       }
-      if(startField !== undefined && targetField !== undefined){
+      if (startField !== undefined && targetField !== undefined) {
         var chosenEffect = startField.effects.pop()
-        if(chosenEffect !== undefined){
+        if (chosenEffect !== undefined) {
           targetField.effects.push(chosenEffect)
         }
       }
@@ -130,8 +130,40 @@ export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): v
   }
 
   function handleBlueMosquitoEffect(activePlayerState: PlayerState) {
-    state.mosquitoEffect = -1
-    handleEffectEnd(activePlayerState)
+    if (move.startMosquitoEffectFieldId == -1) {
+      state.possibleAnimalFields = []
+      for (let i = 0; i < state.board.animalFields.length; i++) {
+        const animalField = state.board.animalFields[i];
+        if (getColorFromAnimalId(animalField.animalId) == state.activePlayer) {
+          state.possibleAnimalFields.push(animalField.fieldId)
+        }
+      }
+    } else if (move.startMosquitoEffectFieldId > -1 && move.targetMosquitoEffectFieldId === -1) {
+      state.mosquitoEffectStartFieldId = move.startMosquitoEffectFieldId
+      state.possibleAnimalFields = []
+      for (let i = 1; i <= 16; i++) {
+        state.possibleAnimalFields.push(i)
+      }
+      for (let j = 0; j < state.board.animalFields.length; j++) {
+        var deleteElement = state.board.animalFields[j].fieldId
+        delete state.possibleAnimalFields[deleteElement - 1]
+      }
+    } else if (move.startMosquitoEffectFieldId > -1 && move.targetMosquitoEffectFieldId > -1) {
+      var startField = undefined
+      for (let i = 0; i < state.board.animalFields.length; i++) {
+        const animalField = state.board.animalFields[i];
+        if (animalField.fieldId === move.startMosquitoEffectFieldId) {
+          startField = animalField
+        }
+      }
+      if (startField !== undefined) {
+        startField.fieldId = move.targetMosquitoEffectFieldId
+      }
+      state.possibleEffectFields = []
+      state.mosquitoEffect = -1
+      state.mosquitoEffectStartFieldId = -1
+      handleEffectEnd(activePlayerState)
+    }
   }
 
   function handleRedMosquitoEffect(activePlayerState: PlayerState) {

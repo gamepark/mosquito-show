@@ -47,11 +47,6 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
         }
     }
     
-    // const activePlayerState = getActivePlayerState(state)
-    // if(activePlayerState !== undefined){
-    //     activePlayerState.availableMosquitoEffects = [];
-    // }
-    
     function showPossibleMosquitoEffectFields(){
         state.possibleEffectFields = []
         var currentAnimalField = getCurrentAnimalField()
