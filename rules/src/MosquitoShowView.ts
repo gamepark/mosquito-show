@@ -30,18 +30,19 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
    * @return A MoveView which can be completely anticipated by the player or the spectator
    */
   getAutomaticMove(): void | MoveView {
-    // Show possible Chameleon Fields after Eat
+    // Chameleon
     if(this.state.selectedAnimalId == 3 || this.state.selectedAnimalId == 4){
       const activePlayerState = getActivePlayerState(this.state)
+      // Show possible Fields to Move after Eat
       if(activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length >0 && !activePlayerState.chameleonMoved && (this.state.possibleAnimalFields === undefined || this.state.possibleAnimalFields.length == 0)){
         return selectAnimalMove(this.state.selectedAnimalId)
       }
+      // Handle Mosquito Effect after Moving
       if(activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length >0 && activePlayerState.chameleonMoved){
-        console.log("still something to do")
         return playMosquitoEffectMove(activePlayerState.availableMosquitoEffects[0])
       }
     }
-    // Eat after moving Toucan
+    // Toucan
     if(this.state.selectedAnimalId == 1 || this.state.selectedAnimalId == 2){
       var activePlayerState = getActivePlayerState(this.state)
       const currentAnimalField = this.getCurrentAnimalField();
@@ -76,19 +77,41 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
             nextToucanPosition = activePlayerState.toucanStartPosition - 3
           }
         }
-          if(nextToucanPosition !== -1){
-            effectFieldToEat = activePlayerState.toucanStartPosition + nextToucanPosition
-            activePlayerState.toucanStartPosition = nextToucanPosition
-            return eatMove(effectFieldToEat)
-          } else {
-            console.error('Could not get nextToucanPosition')
+        // Handle Up to three Eat Moves
+        if(nextToucanPosition !== -1){
+          effectFieldToEat = activePlayerState.toucanStartPosition + nextToucanPosition
+          activePlayerState.toucanStartPosition = nextToucanPosition
+          return eatMove(effectFieldToEat)
+        } else {
+          console.error('Could not get nextToucanPosition')
+        }
+        // Handle Up to three Mosquito Effects
+        if(activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition === currentAnimalField.fieldId && activePlayerState.availableMosquitoEffects.length > 0){
+          // Handle Golden Mosquitos first
+          for (let i = 0; i < activePlayerState.availableMosquitoEffects.length; i++) {
+            const effect = activePlayerState.availableMosquitoEffects[i];
+            if(effect.back == 5){
+              return playMosquitoEffectMove(effect)
+            }
+          }
+          // In case of one left Effect play it automatically, otherwise let Player choose
+          if(activePlayerState.availableMosquitoEffects.length > 1){
+            if(activePlayerState.toucanChosenEffectId == -1){
+              //choose
+              console.error("still something to do")
+            } else {
+              for (let i = 0; i < activePlayerState.availableMosquitoEffects.length; i++) {
+                const effect = activePlayerState.availableMosquitoEffects[i];
+                if(effect.id == activePlayerState.toucanChosenEffectId){
+                  return playMosquitoEffectMove(effect)
+                }
+              }
+            }
+          } else if(activePlayerState.availableMosquitoEffects.length == 1){
+            return playMosquitoEffectMove(activePlayerState.availableMosquitoEffects[0])
+          }
         }
       }
-      if(activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition === currentAnimalField.fieldId && activePlayerState.availableMosquitoEffects.length > 0){
-        console.log("still something to do")
-        // playMosquitoEffectMove()
-      }
-      console.log(getActivePlayerState(this.state)?.toucanStartPosition)
     }
   }
 
