@@ -8,7 +8,8 @@ import PlayerState from './PlayerState';
 type GameState = {
   players: PlayerState[],
   activePlayer : PlayerColor,
-  board: GameBoard
+  board: GameBoard,
+  mosquitoEffect: number
 }
 
 export function getActivePlayerState(state : GameState) {
