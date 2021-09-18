@@ -7,10 +7,10 @@ type Effect = {
 
 export default Effect
 
-export enum MosquitoEffectBack {
+export enum MosquitoEffectFront {
     Grey = '1', Blue = '2', Red = '3', White = '4', Golden = '5'
 }
 
-export enum MosquitoEffectFront {
+export enum MosquitoEffectBack {
   WaterLilyFlower = '1', WaterLily = '2'
 }

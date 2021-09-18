@@ -39,7 +39,7 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
       }
       // Handle Mosquito Effect after Moving
       if(activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length >0 && activePlayerState.chameleonMoved){
-        return playMosquitoEffectMove(activePlayerState.availableMosquitoEffects[0])
+        return playMosquitoEffectMove(0)
       }
     }
     // Toucan
@@ -90,8 +90,8 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
           // Handle Golden Mosquitos first
           for (let i = 0; i < activePlayerState.availableMosquitoEffects.length; i++) {
             const effect = activePlayerState.availableMosquitoEffects[i];
-            if(effect.back == 5){
-              return playMosquitoEffectMove(effect)
+            if(effect.front == 5){
+              return playMosquitoEffectMove(i)
             }
           }
           // In case of one left Effect play it automatically, otherwise let Player choose
@@ -103,12 +103,12 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
               for (let i = 0; i < activePlayerState.availableMosquitoEffects.length; i++) {
                 const effect = activePlayerState.availableMosquitoEffects[i];
                 if(effect.id == activePlayerState.toucanChosenEffectId){
-                  return playMosquitoEffectMove(effect)
+                  return playMosquitoEffectMove(i)
                 }
               }
             }
           } else if(activePlayerState.availableMosquitoEffects.length == 1){
-            return playMosquitoEffectMove(activePlayerState.availableMosquitoEffects[0])
+            return playMosquitoEffectMove(0)
           }
         }
       }
