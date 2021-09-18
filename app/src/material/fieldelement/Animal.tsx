@@ -36,63 +36,99 @@ const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
         }
     }
 
-function chooseAnimal(fieldId: number, animalId: number) {
-    const color = getColorFromAnimalId(animalId)
+    function chooseAnimal(fieldId: number, animalId: number) {
+        const color = getColorFromAnimalId(animalId)
 
-    if (color === state.activePlayer) {
-        if (animalId === 1 || animalId === 2) {
-            setTucanSelected1(!selectTucan1)
-        }
-        if (animalId === 3 || animalId === 4) {
-            setChamelonSelected1(!selectChamelon1)
-        }
-        play({ type: MoveType.ChooseAnimal, selectAnimalId: animalId })
-    }
-}
-
-function isSelected(selectedAnimalId: number) {
-    if (state.selectedAnimalId === selectedAnimalId) {
-        return 100;
-    }
-    return 0;
-}
-
-function possibleFields() {
-    if (state !== undefined) {
-        var possibleFields = state.possibleAnimalFields
-        if (possibleFields !== undefined) {
-            for (var val of possibleFields) {
-
-                if (val === id) {
-                    return <div css={highlightPosition(id)} onClick={() => { moveTo(id) }} ></div>
-                }
+        if (color === state.activePlayer) {
+            if (animalId === 1 || animalId === 2) {
+                setTucanSelected1(!selectTucan1)
             }
+            if (animalId === 3 || animalId === 4) {
+                setChamelonSelected1(!selectChamelon1)
+            }
+            play({ type: MoveType.ChooseAnimal, selectAnimalId: animalId })
         }
-        if (state.board.animalFields !== undefined) {
-            let animals = state.board.animalFields
-            for (let i = 0; i < animals.length; i++) {
-                if (id === animals[i].fieldId) {
-                    let animalId = animals[i].animalId
-                    if (animalId === 1) {
-                        return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Orange})` }} />
-                    } else if (animalId === 2) {
-                        return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Blue})` }} />
-                    } else if (animalId === 3) {
-                        return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Orange})` }} />
-                    } else if (animalId === 4) {
-                        return <div css={animalPosition(animals[i].fieldId, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Blue})` }} />
+    }
+
+    function isSelected(selectedAnimalId: number) {
+        if (state.selectedAnimalId === selectedAnimalId) {
+            return 100;
+        }
+        return 0;
+    }
+
+    function possibleFields() {
+        if (state !== undefined) {
+            if (state.mosquitoEffect === -1) {
+                if (state.possibleAnimalFields !== undefined) {
+                    for (var val of state.possibleAnimalFields) {
+                        if (val === id) {
+                            return <div css={highlightPosition(id)} onClick={() => { moveTo(id) }} ></div>
+                        }
                     }
                 }
+                if (state.board.animalFields !== undefined) {
+                    let animals = state.board.animalFields
+                    for (let i = 0; i < animals.length; i++) {
+                        if (id === animals[i].fieldId) {
+                            let animalId = animals[i].animalId
+                            if (animalId === 1) {
+                                return <div css={animalPosition(id, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Orange})` }} />
+                            } else if (animalId === 2) {
+                                return <div css={animalPosition(id, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Tucan_Blue})` }} />
+                            } else if (animalId === 3) {
+                                return <div css={animalPosition(id, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Orange})` }} />
+                            } else if (animalId === 4) {
+                                return <div css={animalPosition(id, isSelected(animalId))} onClick={() => { chooseAnimal(id, animalId) }} style={{ backgroundImage: `url(${Images.Chamelon_Blue})` }} />
+                            }
+                        }
+                    }
+                }
+            } else {
+                var returnDivHighlightPosition
+                var returnDivAnimal
+                if (state.possibleAnimalFields !== undefined) {
+                    for (var val2 of state.possibleAnimalFields) {
+                        if (val2 === id) {
+                            returnDivHighlightPosition = <div css={highlightPosition(id)} onClick={() => { moveTo(id) }} ></div>
+                            break
+                        }
+                    }
+                }
+                if (state.board.animalFields !== undefined) {
+                    let animals = state.board.animalFields
+                    for (let i = 0; i < animals.length; i++) {
+                        if (id === animals[i].fieldId) {
+                            let animalId = animals[i].animalId
+                            if (animalId === 1) {
+                                returnDivAnimal = <div css={animalPosition(id, 0)} style={{ backgroundImage: `url(${Images.Tucan_Orange})` }} />
+                                break
+                            } else if (animalId === 2) {
+                                returnDivAnimal = <div css={animalPosition(id, 0)} style={{ backgroundImage: `url(${Images.Tucan_Blue})` }} />
+                                break
+                            } else if (animalId === 3) {
+                                returnDivAnimal = <div css={animalPosition(id, 0)} style={{ backgroundImage: `url(${Images.Chamelon_Orange})` }} />
+                                break
+                            } else if (animalId === 4) {
+                                returnDivAnimal = <div css={animalPosition(id, 0)} style={{ backgroundImage: `url(${Images.Chamelon_Blue})` }} />
+                                break
+                            }
+                        }
+                    }
+                }
+                return <div>
+                    {returnDivAnimal !== undefined && returnDivAnimal}
+                    {returnDivHighlightPosition !== undefined &&  returnDivHighlightPosition}
+                </div>
             }
         }
+
+        return <div></div>
+
     }
-
-    return <div></div>
-
-}
-return (
-    possibleFields()
-)
+    return (
+        possibleFields()
+    )
 
 }
 
@@ -124,6 +160,3 @@ border: 5px solid red;
 background-position: center;
 background-size: cover;
 `
-
-
-
