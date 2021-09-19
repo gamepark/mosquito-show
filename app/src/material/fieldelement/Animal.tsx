@@ -33,6 +33,12 @@ const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
                     play({ type: MoveType.PlayMosquitoEffect, selectedEffectIndex: -1, startMosquitoEffectFieldId: state.mosquitoEffectStartFieldId, targetMosquitoEffectFieldId: id })
                 }
                 break;
+            case 3:
+                // Red Moquito Effect
+                if (state.mosquitoEffectStartFieldId === -1) {
+                    play({ type: MoveType.PlayMosquitoEffect, selectedEffectIndex: -1, startMosquitoEffectFieldId: id, targetMosquitoEffectFieldId: -1 })
+                }
+                break;
         }
     }
 

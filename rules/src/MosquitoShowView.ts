@@ -113,6 +113,15 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
         }
       }
     }
+    // Handle Red Mosquito Effect after PlayerSwitch
+    if(this.state.mosquitoEffect === 3 && this.state.selectedAnimalId === undefined && this.state.mosquitoEffectStartFieldId > -1){
+      for (let i = 0; i < this.state.board.animalFields.length; i++) {
+        const animalField = this.state.board.animalFields[i];
+        if (animalField.fieldId == this.state.mosquitoEffectStartFieldId) {
+          return selectAnimalMove(animalField.animalId)
+        }
+      }
+    }
   }
 
   getCurrentAnimalField() {

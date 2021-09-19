@@ -7,11 +7,11 @@ const createEffectFields = ():MosquitoEffectField[] => {
     var id = 1;
     
     // Golden : 17 total 5 hidden
-    for(let i=0; i<12; i++){
-      effects.push(
-        {id: id++, front: 5, back: 2, revealed: false}
-        )
-      }
+    // for(let i=0; i<12; i++){
+    //   effects.push(
+    //     {id: id++, front: 5, back: 2, revealed: false}
+    //     )
+    //   }
     for(let i=0; i<5; i++){
       effects.push(
         {id: id++, front: 5, back: 1, revealed: false}
@@ -36,11 +36,16 @@ const createEffectFields = ():MosquitoEffectField[] => {
       {id: id++, front: 2, back: 1, revealed: false}
       )
     // Red: 2 total 1 hidden
+    for(let i=0; i<12; i++){
+        effects.push(
+          {id: id++, front: 3, back: 2, revealed: false}
+          )
+        }
     effects.push(
       {id: id++, front: 3, back: 1, revealed: false}
       )
     effects.push(
-      {id: id++, front: 3, back: 1, revealed: false}
+      {id: id++, front: 3, back: 2, revealed: false}
       )
     // White: 1 total 1 hidden
     effects.push(
