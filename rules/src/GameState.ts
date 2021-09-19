@@ -11,6 +11,7 @@ type GameState = {
   board: GameBoard,
   mosquitoEffect: number,
   mosquitoEffectStartFieldId: number
+  inMoveAnimalSwitchNotAllowed: boolean
 }
 
 export function getActivePlayerState(state : GameState) {

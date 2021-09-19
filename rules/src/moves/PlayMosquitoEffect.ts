@@ -67,6 +67,7 @@ export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): v
     } else if (state.activePlayer === PlayerColor.Orange) {
       state.activePlayer = PlayerColor.Blue
     }
+    state.inMoveAnimalSwitchNotAllowed = true
     state.selectedAnimalId = undefined
   }
 

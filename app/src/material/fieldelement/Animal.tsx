@@ -46,13 +46,15 @@ const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
         const color = getColorFromAnimalId(animalId)
 
         if (color === state.activePlayer) {
-            if (animalId === 1 || animalId === 2) {
-                setTucanSelected1(!selectTucan1)
+            if (state.inMoveAnimalSwitchNotAllowed) {
+                if (animalId === 1 || animalId === 2) {
+                    setTucanSelected1(!selectTucan1)
+                }
+                if (animalId === 3 || animalId === 4) {
+                    setChamelonSelected1(!selectChamelon1)
+                }
+                play({ type: MoveType.ChooseAnimal, selectAnimalId: animalId })
             }
-            if (animalId === 3 || animalId === 4) {
-                setChamelonSelected1(!selectChamelon1)
-            }
-            play({ type: MoveType.ChooseAnimal, selectAnimalId: animalId })
         }
     }
 

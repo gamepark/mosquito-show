@@ -15,6 +15,7 @@ export const eatMove = (mosquitoEffectFieldId: number): Eat => ({
 })
  
 export const selectMosquitoEffectField = (move: Eat, state:  GameView): void => {
+    state.inMoveAnimalSwitchNotAllowed=false
     let mosquitoEffectFields = state.board.mosquitoFields
     let mosquitoEffect : Effect|undefined
     if(mosquitoEffectFields != undefined){

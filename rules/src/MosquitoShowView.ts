@@ -118,6 +118,7 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
       for (let i = 0; i < this.state.board.animalFields.length; i++) {
         const animalField = this.state.board.animalFields[i];
         if (animalField.fieldId == this.state.mosquitoEffectStartFieldId) {
+          this.state.inMoveAnimalSwitchNotAllowed = false
           return selectAnimalMove(animalField.animalId)
         }
       }

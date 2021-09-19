@@ -16,6 +16,7 @@ export const moveAnimlaMove = (fieldId: number, animalId: number): MoveAnimal =>
 
 export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
     const animalId = move.animalId;
+    state.inMoveAnimalSwitchNotAllowed=false
     let field = {animalId: animalId,  fieldId: move.fieldId}
     let animalFields = state.board.animalFields
     let fieldSet = false
@@ -54,6 +55,7 @@ export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
                 if(activePlayerState !== undefined){
                     activePlayerState.chameleonMoved = false
                 }
+                state.inMoveAnimalSwitchNotAllowed = true
         }
         if(state.activePlayer === PlayerColor.Blue){
             state.activePlayer = PlayerColor.Orange 
