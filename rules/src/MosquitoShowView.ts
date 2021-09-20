@@ -70,12 +70,12 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
             nextToucanPosition = activePlayerState.toucanStartPosition + 5
           }
           if (upDownIndicator < 0 && upDownIndicator % 3 == 0) {
-            // up left
-            nextToucanPosition = activePlayerState.toucanStartPosition - 5
-          }
-          if (upDownIndicator < 0 && upDownIndicator % 5 == 0) {
             // up right
             nextToucanPosition = activePlayerState.toucanStartPosition - 3
+          }
+          if (upDownIndicator < 0 && upDownIndicator % 5 == 0) {
+            // up left
+            nextToucanPosition = activePlayerState.toucanStartPosition - 5
           }
         }
         // Handle Up to three Eat Moves
@@ -86,6 +86,7 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
         } else {
           console.error('Could not get nextToucanPosition')
         }
+      }
         // Handle Up to three Mosquito Effects
         if (activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition === currentAnimalField.fieldId && activePlayerState.availableMosquitoEffects.length > 0) {
           // Handle Golden Mosquitos first
@@ -112,7 +113,6 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
             return playMosquitoEffectMove(0, -1, -1)
           }
         }
-      }
     }
     // Handle Red Mosquito Effect after PlayerSwitch
     if (this.state.mosquitoEffect === 3 && this.state.selectedAnimalId === undefined && this.state.mosquitoEffectStartFieldId > -1) {

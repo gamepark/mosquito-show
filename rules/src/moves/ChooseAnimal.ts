@@ -39,20 +39,20 @@ export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
                     showPossibleChameleonAnimalFields(state)
                 } else {
                     showPossibleMosquitoEffectFields(state)
+                    showPossibleChameleonAnimalFields(state)
                     if (state.mosquitoEffect === 3) {
-                        showPossibleChameleonAnimalFields(state)
                         if (!(state.possibleAnimalFields.length > 0 && state.possibleEffectFields !== undefined && state.possibleEffectFields.length > 0)) {
                             switchPlayerColor()
                             state.possibleEffectFields = []
                         }
                         state.mosquitoEffect = -1
                         state.mosquitoEffectStartFieldId = -1
-                        state.possibleAnimalFields = []
                     } else {
                         if (!(state.possibleAnimalFields.length > 0 && state.possibleEffectFields !== undefined && state.possibleEffectFields.length > 0)) {
                             state.possibleEffectFields = []
                         }
                     }
+                    state.possibleAnimalFields = []
                 }
             }
         }
