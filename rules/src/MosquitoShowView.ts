@@ -87,32 +87,32 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
           console.error('Could not get nextToucanPosition')
         }
       }
-        // Handle Up to three Mosquito Effects
-        if (activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition === currentAnimalField.fieldId && activePlayerState.availableMosquitoEffects.length > 0) {
-          // Handle Golden Mosquitos first
-          for (let i = 0; i < activePlayerState.availableMosquitoEffects.length; i++) {
-            const effect = activePlayerState.availableMosquitoEffects[i];
-            if (effect.front == 5) {
-              return playMosquitoEffectMove(i, -1, -1)
-            }
-          }
-          // In case of one left Effect play it automatically, otherwise let Player choose
-          if (activePlayerState.availableMosquitoEffects.length > 1) {
-            if (activePlayerState.toucanChosenEffectId == -1) {
-              //choose
-              console.error("still something to do")
-            } else {
-              for (let i = 0; i < activePlayerState.availableMosquitoEffects.length; i++) {
-                const effect = activePlayerState.availableMosquitoEffects[i];
-                if (effect.id == activePlayerState.toucanChosenEffectId) {
-                  return playMosquitoEffectMove(i, -1, -1)
-                }
-              }
-            }
-          } else if (activePlayerState.availableMosquitoEffects.length == 1) {
-            return playMosquitoEffectMove(0, -1, -1)
+      // Handle Up to three Mosquito Effects
+      if (activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition === currentAnimalField.fieldId && activePlayerState.availableMosquitoEffects.length > 0) {
+        // Handle Golden Mosquitos first
+        for (let i = 0; i < activePlayerState.availableMosquitoEffects.length; i++) {
+          const effect = activePlayerState.availableMosquitoEffects[i];
+          if (effect.front == 5) {
+            return playMosquitoEffectMove(i, -1, -1)
           }
         }
+        // In case of one left Effect play it automatically, otherwise let Player choose
+        if (activePlayerState.availableMosquitoEffects.length > 1) {
+          if (activePlayerState.toucanChosenEffectId == -1) {
+            //choose
+            console.error("still something to do")
+          } else {
+            for (let i = 0; i < activePlayerState.availableMosquitoEffects.length; i++) {
+              const effect = activePlayerState.availableMosquitoEffects[i];
+              if (effect.id == activePlayerState.toucanChosenEffectId) {
+                return playMosquitoEffectMove(i, -1, -1)
+              }
+            }
+          }
+        } else if (activePlayerState.availableMosquitoEffects.length == 1) {
+          return playMosquitoEffectMove(0, -1, -1)
+        }
+      }
     }
     // Handle Red Mosquito Effect after PlayerSwitch
     if (this.state.mosquitoEffect === 3 && this.state.selectedAnimalId === undefined && this.state.mosquitoEffectStartFieldId > -1) {
