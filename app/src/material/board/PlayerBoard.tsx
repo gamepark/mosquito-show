@@ -148,7 +148,6 @@ const outbox = css`
     display: inline-grid;
     height: 100%;
     width: 100%;
-  
 `
 
 const marked = css`

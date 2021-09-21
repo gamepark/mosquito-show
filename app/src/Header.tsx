@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import GameState from '@gamepark/mosquito-show/GameState';
+import GameState, { getActivePlayerState } from '@gamepark/mosquito-show/GameState';
 
 type Props = {
   loading: boolean
@@ -15,14 +15,14 @@ export default function Header({loading, game}: Props) {
   )
 
   function getText(){
-    
-    return "ActivePlayer: "+ game.activePlayer;
+    var activePlayerState = getActivePlayerState(game)
+    return "ActivePlayer: " + game.activePlayer + " || toucanBlocked: " + activePlayerState?.toucanBlocked + " || chameleonBlocked: " + activePlayerState?.chameleonBlocked;
   }
 }
 
 
 const style = css`
-  position: center;
+  position: absolute;
   display: flex;
   width: 100%;
   height: 7em;
