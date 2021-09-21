@@ -5,7 +5,7 @@ import MoveType from '@gamepark/mosquito-show/moves/MoveType';
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor';
 import PlayerState from '@gamepark/mosquito-show/PlayerState';
 import { usePlay } from '@gamepark/react-client';
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, HTMLAttributes, useState } from 'react';
 import { Images } from '../Images';
 import { Token } from '../token/Token';
 
@@ -13,9 +13,9 @@ type PlayerBoardProps = {
     gameboard?: GameBoard | undefined
     playerstate?: PlayerState | undefined
     activePlayer: PlayerColor
-}
+}  & HTMLAttributes<HTMLDivElement>
 
-const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ gameboard, playerstate, activePlayer }: PlayerBoardProps) => {
+const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ gameboard, playerstate, activePlayer,...props }: PlayerBoardProps) => {
     const play = usePlay()
     const [selectTucan, setTucanSelected] = useState(false)
     const [selectChamelon, setChamelonSelected] = useState(false)
@@ -89,12 +89,12 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ gameboard, playersta
     if(playerstate !== undefined){
         for (var i = 0; i < playerstate.availableMosquitoEffects.length; i++) {
             token.push(
-                <Token effect={playerstate.availableMosquitoEffects[i]}></Token>
+                <Token effect={playerstate.availableMosquitoEffects[i]} effectIndex={i}></Token>
                 )      
             }
     }
 
-    return <div css={outbox}>
+    return <div css={outbox} {...props}>
         <div css={victorypointsRow}>
             <div css={tokenStyle} style={{ backgroundImage: `url(${Images.GoldenMosquito})` }}></div>
             <div css={victorypoints}> x </div>

@@ -3,7 +3,6 @@ import { getActivePlayerState } from './GameState'
 import GameView from './GameView'
 import { selectAnimal, selectAnimalMove } from './moves/ChooseAnimal'
 import { eatMove, selectMosquitoEffectField } from './moves/Eat'
-import Move from './moves/Move'
 import { moveAnimal } from './moves/MoveAnimal'
 import MoveType from './moves/MoveType'
 import MoveView from './moves/MoveView'
@@ -30,11 +29,13 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
    * @return A MoveView which can be completely anticipated by the player or the spectator
    */
   getAutomaticMove(): void | MoveView {
+
+    // TODO Take it to the mosquito show
     // Chameleon
     if(this.state.selectedAnimalId == 3 || this.state.selectedAnimalId == 4){
-      const activePlayerState = getActivePlayerState(this.state)
+      const activePlayerState = getActivePlayerState(this.state)!
       // Show possible Fields to Move after Eat
-      if(activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length >0 && !activePlayerState.chameleonMoved && (this.state.possibleAnimalFields === undefined || this.state.possibleAnimalFields.length == 0)){
+      if(activePlayerState.availableMosquitoEffects.length >0 && !activePlayerState.chameleonMoved && (this.state.possibleAnimalFields === undefined || this.state.possibleAnimalFields.length == 0)){
         return selectAnimalMove(this.state.selectedAnimalId)
       }
       // Handle Mosquito Effect after Moving
@@ -135,13 +136,6 @@ export default class MosquitoShowView implements Game<GameView, MoveView> {
     return undefined
   }
 
-  getLegalMoves(): Move[] {
-    return [
-     
-      // { type: MoveType.MoveAnimal, animalId: 1,  fieldId: 2}
-      // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
-    ]
-  }
 
 
   /**

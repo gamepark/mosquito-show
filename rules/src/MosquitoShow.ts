@@ -36,16 +36,6 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       } else {
         super(arg)    
       }
-
-    
-  }
-
-  /**
-   * @return True when game is over
-   */
-  isOver(): boolean {
-    let player = this.state.players.find(player => player.color === this.getActivePlayer())
-    return !(player?.toucanBlocked && player.chameleonBlocked)
   }
 
   /**

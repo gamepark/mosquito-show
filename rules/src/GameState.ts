@@ -20,6 +20,7 @@ export function getActivePlayerState(state : GameState) {
     if(currentPlayerState.color == state.activePlayer)
     return currentPlayerState
   }
+  //TODO Maybe throw an exceprtion
   return undefined
 }
 

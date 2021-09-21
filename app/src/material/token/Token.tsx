@@ -1,19 +1,28 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { default as Effect, default as EffectType } from '@gamepark/mosquito-show/fields/Effect';
+import MoveType from '@gamepark/mosquito-show/moves/MoveType';
+import { usePlay } from '@gamepark/react-client';
 import { FunctionComponent } from 'react';
 import { Images } from '../Images';
 
 type TokenProps = {
-    effect : Effect
+    effect: Effect
+    effectIndex: number
 }
 
-const Token: FunctionComponent<TokenProps> = ({ effect }: TokenProps) => {
+const Token: FunctionComponent<TokenProps> = ({ effect, effectIndex }: TokenProps) => {
+    const play = usePlay();
+
+    function playEffect() {
+        play({ type: MoveType.PlayMosquitoEffect, selectedEffectIndex: effectIndex, startMosquitoEffectFieldId: -1, targetMosquitoEffectFieldId: -1 });
+    }
+
     return (
-        <div css={tokenStyle} style={{ backgroundImage: getEffectImageUrl(effect) }}></div>
+        <div css={tokenStyle} style={{ backgroundImage: getEffectImageUrl(effect) }} onClick={() => playEffect()}></div>
     )
 
-    function getEffectImageUrl(effect : EffectType){
+    function getEffectImageUrl(effect: EffectType) {
         switch (effect.front) {
             case 1:
                 return `url(${Images.GreyMosquito})`
