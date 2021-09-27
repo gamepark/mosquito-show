@@ -40,14 +40,6 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
   }
 
   /**
-   * @return True when game is over
-   */
-  isOver(): boolean {
-    let player = this.state.players.find(player => player.color === this.getActivePlayer())
-    return !(player?.toucanBlocked && player.chameleonBlocked)
-  }
-
-  /**
    * Retrieves the player which must act. It is used to secure the game and prevent players from acting outside their turns.
    * Only required in a SequentialGame.
    * @return The identifier of the player whose turn it is

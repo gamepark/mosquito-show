@@ -1,16 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import GameView from '@gamepark/mosquito-show/GameView';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, HTMLAttributes } from 'react';
 import { Animal } from '../fieldelement/Animal';
 import { Effect } from '../fieldelement/Effect';
 import { Images } from '../Images';
 
 type BoardProps = {
     state: GameView
-}
+} & HTMLAttributes<HTMLDivElement>
 
-const Board: FunctionComponent<BoardProps> = ({ state }: BoardProps) => {
+const Board: FunctionComponent<BoardProps> = ({ state, ...props}: BoardProps) => {
     // const play = usePlay();
     const animals = []
     const effects = []
@@ -28,7 +28,7 @@ const Board: FunctionComponent<BoardProps> = ({ state }: BoardProps) => {
     }
     
     return (
-        <div css={boardStyle} style={{ backgroundImage: `url(${Images.BoardFront})` }}>
+        <div css={boardStyle} {...props} style={{ backgroundImage: `url(${Images.BoardFront})` }}>
             {animals}
             {effects}
         </div>
