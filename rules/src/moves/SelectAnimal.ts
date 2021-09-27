@@ -1,21 +1,18 @@
 import { getActivePlayerState } from "../GameState"
 import GameView from "../GameView"
 import PlayerColor from "../PlayerColor"
-import MoveType from "./MoveType"
 
-type ChooseAnimal = {
-    type: typeof MoveType.ChooseAnimal
+export type SelectAnimal = {
+    type: 'SelectAnimal'
     selectAnimalId: number
 }
 
-export default ChooseAnimal
-
-export const selectAnimalMove = (selectAnimalId: number): ChooseAnimal => ({
-    type: MoveType.ChooseAnimal, selectAnimalId
+export const selectAnimalMove = (selectAnimalId: number): SelectAnimal => ({
+    type: 'SelectAnimal', selectAnimalId
 })
 
 //1 = Toucan_orange, 3 = Chameleon_orange, 2 = Toucan_blue, 4 = Chameleon_blue
-export const selectAnimal = (move: ChooseAnimal, state: GameView): void => {
+export function selectAnimal(move: SelectAnimal, state: GameView){
     state.possibleAnimalFields = []
     var selectedAnimalId = move.selectAnimalId
     state.selectedAnimalId = selectedAnimalId

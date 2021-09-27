@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import GameBoard from '@gamepark/mosquito-show/GameBoard';
-import MoveType from '@gamepark/mosquito-show/moves/MoveType';
+import { selectAnimalMove } from '@gamepark/mosquito-show/moves';
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor';
 import PlayerState from '@gamepark/mosquito-show/PlayerState';
 import { usePlay } from '@gamepark/react-client';
@@ -52,11 +52,11 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ gameboard, playersta
             setChamelonSelected(chamelon);
 
             if (tucan) {
-                let id = color === PlayerColor.Orange ? 1 : 2;
-                play({ type: MoveType.ChooseAnimal, selectAnimalId: id, color: PlayerColor });
+                let id = color === PlayerColor.Orange ? 1 : 2
+                play(selectAnimalMove(id), { local: true })
             } else if (chamelon) {
-                let id = color === PlayerColor.Orange ? 3 : 4;
-                play({ type: MoveType.ChooseAnimal, selectAnimalId: id, color: PlayerColor });
+                let id = color === PlayerColor.Orange ? 3 : 4
+                play(selectAnimalMove(id), { local: true })
             }
         }
 

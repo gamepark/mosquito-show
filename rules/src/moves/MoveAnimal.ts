@@ -1,9 +1,9 @@
 import { getActivePlayerState } from "../GameState";
 import GameView from "../GameView";
 import PlayerColor from "../PlayerColor";
-import MoveType from "./MoveType";
+import { MoveType } from "./MoveType";
 
-type MoveAnimal = {
+export type MoveAnimal = {
     type: typeof MoveType.MoveAnimal
     fieldId: number
     animalId: number
@@ -72,6 +72,3 @@ export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
     //     state.activePlayer = PlayerColor.Blue 
     // }
 }
-
-export default MoveAnimal
-

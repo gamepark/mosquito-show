@@ -2,8 +2,9 @@ import { SequentialGame } from '@gamepark/rules-api'
 import GameState from './GameState'
 import GameView from './GameView'
 import { isGameOptions } from './MosquitoShowOptions'
-import Move from './moves/Move'
-import MoveType from './moves/MoveType'
+import { Move, moveAnimal, MoveType } from './moves'
+import { selectMosquitoEffectField } from './moves/Eat'
+import { playMosquitoEffect } from './moves/PlayMosquitoEffect'
 import PlayerColor from './PlayerColor'
 import PlayerState from './PlayerState'
 import { createEffectFields } from './utils/BoardUtils'
@@ -36,8 +37,6 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       } else {
         super(arg)    
       }
-
-    
   }
 
   /**
@@ -71,8 +70,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     const moves: Move[] = []
     if (this.state.activePlayer == PlayerColor.Blue) {
       return [
-        { type: MoveType.ChooseAnimal, selectAnimalId: 2 },
-        { type: MoveType.MoveAnimal, fieldId: 2, animalId: 2 }
+        // { type: MoveType.ChooseAnimal, selectAnimalId: 2 },
+        // { type: MoveType.MoveAnimal, fieldId: 2, animalId: 2 }
         // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
       ]
     }
@@ -86,7 +85,15 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   play(move: Move): void {
     switch (move.type) {
-
+      case MoveType.MoveAnimal:
+        moveAnimal(move, this.state)
+        break;
+      case MoveType.Eat:
+        selectMosquitoEffectField(move, this.state)
+        break;
+      case MoveType.PlayMosquitoEffect:
+        playMosquitoEffect(move, this.state)
+        break;
     }
   }
 
@@ -104,10 +111,110 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return The next automatic consequence that should be played in current game state.
    */
   getAutomaticMove(): void | Move {
-    //selectAnimalMove(1)  
-    //moveAnimlaMove(4,1)
+    // // Chameleon
+    // if (this.state.selectedAnimalId == 3 || this.state.selectedAnimalId == 4) {
+    //   const activePlayerState = getActivePlayerState(this.state)
+    //   // Show possible Fields to Move after Eat
+    //   if (activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length > 0 && !activePlayerState.chameleonMoved && (this.state.possibleAnimalFields === undefined || this.state.possibleAnimalFields.length == 0)) {
+    //     return selectAnimalMove(this.state.selectedAnimalId)
+    //   }
+    //   // Handle Mosquito Effect after Moving
+    //   if (activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length > 0 && activePlayerState.chameleonMoved) {
+    //     return playMosquitoEffectMove(0, -1, -1)
+    //   }
+    // }
+    // // Toucan
+    // if (this.state.selectedAnimalId == 1 || this.state.selectedAnimalId == 2) {
+    //   var activePlayerState = getActivePlayerState(this.state)
+    //   const currentAnimalField = this.getCurrentAnimalField();
+    //   var nextToucanPosition: number = -1
+    //   var effectFieldToEat: number
+    //   if (activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition !== currentAnimalField.fieldId) {
+    //     var upDownIndicator = currentAnimalField.fieldId - activePlayerState.toucanStartPosition
+    //     if (upDownIndicator % 3 == 0 && upDownIndicator % 5 == 0) {
+    //       if (upDownIndicator > 0) {
+    //         // bottom right
+    //         nextToucanPosition = activePlayerState.toucanStartPosition + 5
+    //       }
+    //       if (upDownIndicator < 0) {
+    //         // up left
+    //         nextToucanPosition = activePlayerState.toucanStartPosition - 5
+    //       }
+    //     } else {
+    //       if (upDownIndicator > 0 && upDownIndicator % 3 == 0) {
+    //         // bottom left
+    //         nextToucanPosition = activePlayerState.toucanStartPosition + 3
+    //       }
+    //       if (upDownIndicator > 0 && upDownIndicator % 5 == 0) {
+    //         // bottom right
+    //         nextToucanPosition = activePlayerState.toucanStartPosition + 5
+    //       }
+    //       if (upDownIndicator < 0 && upDownIndicator % 3 == 0) {
+    //         // up right
+    //         nextToucanPosition = activePlayerState.toucanStartPosition - 3
+    //       }
+    //       if (upDownIndicator < 0 && upDownIndicator % 5 == 0) {
+    //         // up left
+    //         nextToucanPosition = activePlayerState.toucanStartPosition - 5
+    //       }
+    //     }
+    //     // Handle Up to three Eat Moves
+    //     if (nextToucanPosition !== -1) {
+    //       effectFieldToEat = activePlayerState.toucanStartPosition + nextToucanPosition
+    //       activePlayerState.toucanStartPosition = nextToucanPosition
+    //       return eatMove(effectFieldToEat, nextToucanPosition)
+    //     } else {
+    //       console.error('Could not get nextToucanPosition')
+    //     }
+    //   }
+    //   // Handle Up to three Mosquito Effects
+    //   if (activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition === currentAnimalField.fieldId && activePlayerState.availableMosquitoEffects.length > 0) {
+    //     // Handle Golden Mosquitos first
+    //     for (let i = 0; i < activePlayerState.availableMosquitoEffects.length; i++) {
+    //       const effect = activePlayerState.availableMosquitoEffects[i];
+    //       if (effect.front == 5) {
+    //         return playMosquitoEffectMove(i, -1, -1)
+    //       }
+    //     }
+    //     // In case of one left Effect play it automatically, otherwise let Player choose
+    //     if (activePlayerState.availableMosquitoEffects.length > 1) {
+    //       if (activePlayerState.toucanChosenEffectId == -1) {
+    //         //choose
+    //         console.error("still something to do")
+    //       } else {
+    //         for (let i = 0; i < activePlayerState.availableMosquitoEffects.length; i++) {
+    //           const effect = activePlayerState.availableMosquitoEffects[i];
+    //           if (effect.id == activePlayerState.toucanChosenEffectId) {
+    //             return playMosquitoEffectMove(i, -1, -1)
+    //           }
+    //         }
+    //       }
+    //     } else if (activePlayerState.availableMosquitoEffects.length == 1) {
+    //       return playMosquitoEffectMove(0, -1, -1)
+    //     }
+    //   }
+    // }
+    // // Handle Red Mosquito Effect after PlayerSwitch
+    // if (this.state.mosquitoEffect === 3 && this.state.selectedAnimalId === undefined && this.state.mosquitoEffectStartFieldId > -1) {
+    //   for (let i = 0; i < this.state.board.animalFields.length; i++) {
+    //     const animalField = this.state.board.animalFields[i];
+    //     if (animalField.fieldId == this.state.mosquitoEffectStartFieldId) {
+    //       this.state.inMoveAnimalSwitchNotAllowed = false
+    //       return selectAnimalMove(animalField.animalId)
+    //     }
+    //   }
+    // }
   }
 
+  getCurrentAnimalField() {
+    var animalFieldIds = this.state.board.animalFields
+    for (let j = 0; j < animalFieldIds.length; j++) {
+      if (animalFieldIds[j].animalId == this.state.selectedAnimalId) {
+        return animalFieldIds[j]
+      }
+    }
+    return undefined
+  }
 
   /**
    * If your game has incomplete information, you must hide some of the game's state to the players and spectators.

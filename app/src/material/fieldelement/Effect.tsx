@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import EffectType from '@gamepark/mosquito-show/fields/Effect';
 import MosquitoEffectField from '@gamepark/mosquito-show/fields/MosquitoEffectField';
 import GameView from '@gamepark/mosquito-show/GameView';
-import MoveType from '@gamepark/mosquito-show/moves/MoveType';
+import { MoveType } from '@gamepark/mosquito-show/moves';
 import { usePlay } from '@gamepark/react-client';
 import { FunctionComponent } from 'react';
 import { Images } from '../Images';
@@ -19,7 +19,7 @@ const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: 
     function chooseEffect(id: number) {
         switch (state.mosquitoEffect) {
             case -1:
-                play({ type: MoveType.Eat, mosquitoEffectFieldId: id })
+                play({ type: MoveType.Eat, mosquitoEffectFieldId: id})
                 break;
             case 1:
                 // Grey Moquito Effect

@@ -2,16 +2,14 @@ import { getActivePlayerState } from "../GameState"
 import GameView from "../GameView"
 import PlayerColor, { getColorFromAnimalId } from "../PlayerColor"
 import PlayerState from "../PlayerState"
-import MoveType from "./MoveType"
+import { MoveType } from "./MoveType"
 
-type PlayMosquitoEffect = {
+export type PlayMosquitoEffect = {
   type: typeof MoveType.PlayMosquitoEffect
   selectedEffectIndex: number
   startMosquitoEffectFieldId: number
   targetMosquitoEffectFieldId: number
 }
-
-export default PlayMosquitoEffect
 
 export const playMosquitoEffectMove = (selectedEffectIndex: number, startMosquitoEffectFieldId: number, targetMosquitoEffectFieldId: number): PlayMosquitoEffect => ({
   type: MoveType.PlayMosquitoEffect, selectedEffectIndex, startMosquitoEffectFieldId, targetMosquitoEffectFieldId

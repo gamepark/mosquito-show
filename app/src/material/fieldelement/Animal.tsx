@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import GameView from '@gamepark/mosquito-show/GameView';
-import MoveType from '@gamepark/mosquito-show/moves/MoveType';
+import { MoveType, selectAnimalMove } from '@gamepark/mosquito-show/moves';
 import { getColorFromAnimalId } from '@gamepark/mosquito-show/PlayerColor';
 import { usePlay } from '@gamepark/react-client';
 import { FunctionComponent, useState } from 'react';
@@ -53,7 +53,7 @@ const Animal: FunctionComponent<AnimalProp> = ({ state, id }: AnimalProp) => {
                 if (animalId === 3 || animalId === 4) {
                     setChamelonSelected1(!selectChamelon1)
                 }
-                play({ type: MoveType.ChooseAnimal, selectAnimalId: animalId })
+                play(selectAnimalMove(animalId), { local: true })
             }
         }
     }

@@ -1,17 +1,16 @@
 import Effect from "../fields/Effect";
 import { getActivePlayerState } from "../GameState";
 import GameView from "../GameView";
-import MoveType from "./MoveType";
+import { MoveType } from "./MoveType";
 
- type Eat = {
+export type Eat = {
      type: typeof MoveType.Eat
      mosquitoEffectFieldId: number
+     toucanNextPositionFieldId: number
     }
 
-export default Eat
-
-export const eatMove = (mosquitoEffectFieldId: number): Eat => ({
-    type: MoveType.Eat, mosquitoEffectFieldId
+export const eatMove = (mosquitoEffectFieldId: number, toucanNextPositionFieldId: number): Eat => ({
+    type: MoveType.Eat, mosquitoEffectFieldId, toucanNextPositionFieldId
 })
  
 export const selectMosquitoEffectField = (move: Eat, state:  GameView): void => {
@@ -30,8 +29,8 @@ export const selectMosquitoEffectField = (move: Eat, state:  GameView): void => 
         }
     }
     const activePlayerState = getActivePlayerState(state)
-    if(mosquitoEffect !== undefined){
-        activePlayerState?.availableMosquitoEffects.push(mosquitoEffect)
+    if(activePlayerState !== undefined && mosquitoEffect !== undefined){
+        activePlayerState.availableMosquitoEffects.push(mosquitoEffect)
     }
     state.possibleEffectFields = []
 } 

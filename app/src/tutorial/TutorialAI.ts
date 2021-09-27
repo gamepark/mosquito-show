@@ -1,6 +1,6 @@
 import GameState from '@gamepark/mosquito-show/GameState';
 import MosquitoShow from '@gamepark/mosquito-show/MosquitoShow';
-import Move from '@gamepark/mosquito-show/moves/Move';
+import { Move } from '@gamepark/mosquito-show/moves';
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor';
 import { Dummy } from '@gamepark/rules-api';
 
