@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { default as Effect, default as EffectType } from '@gamepark/mosquito-show/fields/Effect';
-import MoveType from '@gamepark/mosquito-show/moves/MoveType';
+import { MoveType } from '@gamepark/mosquito-show/moves';
 import { usePlay } from '@gamepark/react-client';
 import { FunctionComponent } from 'react';
 import { Images } from '../Images';

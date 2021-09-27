@@ -27,7 +27,7 @@ export default function App() {
   return (
     <DndProvider options={HTML5ToTouch}>
       <LoadingScreen display={loading} gameBox={MosquitoShowBox} author={["Bruno Cathala", "Andrea Mainini"]} artist="Camille 
-    Chaussy" publisher="Origames" css={css`font-weight:normal; letter-spacing: 0.15em;`} />
+    Chaussy" publisher="Origames" developer="smeepit" css={css`font-weight:normal; letter-spacing: 0.15em;`} />
       {!loading && <Header loading={loading} game={game!}/>}
       {!loading && <GameDisplay game={game!}/>}
       <ImagesLoader images={Object.values(Images)} onImagesLoad={() => setImagesLoading(false)} />
