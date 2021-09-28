@@ -13,6 +13,7 @@ type GameState = {
   mosquitoEffectStartFieldId: number
   inMoveAnimalSwitchNotAllowed: boolean
   selectedAnimalId?: number
+  pendingChameleonMove: boolean
 }
 
 export function getActivePlayerState(state : GameState) {

@@ -1,6 +1,7 @@
 import { Game } from '@gamepark/rules-api';
 import GameView from './GameView';
-import { Move, moveAnimal, MoveType, playMosquitoEffect, selectAnimal, SelectAnimal, selectMosquitoEffectField } from './moves';
+import { getPredictableAutomaticMoves } from './MosquitoShow';
+import { Move, moveAnimal, MoveType, playMosquitoEffect, selectAnimal, SelectAnimal, selectAnimalMove, selectMosquitoEffectField } from './moves';
 
 type LocalMove = Move | SelectAnimal
 
@@ -25,6 +26,12 @@ export default class MosquitoShowView implements Game<GameView, LocalMove> {
    * @return A MoveView which can be completely anticipated by the player or the spectator
    */
   getAutomaticMove() {
+    //const activePlayerState = getActivePlayerState(this.state)!
+    if (this.state.pendingChameleonMove){ //&& activePlayerState.availableMosquitoEffects.length > 0 && !activePlayerState.chameleonMoved && (this.state.possibleAnimalFields === undefined || this.state.possibleAnimalFields.length == 0)) {
+      return selectAnimalMove(this.state.selectedAnimalId!)
+    }
+    
+    return getPredictableAutomaticMoves(this.state)
   }
 
   /**

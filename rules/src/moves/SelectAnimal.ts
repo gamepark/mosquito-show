@@ -12,7 +12,7 @@ export const selectAnimalMove = (selectAnimalId: number): SelectAnimal => ({
 })
 
 //1 = Toucan_orange, 3 = Chameleon_orange, 2 = Toucan_blue, 4 = Chameleon_blue
-export function selectAnimal(move: SelectAnimal, state: GameView){
+export function selectAnimal(move: SelectAnimal, state: GameView) {
     state.possibleAnimalFields = []
     var selectedAnimalId = move.selectAnimalId
     state.selectedAnimalId = selectedAnimalId
@@ -34,6 +34,7 @@ export function selectAnimal(move: SelectAnimal, state: GameView){
             if (selectedAnimalId == 3 || selectedAnimalId == 4) {
                 if (activePlayerState.availableMosquitoEffects.length > 0) {
                     showPossibleChameleonAnimalFields(state)
+                    state.pendingChameleonMove = false
                 } else {
                     showPossibleMosquitoEffectFields(state)
                     showPossibleChameleonAnimalFields(state)
@@ -130,27 +131,24 @@ export function showPossibleMosquitoEffectFields(state: GameView) {
 
 export function showPossibleChameleonAnimalFields(state: GameView) {
     state.possibleAnimalFields = []
-    var currentAnimalField = getCurrentAnimalField(state)
-    if (currentAnimalField != undefined) {
-        var currentAnimalFieldId = currentAnimalField.fieldId
-        if (currentAnimalFieldId - 4 > 0) {
-            state.possibleAnimalFields.push(currentAnimalFieldId - 4)
-        }
-        if (currentAnimalFieldId + 4 <= 16) {
-            state.possibleAnimalFields.push(currentAnimalFieldId + 4)
-        }
-        if (currentAnimalFieldId - 1 > 0 && Math.ceil((currentAnimalFieldId - 1) / 4) == Math.ceil((currentAnimalFieldId) / 4)) {
-            state.possibleAnimalFields.push(currentAnimalFieldId - 1)
-        }
-        if (currentAnimalFieldId + 1 <= 16 && Math.ceil((currentAnimalFieldId + 1) / 4) == Math.ceil((currentAnimalFieldId) / 4)) {
-            state.possibleAnimalFields.push(currentAnimalFieldId + 1)
-        }
+    var currentAnimalFieldId = getCurrentAnimalField(state)!.fieldId
+    if (currentAnimalFieldId - 4 > 0) {
+        state.possibleAnimalFields.push(currentAnimalFieldId - 4)
+    }
+    if (currentAnimalFieldId + 4 <= 16) {
+        state.possibleAnimalFields.push(currentAnimalFieldId + 4)
+    }
+    if (currentAnimalFieldId - 1 > 0 && Math.ceil((currentAnimalFieldId - 1) / 4) == Math.ceil((currentAnimalFieldId) / 4)) {
+        state.possibleAnimalFields.push(currentAnimalFieldId - 1)
+    }
+    if (currentAnimalFieldId + 1 <= 16 && Math.ceil((currentAnimalFieldId + 1) / 4) == Math.ceil((currentAnimalFieldId) / 4)) {
+        state.possibleAnimalFields.push(currentAnimalFieldId + 1)
+    }
 
-        for (let j = 0; j < state.board.animalFields.length; j++) {
-            var deleteElement = state.board.animalFields[j].fieldId
-            if (state.possibleAnimalFields.includes(deleteElement)) {
-                state.possibleAnimalFields.splice(state.possibleAnimalFields.indexOf(deleteElement), 1)
-            }
+    for (let j = 0; j < state.board.animalFields.length; j++) {
+        var deleteElement = state.board.animalFields[j].fieldId
+        if (state.possibleAnimalFields.includes(deleteElement)) {
+            state.possibleAnimalFields.splice(state.possibleAnimalFields.indexOf(deleteElement), 1)
         }
     }
 }

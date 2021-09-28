@@ -6,7 +6,6 @@ import { Move, moveAnimal, MoveType } from './moves'
 import { selectMosquitoEffectField } from './moves/Eat'
 import { playMosquitoEffect } from './moves/PlayMosquitoEffect'
 import PlayerColor from './PlayerColor'
-import PlayerState from './PlayerState'
 import { createEffectFields } from './utils/BoardUtils'
 
 /**
@@ -32,7 +31,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
           board: { animalFields: [], mosquitoFields: createEffectFields()},
           mosquitoEffect: -1,
           mosquitoEffectStartFieldId: -1,
-          inMoveAnimalSwitchNotAllowed: true
+          inMoveAnimalSwitchNotAllowed: true,
+          pendingChameleonMove: false
         })
       } else {
         super(arg)    
@@ -227,5 +227,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
   }
 }
 
-export function getPredictableAutomaticMoves(state: GameState | GameView, activePlayer: PlayerState): Move | void {
+
+export function getPredictableAutomaticMoves(state: GameState | GameView): Move | void {
+  
 }

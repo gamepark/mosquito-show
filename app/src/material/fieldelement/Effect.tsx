@@ -19,7 +19,7 @@ const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: 
     function chooseEffect(id: number) {
         switch (state.mosquitoEffect) {
             case -1:
-                play({ type: MoveType.Eat, mosquitoEffectFieldId: id})
+                play({ type: MoveType.Eat, mosquitoEffectFieldId: id, selectedAnimalId: state.selectedAnimalId, toucanNextPositionFieldId: -1})
                 break;
             case 1:
                 // Grey Moquito Effect

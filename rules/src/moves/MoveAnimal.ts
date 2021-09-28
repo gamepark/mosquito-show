@@ -16,6 +16,7 @@ export const moveAnimlaMove = (fieldId: number, animalId: number): MoveAnimal =>
 
 export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
     const animalId = move.animalId;
+    state.selectedAnimalId = move.animalId
     state.inMoveAnimalSwitchNotAllowed=false
     let field = {animalId: animalId,  fieldId: move.fieldId}
     let animalFields = state.board.animalFields

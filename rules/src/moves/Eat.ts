@@ -5,15 +5,17 @@ import { MoveType } from "./MoveType";
 
 export type Eat = {
      type: typeof MoveType.Eat
+     selectedAnimalId: number
      mosquitoEffectFieldId: number
      toucanNextPositionFieldId: number
     }
 
-export const eatMove = (mosquitoEffectFieldId: number, toucanNextPositionFieldId: number): Eat => ({
-    type: MoveType.Eat, mosquitoEffectFieldId, toucanNextPositionFieldId
+export const eatMove = (selectedAnimalId: number, mosquitoEffectFieldId: number, toucanNextPositionFieldId: number): Eat => ({
+    type: MoveType.Eat, selectedAnimalId, mosquitoEffectFieldId, toucanNextPositionFieldId
 })
  
 export const selectMosquitoEffectField = (move: Eat, state:  GameView): void => {
+    state.selectedAnimalId = move.selectedAnimalId
     state.inMoveAnimalSwitchNotAllowed=false
     let mosquitoEffectFields = state.board.mosquitoFields
     let mosquitoEffect : Effect|undefined
@@ -28,9 +30,9 @@ export const selectMosquitoEffectField = (move: Eat, state:  GameView): void => 
             }
         }
     }
-    const activePlayerState = getActivePlayerState(state)
-    if(activePlayerState !== undefined && mosquitoEffect !== undefined){
-        activePlayerState.availableMosquitoEffects.push(mosquitoEffect)
+    if(mosquitoEffect !== undefined){
+        getActivePlayerState(state)!.availableMosquitoEffects.push(mosquitoEffect)
+        state.pendingChameleonMove = true
     }
     state.possibleEffectFields = []
 } 
