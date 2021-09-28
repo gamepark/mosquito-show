@@ -1,6 +1,7 @@
 import { getActivePlayerState } from "../GameState"
 import GameView from "../GameView"
 import PlayerColor from "../PlayerColor"
+import { getPossibleFieldsFromPlayerboard } from "../utils/GameUtils"
 
 export type SelectAnimal = {
     type: 'SelectAnimal'
@@ -16,9 +17,9 @@ export function selectAnimal(move: SelectAnimal, state: GameView) {
     state.possibleAnimalFields = []
     var selectedAnimalId = move.selectAnimalId
     state.selectedAnimalId = selectedAnimalId
-    var animalFieldIds = state.board.animalFields
+    var animalFields = state.board.animalFields
 
-    if (animalFieldIds.length == 4) {
+    if (animalFields.length == 4) {
         const activePlayerState = getActivePlayerState(state)
         if (activePlayerState !== undefined) {
             if (selectedAnimalId == 1 || selectedAnimalId == 2) {
@@ -57,13 +58,7 @@ export function selectAnimal(move: SelectAnimal, state: GameView) {
     }
     else {
         // From Playerboard -> Board
-        for (let i = 1; i <= 16; i++) {
-            state.possibleAnimalFields.push(i)
-        }
-        for (let j = 0; j < animalFieldIds.length; j++) {
-            var deleteElement = animalFieldIds[j].fieldId
-            state.possibleAnimalFields.splice(state.possibleAnimalFields.indexOf(deleteElement), 1)
-        }
+        state.possibleAnimalFields = getPossibleFieldsFromPlayerboard(animalFields)
     }
 
     function switchPlayerColor() {

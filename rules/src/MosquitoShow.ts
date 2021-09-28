@@ -1,12 +1,13 @@
 import { SequentialGame } from '@gamepark/rules-api'
-import GameState from './GameState'
+import GameState, { getActivePlayerState } from './GameState'
 import GameView from './GameView'
 import { isGameOptions } from './MosquitoShowOptions'
 import { Move, moveAnimal, MoveType } from './moves'
 import { selectMosquitoEffectField } from './moves/Eat'
-import { playMosquitoEffect } from './moves/PlayMosquitoEffect'
-import PlayerColor from './PlayerColor'
+import { playMosquitoEffect, playMosquitoEffectMove } from './moves/PlayMosquitoEffect'
+import PlayerColor, { getAnimalIdsFromColor } from './PlayerColor'
 import { createEffectFields } from './utils/BoardUtils'
+import { getPossibleFieldsFromPlayerboard } from './utils/GameUtils'
 
 /**
  * Your Board Game rules must extend either "SequentialGame" or "SimultaneousGame".
@@ -27,16 +28,17 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         players: [{ color: PlayerColor.Blue, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], toucanChosenEffectId: -1, toucanStartPosition: -1, chameleonMoved: false, toucanBlocked: false, chameleonBlocked: false },
         { color: PlayerColor.Orange, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], toucanChosenEffectId: -1, toucanStartPosition: -1, chameleonMoved: false, toucanBlocked: false, chameleonBlocked: false }
         ],
-          activePlayer : PlayerColor.Orange,
-          board: { animalFields: [], mosquitoFields: createEffectFields()},
-          mosquitoEffect: -1,
-          mosquitoEffectStartFieldId: -1,
-          inMoveAnimalSwitchNotAllowed: true,
-          pendingChameleonMove: false
-        })
-      } else {
-        super(arg)    
-      }
+        activePlayer: PlayerColor.Orange,
+        board: { animalFields: [], mosquitoFields: createEffectFields() },
+        mosquitoEffect: -1,
+        mosquitoEffectStartFieldId: -1,
+        inMoveAnimalSwitchNotAllowed: true,
+        selectedAnimalId: -1,
+        pendingChameleonMove: false
+      })
+    } else {
+      super(arg)
+    }
   }
 
   /**
@@ -60,13 +62,24 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   getLegalMoves(): Move[] {
     const moves: Move[] = []
-    if (this.state.activePlayer == PlayerColor.Blue) {
-      return [
-        // { type: MoveType.ChooseAnimal, selectAnimalId: 2 },
-        // { type: MoveType.MoveAnimal, fieldId: 2, animalId: 2 }
-        // {type: MoveType.DrawCard, playerId: this.getActivePlayer()!}
-      ]
+    const activePlayer = this.state.players.find(player => player.color === this.state.activePlayer)
+    if (!activePlayer) {
+      return []
     }
+
+    if (this.state.board.animalFields.length === 4) {
+      moves.push({ type: MoveType.MoveAnimal, fieldId: 7, animalId: 3 })
+    } else {
+      getPossibleFieldsFromPlayerboard(this.state.board.animalFields)
+        .forEach(possibleFieldId => getAnimalIdsFromColor(activePlayer.color)
+          .forEach(animalId => moves.push({ type: MoveType.MoveAnimal, fieldId: possibleFieldId, animalId: animalId }))
+        )
+    }
+    // for activeplayer
+    // if from gameboard each animal -> move for all possible fields
+    // else if -> move for toucan possible fields && (eat for possible token fields (when !chameleonmoved) || move for chameleon possible fields)
+    //
+
     return moves
   }
 
@@ -103,18 +116,14 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return The next automatic consequence that should be played in current game state.
    */
   getAutomaticMove(): void | Move {
-    // // Chameleon
-    // if (this.state.selectedAnimalId == 3 || this.state.selectedAnimalId == 4) {
-    //   const activePlayerState = getActivePlayerState(this.state)
-    //   // Show possible Fields to Move after Eat
-    //   if (activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length > 0 && !activePlayerState.chameleonMoved && (this.state.possibleAnimalFields === undefined || this.state.possibleAnimalFields.length == 0)) {
-    //     return selectAnimalMove(this.state.selectedAnimalId)
-    //   }
-    //   // Handle Mosquito Effect after Moving
-    //   if (activePlayerState !== undefined && activePlayerState.availableMosquitoEffects.length > 0 && activePlayerState.chameleonMoved) {
-    //     return playMosquitoEffectMove(0, -1, -1)
-    //   }
-    // }
+    // Chameleon
+    if (this.state.selectedAnimalId == 3 || this.state.selectedAnimalId == 4) {
+      const activePlayerState = getActivePlayerState(this.state)!
+      // Handle Mosquito Effect after Moving
+      if (activePlayerState.availableMosquitoEffects.length > 0 && activePlayerState.chameleonMoved) {
+        return playMosquitoEffectMove(0, -1, -1)
+      }
+    }
     // // Toucan
     // if (this.state.selectedAnimalId == 1 || this.state.selectedAnimalId == 2) {
     //   var activePlayerState = getActivePlayerState(this.state)
@@ -229,5 +238,5 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
 
 
 export function getPredictableAutomaticMoves(state: GameState | GameView): Move | void {
-  
+
 }

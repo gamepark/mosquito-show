@@ -1,4 +1,4 @@
-import { getActivePlayerState } from "../GameState";
+import GameState, { getActivePlayerState } from "../GameState";
 import GameView from "../GameView";
 import PlayerColor from "../PlayerColor";
 import { MoveType } from "./MoveType";
@@ -14,7 +14,7 @@ export const moveAnimlaMove = (fieldId: number, animalId: number): MoveAnimal =>
     type: MoveType.MoveAnimal, fieldId, animalId
 })
 
-export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
+export const moveAnimal = (move: MoveAnimal, state:  GameState | GameView): void => {
     const animalId = move.animalId;
     state.selectedAnimalId = move.animalId
     state.inMoveAnimalSwitchNotAllowed=false
@@ -66,7 +66,7 @@ export const moveAnimal = (move: MoveAnimal, state:  GameView): void => {
         state.selectedAnimalId = undefined
     }
     
-    state.possibleAnimalFields = []
+    // state.possibleAnimalFields = []
     // if(state.activePlayer === PlayerColor.Blue){
     //     state.activePlayer = PlayerColor.Orange 
     // } else if(state.activePlayer === PlayerColor.Orange){
