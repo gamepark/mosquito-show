@@ -70,6 +70,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     if (this.state.board.animalFields.length === 4) {
       moves.push({ type: MoveType.MoveAnimal, fieldId: 7, animalId: 3 })
     } else {
+      // noch verfeinern, dass nur die moves legal sind von dem Tier, was noch nicht auf dem Plan ist.
       getPossibleFieldsFromPlayerboard(this.state.board.animalFields)
         .forEach(possibleFieldId => getAnimalIdsFromColor(activePlayer.color)
           .forEach(animalId => moves.push({ type: MoveType.MoveAnimal, fieldId: possibleFieldId, animalId: animalId }))
