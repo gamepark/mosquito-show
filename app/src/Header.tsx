@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import GameState, { getActivePlayerState } from '@gamepark/mosquito-show/GameState';
+import { usePlayerId } from '@gamepark/react-client';
 
 type Props = {
   loading: boolean
@@ -16,7 +17,8 @@ export default function Header({loading, game}: Props) {
 
   function getText(){
     var activePlayerState = getActivePlayerState(game)
-    return "ActivePlayer: " + game.activePlayer + " || toucanBlocked: " + activePlayerState?.toucanBlocked + " || chameleonBlocked: " + activePlayerState?.chameleonBlocked;
+    var playerId = usePlayerId()
+    return "PlayerId: "+ playerId +"ActivePlayer: " + game.activePlayer + " || toucanBlocked: " + activePlayerState?.toucanBlocked + " || chameleonBlocked: " + activePlayerState?.chameleonBlocked;
   }
 }
 
