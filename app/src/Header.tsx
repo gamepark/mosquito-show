@@ -18,7 +18,7 @@ export default function Header({loading, game}: Props) {
   function getText(){
     var activePlayerState = getActivePlayerState(game)
     var playerId = usePlayerId()
-    return "PlayerId: "+ playerId +"ActivePlayer: " + game.activePlayer + " || toucanBlocked: " + activePlayerState?.toucanBlocked + " || chameleonBlocked: " + activePlayerState?.chameleonBlocked;
+    return "PlayerId: "+ playerId +" || ActivePlayer: " + game.activePlayer + " || toucanBlocked: " + activePlayerState?.toucanBlocked + " || chameleonBlocked: " + activePlayerState?.chameleonBlocked;
   }
 }
 
