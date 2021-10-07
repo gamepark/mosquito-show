@@ -1,8 +1,5 @@
-import { getActivePlayerState } from "../GameState"
-import GameView from "../GameView"
-import PlayerColor, { getColorFromAnimalId } from "../PlayerColor"
-import PlayerState from "../PlayerState"
-import { MoveType } from "./MoveType"
+import GameView from '../GameView'
+import {MoveType} from './MoveType'
 
 export type PlayMosquitoEffect = {
   type: typeof MoveType.PlayMosquitoEffect
@@ -16,7 +13,7 @@ export const playMosquitoEffectMove = (selectedEffectIndex: number, startMosquit
 })
 
 export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): void => {
-  const activePlayerState = getActivePlayerState(state)
+  /*const activePlayerState = getActivePlayerState(state)
   if (activePlayerState !== undefined) {
     if (move.selectedEffectIndex > -1) {
       const selectedEffect = activePlayerState.availableMosquitoEffects.splice(move.selectedEffectIndex, 1)[0]
@@ -131,11 +128,11 @@ export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): v
   function handleBlueMosquitoEffect(activePlayerState: PlayerState) {
     if (move.startMosquitoEffectFieldId == -1) {
       state.possibleAnimalFields = []
-      for (let i = 0; i < state.board.animalFields.length; i++) {
-        const animalField = state.board.animalFields[i];
+      for (let i = 0; i < state.board.animalLocations.length; i++) {
+        /!*const animalField = state.board.animalLocations[i];
         if (getColorFromAnimalId(animalField.animalId) == state.activePlayer) {
           state.possibleAnimalFields.push(animalField.fieldId)
-        }
+        }*!/
       }
     } else if (move.startMosquitoEffectFieldId > -1 && move.targetMosquitoEffectFieldId === -1) {
       state.mosquitoEffectStartFieldId = move.startMosquitoEffectFieldId
@@ -143,14 +140,14 @@ export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): v
       for (let i = 1; i <= 16; i++) {
         state.possibleAnimalFields.push(i)
       }
-      for (let j = 0; j < state.board.animalFields.length; j++) {
-        var deleteElement = state.board.animalFields[j].fieldId
+      for (let j = 0; j < state.board.animalLocations.length; j++) {
+        var deleteElement = state.board.animalLocations[j].fieldId
         state.possibleAnimalFields.splice(state.possibleAnimalFields.indexOf(deleteElement), 1)
       }
     } else if (move.startMosquitoEffectFieldId > -1 && move.targetMosquitoEffectFieldId > -1) {
       var startField = undefined
-      for (let i = 0; i < state.board.animalFields.length; i++) {
-        const animalField = state.board.animalFields[i];
+      for (let i = 0; i < state.board.animalLocations.length; i++) {
+        const animalField = state.board.animalLocations[i];
         if (animalField.fieldId === move.startMosquitoEffectFieldId) {
           startField = animalField
         }
@@ -168,11 +165,11 @@ export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): v
   function handleRedMosquitoEffect(activePlayerState: PlayerState) {
     if (move.startMosquitoEffectFieldId == -1) {
       state.possibleAnimalFields = []
-      for (let i = 0; i < state.board.animalFields.length; i++) {
-        const animalField = state.board.animalFields[i];
+      for (let i = 0; i < state.board.animalLocations.length; i++) {
+        /!*const animalField = state.board.animalLocations[i];
         if (getColorFromAnimalId(animalField.animalId) !== state.activePlayer) {
           state.possibleAnimalFields.push(animalField.fieldId)
-        }
+        }*!/
       }
     } else if (move.startMosquitoEffectFieldId > -1 && move.targetMosquitoEffectFieldId === -1) {
       state.mosquitoEffectStartFieldId = move.startMosquitoEffectFieldId
@@ -208,5 +205,5 @@ export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): v
   function handleGoldenMosquitoEffect(activePlayerState: PlayerState) {
     activePlayerState.ownedGoldenMosquitos++
     handleEffectEnd(activePlayerState)
-  }
+  }*/
 }

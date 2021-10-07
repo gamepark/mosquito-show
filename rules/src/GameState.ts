@@ -12,7 +12,6 @@ type GameState = {
   mosquitoEffect: number,
   mosquitoEffectStartFieldId: number
   inMoveAnimalSwitchNotAllowed: boolean
-  selectedAnimalId?: number
   pendingChameleonMove: boolean
 }
 

@@ -3,5 +3,5 @@
  * Even though it is not strictly required to use a type like that, it helps a lot in practice!
  */
 export enum MoveType {
-  Eat, MoveAnimal, PlayMosquitoEffect, ChooseMosquitoEffect
+  Eat, MoveAnimal, PlayMosquitoEffect, ChooseMosquitoEffect, SelectAnimal
 }

@@ -1,5 +1,5 @@
-import { isEnumValue, OptionsSpec } from '@gamepark/rules-api'
-import { TFunction } from 'i18next'
+import {OptionsSpec} from '@gamepark/rules-api'
+import {TFunction} from 'i18next'
 import GameState from './GameState'
 import PlayerColor from './PlayerColor'
 
@@ -12,7 +12,7 @@ type MosquitoShowPlayerOptions = { id: PlayerColor }
  * This is the type of object that the game receives when a new game is started.
  * The first generic parameter, "{}", can be changed to include game options like variants or expansions.
  */
-export type MosquitoShowOptions = {players: MosquitoShowPlayerOptions[]}
+export type MosquitoShowOptions = { players: MosquitoShowPlayerOptions[] }
 
 /**
  * Typeguard to help Typescript distinguish between a GameState and new game's options, for you main class constructor.
@@ -31,7 +31,7 @@ export const MosquitoShowOptionsSpec: OptionsSpec<MosquitoShowOptions> = {
   players: {
     id: {
       label: t => t('Colour'),
-      values: Object.values(PlayerColor).filter(isEnumValue),
+      values: [PlayerColor.Blue, PlayerColor.Orange],
       valueSpec: color => ({label: t => getPlayerName(color, t)})
     }
   }

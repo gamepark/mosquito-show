@@ -1,13 +1,13 @@
 import { css, Global } from '@emotion/react'
 import MosquitoShow from '@gamepark/mosquito-show/MosquitoShow'
 import { MosquitoShowOptionsSpec } from '@gamepark/mosquito-show/MosquitoShowOptions'
-import MosquitoShowView from '@gamepark/mosquito-show/MosquitoShowView'
 import { GameProvider, setupTranslation } from '@gamepark/react-client'
 import normalize from 'emotion-normalize'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-import { Images } from './material/Images'
+import Images from './material/Images'
+import MosquitoShowView from './MosquitoShowView'
 import translations from './translations.json'
 
 setupTranslation(translations)

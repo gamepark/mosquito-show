@@ -8,8 +8,8 @@
   "dependencies": {
     "@emotion/babel-preset-css-prop": "^11.2.0",
     "@emotion/react": "^11.1.5",
-    "@gamepark/react-client": "^5.6.0",
-    "@gamepark/react-components": "^5.5.0",
+    "@gamepark/react-client": "^5.6.2",
+    "@gamepark/react-components": "^5.5.4",
     "@gamepark/rules-api": "^4.8.0",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.1.2",

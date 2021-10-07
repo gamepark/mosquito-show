@@ -1,16 +1,13 @@
-import { Game } from '@gamepark/rules-api';
-import GameView from './GameView';
-import { getPredictableAutomaticMoves } from './MosquitoShow';
-import { Move, moveAnimal, MoveType, playMosquitoEffect, selectAnimal, SelectAnimal, selectAnimalMove, selectMosquitoEffectField } from './moves';
-
-type LocalMove = Move | SelectAnimal
-
+import GameView from '@gamepark/mosquito-show/GameView'
+import {Move, moveAnimal, MoveType, playMosquitoEffect, selectMosquitoEffectField} from '@gamepark/mosquito-show/moves'
+import {Game} from '@gamepark/rules-api'
+import LocalGameView from './LocalGameView'
 /**
  * This class is useful when the game has "IncompleteInformation" (or "SecretInformation").
  * It allows to handle, in a different way than the backend side, the moves that involve hidden information.
  */
-export default class MosquitoShowView implements Game<GameView, LocalMove> {
-  state: GameView
+export default class MosquitoShowView implements Game<LocalGameView, Move> {
+  state: LocalGameView
 
   constructor(state: GameView) {
     this.state = state
@@ -25,14 +22,14 @@ export default class MosquitoShowView implements Game<GameView, LocalMove> {
    *
    * @return A MoveView which can be completely anticipated by the player or the spectator
    */
-  getAutomaticMove() {
+/*  getAutomaticMove() {
     //const activePlayerState = getActivePlayerState(this.state)!
-    if (this.state.pendingChameleonMove){ //&& activePlayerState.availableMosquitoEffects.length > 0 && !activePlayerState.chameleonMoved && (this.state.possibleAnimalFields === undefined || this.state.possibleAnimalFields.length == 0)) {
+    if (this.state.pendingChameleonMove) { //&& activePlayerState.availableMosquitoEffects.length > 0 && !activePlayerState.chameleonMoved && (this.state.possibleAnimalFields === undefined || this.state.possibleAnimalFields.length == 0)) {
       return selectAnimalMove(this.state.selectedAnimalId!)
     }
-    
+
     return getPredictableAutomaticMoves(this.state)
-  }
+  }*/
 
   /**
    * This is where a move is reproduced on the browser of a player. Most move will be treated the exact same way on both server and client side,
@@ -40,20 +37,23 @@ export default class MosquitoShowView implements Game<GameView, LocalMove> {
    *
    * @param move The move that must be applied in the browser of the player or the spectator
    */
-  play(move: LocalMove): void {
+  play(move: Move): void {
     switch (move.type) {
-      case 'SelectAnimal':
-        selectAnimal(move, this.state)
-        break;
+      case MoveType.SelectAnimal:
+        /*if (moquito effect to force to move opponent animal) {
+          selectAnimal(this.state, move)
+        } else ...*/
+        this.state.selectedAnimal = move.animal
+        break
       case MoveType.MoveAnimal:
-        moveAnimal(move, this.state)
-        break;
+        moveAnimal(this.state, move)
+        break
       case MoveType.Eat:
         selectMosquitoEffectField(move, this.state)
-        break;
+        break
       case MoveType.PlayMosquitoEffect:
         playMosquitoEffect(move, this.state)
-        break;
+        break
     }
   }
 

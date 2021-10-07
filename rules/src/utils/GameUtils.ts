@@ -1,4 +1,4 @@
-import AnimalField from "../fields/AnimalField"
+import AnimalField from '../fields/AnimalField'
 
 // function switchPlayerColor(state: GameView) {
 //     if (state.activePlayer === PlayerColor.Blue) {
@@ -12,14 +12,6 @@ import AnimalField from "../fields/AnimalField"
 //     state.selectedAnimalId = undefined
 // }
 
-export function getPossibleFieldsFromPlayerboard(fieldsInUse: AnimalField[]) : number[]{
-    var possibleFields: number[] = []
-    for (let i = 1; i <= 16; i++) {
-        possibleFields.push(i)
-    }
-    for (let j = 0; j < fieldsInUse.length; j++) {
-        var deleteElement = fieldsInUse[j].fieldId
-        possibleFields.splice(possibleFields.indexOf(deleteElement), 1)
-    }
-    return possibleFields
+export function getPossibleFieldsFromPlayerboard(fieldsInUse: AnimalField[]): number[] {
+  return Array(16).fill(null).map((_, index) => index + 1).filter(position => !fieldsInUse.some(field => field.fieldId === position))
 }

@@ -1,3 +1,3 @@
-import { ChooseMosquitoEffect, Eat, MoveAnimal, PlayMosquitoEffect } from "./";
+import {ChooseMosquitoEffect, Eat, MoveAnimal, PlayMosquitoEffect, SelectAnimal} from './'
 
-export type Move =  Eat | MoveAnimal | PlayMosquitoEffect | ChooseMosquitoEffect
+export type Move = Eat | MoveAnimal | PlayMosquitoEffect | ChooseMosquitoEffect | SelectAnimal

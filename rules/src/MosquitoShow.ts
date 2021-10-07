@@ -1,13 +1,13 @@
-import { SequentialGame } from '@gamepark/rules-api'
-import GameState, { getActivePlayerState } from './GameState'
+import {SequentialGame} from '@gamepark/rules-api'
+import Animal from './animals/Animal'
+import GameBoard from './GameBoard'
+import GameState from './GameState'
 import GameView from './GameView'
-import { isGameOptions } from './MosquitoShowOptions'
-import { Move, moveAnimal, MoveType } from './moves'
-import { selectMosquitoEffectField } from './moves/Eat'
-import { playMosquitoEffect, playMosquitoEffectMove } from './moves/PlayMosquitoEffect'
-import PlayerColor, { getAnimalIdsFromColor } from './PlayerColor'
-import { createEffectFields } from './utils/BoardUtils'
-import { getPossibleFieldsFromPlayerboard } from './utils/GameUtils'
+import {isGameOptions, MosquitoShowOptions} from './MosquitoShowOptions'
+import {Move, moveAnimal, moveAnimalMove, MoveType, playMosquitoEffect, selectMosquitoEffectField} from './moves'
+import PlayerColor from './PlayerColor'
+import {createEffectFields} from './utils/BoardUtils'
+import {getPossibleFieldsFromPlayerboard} from './utils/GameUtils'
 
 /**
  * Your Board Game rules must extend either "SequentialGame" or "SimultaneousGame".
@@ -16,24 +16,28 @@ import { getPossibleFieldsFromPlayerboard } from './utils/GameUtils'
  * If the game contains information that some players know, but the other players does not, it must implement "SecretInformation" instead.
  * Later on, you can also implement "Competitive", "Undo", "TimeLimit" and "Eliminations" to add further features to the game.
  */
-export default class MosquitoShow extends SequentialGame<GameState, Move, PlayerColor>{
-  /**
-   * This constructor is called when the game "restarts" from a previously saved state.
-   * @param state The state of the game
-   */
-  constructor(arg: GameState) {
+export default class MosquitoShow extends SequentialGame<GameState, Move, PlayerColor> {
+
+  constructor(state: GameState)
+  constructor(options: MosquitoShowOptions)
+  constructor(arg: GameState | MosquitoShowOptions) {
     if (isGameOptions(arg)) {
       // const board = setupGameBoard()
       super({
-        players: [{ color: PlayerColor.Blue, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], toucanChosenEffectId: -1, toucanStartPosition: -1, chameleonMoved: false, toucanBlocked: false, chameleonBlocked: false },
-        { color: PlayerColor.Orange, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], toucanChosenEffectId: -1, toucanStartPosition: -1, chameleonMoved: false, toucanBlocked: false, chameleonBlocked: false }
+        players: [{
+          color: PlayerColor.Blue, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], toucanChosenEffectId: -1, toucanStartPosition: -1,
+          chameleonMoved: false, toucanBlocked: false, chameleonBlocked: false
+        },
+          {
+            color: PlayerColor.Orange, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], toucanChosenEffectId: -1, toucanStartPosition: -1,
+            chameleonMoved: false, toucanBlocked: false, chameleonBlocked: false
+          }
         ],
-        activePlayer: PlayerColor.Orange,
-        board: { animalFields: [], mosquitoFields: createEffectFields() },
+        activePlayer: Math.random() < 0.5 ? PlayerColor.Orange : PlayerColor.Blue,
+        board: {animalLocations: [], mosquitoFields: createEffectFields()},
         mosquitoEffect: -1,
         mosquitoEffectStartFieldId: -1,
         inMoveAnimalSwitchNotAllowed: true,
-        selectedAnimalId: -1,
         pendingChameleonMove: false
       })
     } else {
@@ -62,19 +66,20 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   getLegalMoves(): Move[] {
     const moves: Move[] = []
-    const activePlayer = this.state.players.find(player => player.color === this.state.activePlayer)
-    if (!activePlayer) {
-      return []
-    }
+    //const activePlayer = this.state.players.find(player => player.color === this.state.activePlayer)!
 
-    if (this.state.board.animalFields.length === 4) {
-      moves.push({ type: MoveType.MoveAnimal, fieldId: 7, animalId: 3 })
+    if (this.state.board.animalLocations.length === 4) {
+      //moves.push({type: MoveType.MoveAnimal, fieldId: 7, animalId: 3})
     } else {
-      // noch verfeinern, dass nur die moves legal sind von dem Tier, was noch nicht auf dem Plan ist.
-      getPossibleFieldsFromPlayerboard(this.state.board.animalFields)
-        .forEach(possibleFieldId => getAnimalIdsFromColor(activePlayer.color)
-          .forEach(animalId => moves.push({ type: MoveType.MoveAnimal, fieldId: possibleFieldId, animalId: animalId }))
-        )
+      getPossibleFieldsFromPlayerboard(this.state.board.animalLocations)
+        .forEach(possibleFieldId => {
+          if (!this.state.board.animalLocations.some(location => location.animal === Animal.Toucan && location.player === this.state.activePlayer)) {
+            moves.push(moveAnimalMove(Animal.Toucan, possibleFieldId))
+          }
+          if (!this.state.board.animalLocations.some(location => location.animal === Animal.Chameleon && location.player === this.state.activePlayer)) {
+            moves.push(moveAnimalMove(Animal.Chameleon, possibleFieldId))
+          }
+        })
     }
     // for activeplayer
     // if from gameboard each animal -> move for all possible fields
@@ -92,14 +97,14 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
   play(move: Move): void {
     switch (move.type) {
       case MoveType.MoveAnimal:
-        moveAnimal(move, this.state)
-        break;
+        moveAnimal(this.state, move)
+        break
       case MoveType.Eat:
         selectMosquitoEffectField(move, this.state)
-        break;
+        break
       case MoveType.PlayMosquitoEffect:
         playMosquitoEffect(move, this.state)
-        break;
+        break
     }
   }
 
@@ -118,13 +123,13 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   getAutomaticMove(): void | Move {
     // Chameleon
-    if (this.state.selectedAnimalId == 3 || this.state.selectedAnimalId == 4) {
+    /*if (this.state.selectedAnimalId == 3 || this.state.selectedAnimalId == 4) {
       const activePlayerState = getActivePlayerState(this.state)!
       // Handle Mosquito Effect after Moving
       if (activePlayerState.availableMosquitoEffects.length > 0 && activePlayerState.chameleonMoved) {
         return playMosquitoEffectMove(0, -1, -1)
       }
-    }
+    }*/
     // // Toucan
     // if (this.state.selectedAnimalId == 1 || this.state.selectedAnimalId == 2) {
     //   var activePlayerState = getActivePlayerState(this.state)
@@ -208,22 +213,22 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     // }
   }
 
-  getCurrentAnimalField() {
-    var animalFieldIds = this.state.board.animalFields
+  /*getCurrentAnimalField() {
+    var animalFieldIds = this.state.board.animalLocations
     for (let j = 0; j < animalFieldIds.length; j++) {
       if (animalFieldIds[j].animalId == this.state.selectedAnimalId) {
         return animalFieldIds[j]
       }
     }
     return undefined
-  }
+  }*/
 
   /**
    * If your game has incomplete information, you must hide some of the game's state to the players and spectators.
    * @return What a person can see from the game state
    */
   getView(): GameView {
-    return { ...this.state, board: this.state.board }
+    return {...this.state, board: this.state.board}
   }
 
   /**
@@ -233,10 +238,13 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    */
   getPlayerView(playerId: PlayerColor): GameView {
     // Here we could, for example, return a "playerView" with only the number of cards in hand for the other player only.
-    return { ...this.state, board: this.state.board }
+    return {...this.state, board: this.state.board}
   }
 }
 
+export function getValidDestinations(board: GameBoard, player: PlayerColor, animal: Animal): number[] {
+  return []
+}
 
 export function getPredictableAutomaticMoves(state: GameState | GameView): Move | void {
 

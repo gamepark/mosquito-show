@@ -1,14 +1,5 @@
-import PlayerColor from "../PlayerColor";
-import AnimalType from "./AnimalType";
-
-
-export default class Animal {
-  playerId: PlayerColor
-  animalType: AnimalType
-
-  constructor(playeColor: PlayerColor) {
-    this.playerId = playeColor;
-    this.animalType = AnimalType.Toucan
-  }
+export enum Animal {
+  Toucan = 1, Chameleon = 2
 }
 
+export default Animal

@@ -6,7 +6,7 @@ import GameView from '@gamepark/mosquito-show/GameView';
 import { MoveType } from '@gamepark/mosquito-show/moves';
 import { usePlay } from '@gamepark/react-client';
 import { FunctionComponent } from 'react';
-import { Images } from '../Images';
+import Images from '../Images';
 
 type EffectProps = {
     mosquitoEffectField: MosquitoEffectField
@@ -19,7 +19,7 @@ const Effect: FunctionComponent<EffectProps> = ({ state, mosquitoEffectField }: 
     function chooseEffect(id: number) {
         switch (state.mosquitoEffect) {
             case -1:
-                play({ type: MoveType.Eat, mosquitoEffectFieldId: id, selectedAnimalId: state.selectedAnimalId, toucanNextPositionFieldId: -1})
+                //play({ type: MoveType.Eat, mosquitoEffectFieldId: id, selectedAnimalId: state.selectedAnimalId, toucanNextPositionFieldId: -1})
                 break;
             case 1:
                 // Grey Moquito Effect

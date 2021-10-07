@@ -1,3 +1,5 @@
+import Animal from './animals/Animal'
+
 enum PlayerColor {
   Blue = 1,
   Orange = 2
@@ -13,8 +15,8 @@ export function getColorFromAnimalId(animalId: number){
   }
 }
 
-export function getAnimalIdsFromColor(color: PlayerColor) : number[] {
-  if(color === PlayerColor.Orange){
+export function getAnimalIdsFromColor(color: PlayerColor) : Animal[] {
+  if (color === PlayerColor.Orange){
     return [1,3]
   } else {
     return [2,4]

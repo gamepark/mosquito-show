@@ -9,6 +9,8 @@ type Props = {
 
 export default function Header({loading, game}: Props) {
 
+  const playerId = usePlayerId()
+
   return (
     <header css={style}>
       <h1 css={titleStyle}>{getText()}</h1>
@@ -16,8 +18,7 @@ export default function Header({loading, game}: Props) {
   )
 
   function getText(){
-    var activePlayerState = getActivePlayerState(game)
-    var playerId = usePlayerId()
+    const activePlayerState = getActivePlayerState(game)
     return "PlayerId: "+ playerId +" || ActivePlayer: " + game.activePlayer + " || toucanBlocked: " + activePlayerState?.toucanBlocked + " || chameleonBlocked: " + activePlayerState?.chameleonBlocked;
   }
 }

@@ -1,7 +1,5 @@
-import Effect from "../fields/Effect";
-import { getActivePlayerState } from "../GameState";
-import GameView from "../GameView";
-import { MoveType } from "./MoveType";
+import GameView from '../GameView'
+import {MoveType} from './MoveType'
 
 export type Eat = {
      type: typeof MoveType.Eat
@@ -15,7 +13,7 @@ export const eatMove = (selectedAnimalId: number, mosquitoEffectFieldId: number,
 })
  
 export const selectMosquitoEffectField = (move: Eat, state:  GameView): void => {
-    state.selectedAnimalId = move.selectedAnimalId
+    /*state.selectedAnimalId = move.selectedAnimalId
     state.inMoveAnimalSwitchNotAllowed=false
     let mosquitoEffectFields = state.board.mosquitoFields
     let mosquitoEffect : Effect|undefined
@@ -34,5 +32,5 @@ export const selectMosquitoEffectField = (move: Eat, state:  GameView): void => 
         getActivePlayerState(state)!.availableMosquitoEffects.push(mosquitoEffect)
         state.pendingChameleonMove = true
     }
-    state.possibleEffectFields = []
+    state.possibleEffectFields = []*/
 } 

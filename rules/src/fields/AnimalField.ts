@@ -1,10 +1,10 @@
-
+import Animal from '../animals/Animal'
+import PlayerColor from '../PlayerColor'
 
 type AnimalField = {
-    animalId: number
-    fieldId: number
-  } 
-
-
+  player: PlayerColor
+  animal: Animal
+  fieldId: number
+}
 
 export default AnimalField

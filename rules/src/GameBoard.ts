@@ -1,9 +1,9 @@
-import AnimalField from "./fields/AnimalField";
-import MosquitoEffectField from "./fields/MosquitoEffectField";
+import AnimalLocation from './fields/AnimalField'
+import MosquitoEffectField from './fields/MosquitoEffectField'
 
 type GameBoard = {
-    animalFields: AnimalField[]
-    mosquitoFields: MosquitoEffectField[]
+  animalLocations: AnimalLocation[]
+  mosquitoFields: MosquitoEffectField[]
 }
 
 export default GameBoard 
