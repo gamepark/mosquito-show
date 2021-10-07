@@ -1,4 +1,4 @@
-import AnimalLocation from './fields/AnimalField'
+import AnimalLocation from './fields/AnimalLocation'
 import MosquitoEffectField from './fields/MosquitoEffectField'
 
 type GameBoard = {

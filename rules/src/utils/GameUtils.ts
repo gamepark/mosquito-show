@@ -1,4 +1,4 @@
-import AnimalField from '../fields/AnimalField'
+import AnimalLocation from '../fields/AnimalLocation'
 
 // function switchPlayerColor(state: GameView) {
 //     if (state.activePlayer === PlayerColor.Blue) {
@@ -12,6 +12,6 @@ import AnimalField from '../fields/AnimalField'
 //     state.selectedAnimalId = undefined
 // }
 
-export function getPossibleFieldsFromPlayerboard(fieldsInUse: AnimalField[]): number[] {
+export function getPossibleFieldsFromPlayerboard(fieldsInUse: AnimalLocation[]): number[] {
   return Array(16).fill(null).map((_, index) => index + 1).filter(position => !fieldsInUse.some(field => field.fieldId === position))
 }

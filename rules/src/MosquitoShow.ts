@@ -1,5 +1,6 @@
 import {SequentialGame} from '@gamepark/rules-api'
 import Animal from './animals/Animal'
+import Coordinates from './fields/Coordinates'
 import GameBoard from './GameBoard'
 import GameState from './GameState'
 import GameView from './GameView'
@@ -7,7 +8,8 @@ import {isGameOptions, MosquitoShowOptions} from './MosquitoShowOptions'
 import {Move, moveAnimal, moveAnimalMove, MoveType, playMosquitoEffect, selectMosquitoEffectField} from './moves'
 import PlayerColor from './PlayerColor'
 import {createEffectFields} from './utils/BoardUtils'
-import {getPossibleFieldsFromPlayerboard} from './utils/GameUtils'
+
+const {Toucan, Chameleon} = Animal
 
 /**
  * Your Board Game rules must extend either "SequentialGame" or "SimultaneousGame".
@@ -68,24 +70,17 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     const moves: Move[] = []
     //const activePlayer = this.state.players.find(player => player.color === this.state.activePlayer)!
 
-    if (this.state.board.animalLocations.length === 4) {
-      //moves.push({type: MoveType.MoveAnimal, fieldId: 7, animalId: 3})
-    } else {
-      getPossibleFieldsFromPlayerboard(this.state.board.animalLocations)
-        .forEach(possibleFieldId => {
-          if (!this.state.board.animalLocations.some(location => location.animal === Animal.Toucan && location.player === this.state.activePlayer)) {
-            moves.push(moveAnimalMove(Animal.Toucan, possibleFieldId))
-          }
-          if (!this.state.board.animalLocations.some(location => location.animal === Animal.Chameleon && location.player === this.state.activePlayer)) {
-            moves.push(moveAnimalMove(Animal.Chameleon, possibleFieldId))
-          }
-        })
+    if (isGameSetup(this.state)) {
+      for (const animal of [Chameleon, Toucan]) {
+        if (!isOnBoard(this.state.board, this.state.activePlayer, animal)) {
+          getValidDestinations(this.state.board, this.state.activePlayer, animal).forEach(coordinates => moves.push(moveAnimalMove(animal, coordinates)))
+        }
+      }
     }
     // for activeplayer
     // if from gameboard each animal -> move for all possible fields
     // else if -> move for toucan possible fields && (eat for possible token fields (when !chameleonmoved) || move for chameleon possible fields)
     //
-
     return moves
   }
 
@@ -242,8 +237,39 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
   }
 }
 
-export function getValidDestinations(board: GameBoard, player: PlayerColor, animal: Animal): number[] {
-  return []
+export function isGameSetup(game: GameState | GameView) {
+  return game.board.animalLocations.length < 4
+}
+
+export function isOnBoard(board: GameBoard, player: PlayerColor, animal: Animal) {
+  return board.animalLocations.some(location => location.animal === animal && location.player === player)
+}
+
+export function getValidDestinations(board: GameBoard, player: PlayerColor, animal: Animal): Coordinates[] {
+  const result: Coordinates[] = []
+  const origin = board.animalLocations.find(location => location.animal === animal && location.player === player)
+  if (!origin) {
+    for (let x = 0; x < 4; x++) {
+      for (let y = 0; y < 4; y++) {
+        if (!board.animalLocations.some(location => location.x === x && location.y === y)) {
+          result.push({x, y})
+        }
+      }
+    }
+  }
+  return result
+}
+
+export function isValidDestination(board: GameBoard, player: PlayerColor, animal: Animal, {x, y}: Coordinates) {
+  const origin = board.animalLocations.find(location => location.animal === animal && location.player === player)
+  if (!origin) {
+    return !board.animalLocations.some(location => location.x === x && location.y === y)
+  }
+  return false // TODO animal legal moves after setup
+}
+
+export function canMoveAnimal(game: GameView, animal: Animal) {
+  return !game.board.animalLocations.find(location => location.animal === animal && location.player === game.activePlayer)
 }
 
 export function getPredictableAutomaticMoves(state: GameState | GameView): Move | void {

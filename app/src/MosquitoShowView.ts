@@ -47,6 +47,7 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
         break
       case MoveType.MoveAnimal:
         moveAnimal(this.state, move)
+        this.state.selectedAnimal = undefined
         break
       case MoveType.Eat:
         selectMosquitoEffectField(move, this.state)

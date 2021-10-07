@@ -1,22 +1,26 @@
 import Animal from '../animals/Animal'
+import Coordinates from '../fields/Coordinates'
 import GameState from '../GameState'
 import GameView from '../GameView'
+import PlayerColor from '../PlayerColor'
 import {MoveType} from './MoveType'
+
+const {Orange, Blue} = PlayerColor
 
 export type MoveAnimal = {
   type: typeof MoveType.MoveAnimal
   animal: Animal
-  fieldId: number
-}
+} & Coordinates
 
-export const moveAnimalMove = (animal: Animal, fieldId: number): MoveAnimal => ({
-  type: MoveType.MoveAnimal, animal, fieldId
+export const moveAnimalMove = (animal: Animal, coordinates: Coordinates): MoveAnimal => ({
+  type: MoveType.MoveAnimal, animal, x: coordinates.x, y: coordinates.y
 })
 
 export const moveAnimal = (state: GameState | GameView, move: MoveAnimal): void => {
   const location = state.board.animalLocations.find(location => location.player === state.activePlayer && location.animal === move.animal)
   if (!location) {
-    state.board.animalLocations.push({player: state.activePlayer, animal: move.animal, fieldId: move.fieldId})
+    state.board.animalLocations.push({player: state.activePlayer, animal: move.animal, x: move.x, y: move.y})
+    state.activePlayer = state.activePlayer === Orange ? Blue : Orange
   }
   /*const animalId = move.animalId
   state.selectedAnimalId = move.animalId
