@@ -25,15 +25,15 @@ const Token: FunctionComponent<TokenProps> = ({effect, effectIndex}: TokenProps)
   function getEffectImageUrl(effect: EffectType) {
     switch (effect.front) {
       case 1:
-        return `url(${Images.GreyMosquito})`
+        return `url(${Images.greyMosquito})`
       case 2:
-        return `url(${Images.BlueMosquito})`
+        return `url(${Images.blueMosquito})`
       case 3:
-        return `url(${Images.RedMosquito})`
+        return `url(${Images.redMosquito})`
       case 4:
-        return `url(${Images.WhiteMosquito})`
+        return `url(${Images.whiteMosquito})`
       case 5:
-        return `url(${Images.GoldenMosquito})`
+        return `url(${Images.goldenMosquito})`
     }
     return undefined
   }

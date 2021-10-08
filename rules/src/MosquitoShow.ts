@@ -1,4 +1,4 @@
-import {SequentialGame} from '@gamepark/rules-api'
+import {IncompleteInformation, SequentialGame} from '@gamepark/rules-api'
 import Animal from './animals/Animal'
 import Coordinates from './fields/Coordinates'
 import GameBoard from './GameBoard'
@@ -7,7 +7,7 @@ import GameView from './GameView'
 import {isGameOptions, MosquitoShowOptions} from './MosquitoShowOptions'
 import {Move, moveAnimal, moveAnimalMove, MoveType, playMosquitoEffect, selectMosquitoEffectField} from './moves'
 import PlayerColor from './PlayerColor'
-import {createEffectFields} from './utils/BoardUtils'
+import {createMosquitos} from './utils/BoardUtils'
 
 const {Toucan, Chameleon} = Animal
 
@@ -18,7 +18,8 @@ const {Toucan, Chameleon} = Animal
  * If the game contains information that some players know, but the other players does not, it must implement "SecretInformation" instead.
  * Later on, you can also implement "Competitive", "Undo", "TimeLimit" and "Eliminations" to add further features to the game.
  */
-export default class MosquitoShow extends SequentialGame<GameState, Move, PlayerColor> {
+export default class MosquitoShow extends SequentialGame<GameState, Move, PlayerColor>
+  implements IncompleteInformation<GameState, GameView, Move, Move, PlayerColor> {
 
   constructor(state: GameState)
   constructor(options: MosquitoShowOptions)
@@ -36,7 +37,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
           }
         ],
         activePlayer: Math.random() < 0.5 ? PlayerColor.Orange : PlayerColor.Blue,
-        board: {animalLocations: [], mosquitoFields: createEffectFields()},
+        board: {animalLocations: []},
+        mosquitos: createMosquitos(),
         mosquitoEffect: -1,
         mosquitoEffectStartFieldId: -1,
         inMoveAnimalSwitchNotAllowed: true,
@@ -223,17 +225,28 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return What a person can see from the game state
    */
   getView(): GameView {
-    return {...this.state, board: this.state.board}
+    return {
+      ...this.state,
+      mosquitos: this.state.mosquitos.map(row =>
+        row.map(pile =>
+          pile.map(mosquitoOnBoard => {
+            if (mosquitoOnBoard.revealed) {
+              return {mosquito: mosquitoOnBoard.mosquito}
+            } else {
+              return {waterlily: mosquitoOnBoard.waterlily}
+            }
+          })
+        )
+      )
+    }
   }
 
-  /**
-   * If you game has "SecretInformation", you must also implement "getPlayerView", returning the information visible by a specific player.
-   * @param playerId Identifier of the player
-   * @return what the player can see
-   */
-  getPlayerView(playerId: PlayerColor): GameView {
-    // Here we could, for example, return a "playerView" with only the number of cards in hand for the other player only.
-    return {...this.state, board: this.state.board}
+  getMoveView(move: Move): Move {
+    /*if (move.type === MoveType.Eat) {
+      let pile = this.state.mosquitos[move.x][move.y]
+      return {...move, mosquito: pile[pile.length - 1]}
+    }*/
+    return move
   }
 }
 
@@ -269,7 +282,11 @@ export function isValidDestination(board: GameBoard, player: PlayerColor, animal
 }
 
 export function canMoveAnimal(game: GameView, animal: Animal) {
-  return !game.board.animalLocations.find(location => location.animal === animal && location.player === game.activePlayer)
+  const location = game.board.animalLocations.find(location => location.animal === animal && location.player === game.activePlayer)
+  if (!location) {
+    return true
+  }
+  return true // TODO: implement constraints
 }
 
 export function getPredictableAutomaticMoves(state: GameState | GameView): Move | void {

@@ -2,6 +2,7 @@ import GameView from '@gamepark/mosquito-show/GameView'
 import {Move, moveAnimal, MoveType, playMosquitoEffect, selectMosquitoEffectField} from '@gamepark/mosquito-show/moves'
 import {Game} from '@gamepark/rules-api'
 import LocalGameView from './LocalGameView'
+
 /**
  * This class is useful when the game has "IncompleteInformation" (or "SecretInformation").
  * It allows to handle, in a different way than the backend side, the moves that involve hidden information.
@@ -11,8 +12,6 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
 
   constructor(state: GameView) {
     this.state = state
-    state.possibleAnimalFields = []
-    state.possibleEffectFields = []
   }
 
   /**
@@ -22,14 +21,15 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
    *
    * @return A MoveView which can be completely anticipated by the player or the spectator
    */
-/*  getAutomaticMove() {
-    //const activePlayerState = getActivePlayerState(this.state)!
-    if (this.state.pendingChameleonMove) { //&& activePlayerState.availableMosquitoEffects.length > 0 && !activePlayerState.chameleonMoved && (this.state.possibleAnimalFields === undefined || this.state.possibleAnimalFields.length == 0)) {
-      return selectAnimalMove(this.state.selectedAnimalId!)
-    }
 
-    return getPredictableAutomaticMoves(this.state)
-  }*/
+  /*  getAutomaticMove() {
+      //const activePlayerState = getActivePlayerState(this.state)!
+      if (this.state.pendingChameleonMove) { //&& activePlayerState.availableMosquitoEffects.length > 0 && !activePlayerState.chameleonMoved && (this.state.possibleAnimalFields === undefined || this.state.possibleAnimalFields.length == 0)) {
+        return selectAnimalMove(this.state.selectedAnimalId!)
+      }
+
+      return getPredictableAutomaticMoves(this.state)
+    }*/
 
   /**
    * This is where a move is reproduced on the browser of a player. Most move will be treated the exact same way on both server and client side,

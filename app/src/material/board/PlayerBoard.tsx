@@ -26,7 +26,7 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({gameboard, playerstat
 
   return <div css={outbox} {...props}>
     <div css={victorypointsRow}>
-      <div css={tokenStyle} style={{backgroundImage: `url(${Images.GoldenMosquito})`}}/>
+      <div css={tokenStyle} style={{backgroundImage: `url(${Images.goldenMosquito})`}}/>
       <div css={victorypoints}> x</div>
       <div css={victorypoints}> {playerstate?.ownedGoldenMosquitos}</div>
     </div>

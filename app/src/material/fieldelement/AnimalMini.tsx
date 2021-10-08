@@ -30,7 +30,7 @@ export default function AnimalMini({game, owner, animal}: AnimalProp) {
   const selected = playerId === owner && game.selectedAnimal === animal
   const canMove = playerId === game.activePlayer && playerId === owner && canMoveAnimal(game, animal)
 
-  const onClick = (color: PlayerColor, animal: Animal) => {
+  const onClick = () => {
     if (canMove) {
       play(selectAnimalMove(animal === game.selectedAnimal ? undefined : animal), {local: true})
     }
@@ -39,7 +39,7 @@ export default function AnimalMini({game, owner, animal}: AnimalProp) {
   return <Draggable type={ANIMAL} item={{animal}} canDrag={canMove} drop={play}
                     css={[style(owner, animal), selected ? selectedAnimal : canMove && filterAnimation]}
                     preTransform={placeAnimal(game.board, owner, animal)}
-                    onClick={() => onClick(owner, animal)}/>
+                    onClick={onClick}/>
 }
 
 const style = (player: PlayerColor, animal: Animal) => css`

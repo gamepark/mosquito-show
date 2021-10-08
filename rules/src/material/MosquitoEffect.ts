@@ -1,19 +1,25 @@
-export enum MosquitoEffectBack {
-    Grey = 'Grey', Blue = 'Blue', Red = 'Red', White = 'White', Golden = 'Golden'
+export enum Mosquito {
+  Grey = 1, Blue, Red, White, Golden
 }
 
-export enum MosquitoEffectFront {
-  WaterLilyFlower = 'WaterLilyFlower', WaterLily = 'WaterLily'
+export enum Waterlily {
+  WaterLily = 1, Flower
+}
+
+export type MosquitoOnBoard = {
+  mosquito: Mosquito
+  waterlily: Waterlily
+  revealed: boolean
 }
 
 export default class MosquitoEffectToken {
 
-  front: MosquitoEffectFront;
-  back: MosquitoEffectBack;
+  front: Waterlily
+  back: Mosquito
 
-  constructor(front: MosquitoEffectFront, back: MosquitoEffectBack){
-    this.front = front;
-    this.back = back;
+  constructor(front: Waterlily, back: Mosquito) {
+    this.front = front
+    this.back = back
   }
 
 }

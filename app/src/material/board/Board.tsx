@@ -9,7 +9,7 @@ import {useMemo} from 'react'
 import LocalGameView from '../../LocalGameView'
 import {boardSize, headerHeight, margin} from '../../styles'
 import AnimalMini from '../fieldelement/AnimalMini'
-import {Effect} from '../fieldelement/Effect'
+import PondSpace from '../fieldelement/PondSpace'
 import Images from '../Images'
 import JungleSpace from './JungleSpace'
 
@@ -23,13 +23,7 @@ type Props = {
 export default function Board({game, ...props}: Props) {
   const playerId = usePlayerId()
   const play = usePlay()
-  const effects = []
-
-  for (var i = 0; i < game.board.mosquitoFields.length; i++) {
-    effects.push(
-      <Effect mosquitoEffectField={game.board.mosquitoFields[i]} state={game}/>
-    )
-  }
+  console.log(game.mosquitos)
 
   const validDestinations = useMemo(() => {
     if (game.selectedAnimal) {
@@ -55,7 +49,12 @@ export default function Board({game, ...props}: Props) {
           <AnimalMini key={color + '_' + animal} game={game} owner={color} animal={animal}/>
         )
       )}
-      {effects}
+
+      {[...Array(3)].map((_, x) =>
+        [...Array(3)].map((_, y) =>
+          <PondSpace key={x + '_' + y} game={game} x={x} y={y}/>
+        )
+      )}
     </div>
   )
 }

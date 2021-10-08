@@ -4,18 +4,17 @@ import orangeChameleon from './animals/orange-chameleon.png'
 import orangeToucan from './animals/orange-toucan.png'
 import BoardBack from './board/boardBack.jpg'
 import BoardFront from './board/boardFront.jpg'
-import blueMosquito from './logo.png'
-import BlueMosquito from './token/blue2.jpg'
-import GoldenMosquito from './token/golden2.jpg'
-import GreyMosquito from './token/grey2.jpg'
-import RedMosquito from './token/red2.jpg'
-import Waterlilly from './token/waterlilly2.jpg'
-import WaterlillyFlower from './token/waterlillyFlower2.jpg'
-import WhiteMosquito from './token/white2.jpg'
+import blueMosquito from './token/blue-mosquito.jpg'
+import goldenMosquito from './token/golden-mosquito.jpg'
+import greyMosquito from './token/grey-mosquito.jpg'
+import redMosquito from './token/red-mosquito.jpg'
+import waterlilyFlower from './token/waterlily-flower.jpg'
+import waterlily from './token/waterlily.jpg'
+import whiteMosquito from './token/white-mosquito.jpg'
 
 const Images = {
-  BoardBack, BoardFront, blueChameleon, orangeChameleon, blueToucan, orangeToucan, blueMosquito,
-  BlueMosquito, GoldenMosquito, GreyMosquito, RedMosquito, WhiteMosquito, Waterlilly, WaterlillyFlower
+  BoardBack, BoardFront, blueChameleon, orangeChameleon, blueToucan, orangeToucan,
+  blueMosquito, goldenMosquito, greyMosquito, redMosquito, whiteMosquito, waterlily, waterlilyFlower
 }
 
 export default Images
