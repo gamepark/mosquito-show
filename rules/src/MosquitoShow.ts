@@ -5,7 +5,8 @@ import GameBoard from './GameBoard'
 import GameState from './GameState'
 import GameView from './GameView'
 import {isGameOptions, MosquitoShowOptions} from './MosquitoShowOptions'
-import {Move, moveAnimal, moveAnimalMove, MoveType, playMosquitoEffect, selectMosquitoEffectField} from './moves'
+import {eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playMosquitoEffect, selectMosquitoEffectField} from './moves'
+import {MoveView} from './moves/MoveView'
 import PlayerColor from './PlayerColor'
 import {createMosquitos} from './utils/BoardUtils'
 
@@ -19,7 +20,7 @@ const {Toucan, Chameleon} = Animal
  * Later on, you can also implement "Competitive", "Undo", "TimeLimit" and "Eliminations" to add further features to the game.
  */
 export default class MosquitoShow extends SequentialGame<GameState, Move, PlayerColor>
-  implements IncompleteInformation<GameState, GameView, Move, Move, PlayerColor> {
+  implements IncompleteInformation<GameState, GameView, Move, MoveView, PlayerColor> {
 
   constructor(state: GameState)
   constructor(options: MosquitoShowOptions)
@@ -78,6 +79,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
           getValidDestinations(this.state.board, this.state.activePlayer, animal).forEach(coordinates => moves.push(moveAnimalMove(animal, coordinates)))
         }
       }
+    } else {
+      getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(pond.x, pond.y)))
     }
     // for activeplayer
     // if from gameboard each animal -> move for all possible fields
@@ -241,11 +244,11 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     }
   }
 
-  getMoveView(move: Move): Move {
-    /*if (move.type === MoveType.Eat) {
+  getMoveView(move: Move): MoveView {
+    if (move.type === MoveType.Eat) {
       let pile = this.state.mosquitos[move.x][move.y]
-      return {...move, mosquito: pile[pile.length - 1]}
-    }*/
+      return {...move, mosquito: pile[pile.length - 1].mosquito}
+    }
     return move
   }
 }
@@ -287,6 +290,18 @@ export function canMoveAnimal(game: GameView, animal: Animal) {
     return true
   }
   return true // TODO: implement constraints
+}
+
+export function getPondsWithMosquitoAroundChameleon(game: GameState) {
+  const location = game.board.animalLocations.find(location => location.animal === Chameleon && location.player === game.activePlayer)
+  if (!location) return []
+  const ponds = [
+    {x: location.x, y: location.y},
+    {x: location.x + 1, y: location.y},
+    {x: location.x, y: location.y + 1},
+    {x: location.x + 1, y: location.y + 1}
+  ]
+  return ponds.filter(pond => game.mosquitos[pond.x][pond.y].length > 0)
 }
 
 export function getPredictableAutomaticMoves(state: GameState | GameView): Move | void {

@@ -1,10 +1,15 @@
 import Coordinates from '../fields/Coordinates'
 import GameView from '../GameView'
+import {Mosquito} from '../material/MosquitoEffect'
 import {MoveType} from './MoveType'
 
 export type Eat = {
   type: typeof MoveType.Eat
 } & Coordinates
+
+export type EatView = Eat & {
+  mosquito: Mosquito
+}
 
 export const eatMove = (x: number, y: number): Eat => ({type: MoveType.Eat, x, y})
 

@@ -12,7 +12,7 @@ type Props = {
 export default function PondSpace({game, x, y}: Props) {
   return (
     <div css={[style(x, y)]}>
-      {game.mosquitos[x][y].map((mosquitoOnBoard, index) => <MosquitoToken mosquitoOnBoard={mosquitoOnBoard} css={tokenPosition(index)}/>)}
+      {game.mosquitos[x][y].map((mosquitoOnBoard, index) => <MosquitoToken key={index} mosquitoOnBoard={mosquitoOnBoard} css={tokenPosition(index)}/>)}
     </div>
   )
 }

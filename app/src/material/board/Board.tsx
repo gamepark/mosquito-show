@@ -23,7 +23,6 @@ type Props = {
 export default function Board({game, ...props}: Props) {
   const playerId = usePlayerId()
   const play = usePlay()
-  console.log(game.mosquitos)
 
   const validDestinations = useMemo(() => {
     if (game.selectedAnimal) {
