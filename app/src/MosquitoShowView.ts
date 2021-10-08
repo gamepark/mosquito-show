@@ -1,6 +1,8 @@
 import GameView from '@gamepark/mosquito-show/GameView'
 import {endOfTurn} from '@gamepark/mosquito-show/MosquitoShow'
 import {eatInView, Move, moveAnimal, MoveType, playMosquitoEffect} from '@gamepark/mosquito-show/moves'
+import {MoveView} from '@gamepark/mosquito-show/moves/MoveView'
+import {revealMosquitoInView} from '@gamepark/mosquito-show/moves/RevealMosquito'
 import {Game} from '@gamepark/rules-api'
 import LocalGameView from './LocalGameView'
 
@@ -38,7 +40,7 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
    *
    * @param move The move that must be applied in the browser of the player or the spectator
    */
-  play(move: Move): void {
+  play(move: MoveView): void {
     switch (move.type) {
       case MoveType.SelectAnimal:
         /*if (moquito effect to force to move opponent animal) {
@@ -55,6 +57,9 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
         break
       case MoveType.PlayMosquitoEffect:
         playMosquitoEffect(move, this.state)
+        break
+      case MoveType.RevealMosquito:
+        revealMosquitoInView(this.state, move)
         break
     }
     endOfTurn(this.state)

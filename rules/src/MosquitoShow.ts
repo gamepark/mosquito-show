@@ -3,10 +3,11 @@ import Animal from './animals/Animal'
 import Coordinates from './fields/Coordinates'
 import GameState from './GameState'
 import GameView from './GameView'
-import {Mosquito} from './material/MosquitoEffect'
+import {Mosquito, Waterlily} from './material/MosquitoEffect'
 import {isGameOptions, MosquitoShowOptions} from './MosquitoShowOptions'
 import {eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playMosquitoEffect} from './moves'
 import {MoveView} from './moves/MoveView'
+import {revealMosquito, revealMosquitoMove} from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
 import {createMosquitos} from './utils/BoardUtils'
 
@@ -103,6 +104,9 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       case MoveType.PlayMosquitoEffect:
         playMosquitoEffect(move, this.state)
         break
+      case MoveType.RevealMosquito:
+        revealMosquito(this.state, move)
+        break
     }
     endOfTurn(this.state)
   }
@@ -126,6 +130,11 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     if (activePlayer.pendingToucanEat.length) {
       const {y, x} = activePlayer.pendingToucanEat[0]
       return eatMove(x, y)
+    } else if (!activePlayer.chameleonMustMove) {
+      const mosquito = mosquitoToReveal(this.state)
+      if (mosquito) {
+        return revealMosquitoMove(mosquito.x, mosquito.y)
+      }
     }
 
     // Chameleon
@@ -251,12 +260,20 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
   }
 
   getMoveView(move: Move): MoveView {
-    if (move.type === MoveType.Eat) {
-      const pile = this.state.mosquitos[move.x][move.y]
-      const mosquitoOnBoard = pile[pile.length - 1]
-      return mosquitoOnBoard.revealed ? move : {...move, mosquito: mosquitoOnBoard.mosquito}
+    switch (move.type) {
+      case MoveType.Eat: {
+        const pile = this.state.mosquitos[move.x][move.y]
+        const mosquitoOnBoard = pile[pile.length - 1]
+        return mosquitoOnBoard.revealed ? move : {...move, mosquito: mosquitoOnBoard.mosquito}
+      }
+      case MoveType.RevealMosquito: {
+        const pile = this.state.mosquitos[move.x][move.y]
+        const mosquitoOnBoard = pile[pile.length - 1]
+        return {...move, mosquito: mosquitoOnBoard.mosquito}
+      }
+      default:
+        return move
     }
-    return move
   }
 }
 
@@ -282,6 +299,7 @@ export function getValidDestinations(game: GameState | GameView, animal: Animal)
   }
   const animalLocations = getAnimalLocations(game)
   if (animal === Chameleon) {
+    if (!player.chameleonMustMove) return []
     const {x, y} = origin
     return [{x: x + 1, y}, {x, y: y + 1}, {x: x - 1, y}, {x, y: y - 1}]
       .filter(({x, y}) => x >= 0 && x <= 3 && y >= 0 && y <= 3 && !animalLocations.some(animal => animal.x === x && animal.y === y))
@@ -374,7 +392,7 @@ export function endOfTurn(game: GameState | GameView) {
   if (player.goldenMosquitos >= 9) {
     delete game.activePlayer
   }
-  if (!player.chameleonMustMove && !player.pendingToucanEat.length && !player.eatenMosquitos.length) {
+  if (!player.chameleonMustMove && !player.pendingToucanEat.length && !player.eatenMosquitos.length && !mosquitoToReveal(game)) {
     game.activePlayer = player.color === Blue ? Orange : Blue
     if (!canMoveAnimal(game, Toucan) && !canMoveAnimal(game, Chameleon)) {
       // TODO: not game over if animal cannot move due to red mosquito
@@ -383,8 +401,18 @@ export function endOfTurn(game: GameState | GameView) {
   }
 }
 
-export function cannotMove(state: GameState | GameView) {
-
+export function mosquitoToReveal(game: GameState | GameView) {
+  for (let x = 0; x < 3; x++) {
+    for (let y = 0; y < 3; y++) {
+      const pile = game.mosquitos[x][y]
+      if (!pile.length) continue
+      const mosquito = pile[pile.length - 1]
+      if (mosquito.waterlily === Waterlily.WaterLily && !mosquito.revealed) {
+        return {x, y}
+      }
+    }
+  }
+  return
 }
 
 export function getPredictableAutomaticMoves(state: GameState | GameView): Move | void {
