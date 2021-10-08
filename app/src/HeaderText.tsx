@@ -12,5 +12,5 @@ export default function HeaderText({loading, game}: Props) {
   const {t} = useTranslation()
   const playerId = usePlayerId()
   if (!game || loading) return <>{t('Game loading...')}</>
-  return <>Your color: {getPlayerName(playerId, t)} - Active player: {getPlayerName(game.activePlayer, t)}</>
+  return <>Your color: {getPlayerName(playerId, t)} - Active player: {game.activePlayer ? getPlayerName(game.activePlayer, t) : 'Game is over'}</>
 }

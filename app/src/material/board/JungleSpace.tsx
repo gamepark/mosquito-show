@@ -15,14 +15,15 @@ type Props = Coordinates & {
 export default function JungleSpace({x, y, canMoveHere, ...props}: Props) {
   const [{canDrop, isOver}, ref] = useDrop({
     accept: ANIMAL,
+    canDrop: (item: AnimalDragObject) => canMoveHere(item.animal),
     collect: (monitor: DropTargetMonitor<AnimalDragObject>) => ({
-      canDrop: monitor.getItem() && canMoveHere(monitor.getItem().animal),
+      canDrop: monitor.canDrop(),
       isOver: monitor.isOver()
     }),
     drop: ({animal}: AnimalDragObject) => moveAnimalMove(animal, {x, y})
   })
   return (
-    <div ref={ref} css={[style(x, y), (props.onClick || canDrop) && !isOver && display, isOver && overStyle]} {...props}/>
+    <div ref={ref} css={[style(x, y), (props.onClick || canDrop) && !isOver && display, canDrop && isOver && overStyle]} {...props}/>
   )
 }
 
@@ -54,4 +55,9 @@ const glow = keyframes`
 const display = css`
   cursor: pointer;
   animation: ${glow} 2s alternate infinite ease-in-out;
+  &:hover {
+    border-color: green;
+    opacity: 1;
+    animation: none;
+  }
 `

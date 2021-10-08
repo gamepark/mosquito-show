@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import {css} from '@emotion/react'
+import {css, keyframes} from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import {Mosquito, MosquitoOnBoard, Waterlily} from '@gamepark/mosquito-show/material/MosquitoEffect'
 import {HTMLAttributes} from 'react'
@@ -16,7 +16,9 @@ export type mosquitoTokenDragObject = { token: Animal }
 export default function MosquitoToken({mosquitoOnBoard, ...props}: Props) {
   return <div css={[style,
     mosquitoOnBoard.mosquito ? frontFace(mosquitoOnBoard.mosquito) : flip,
-    mosquitoOnBoard.waterlily && backFace(mosquitoOnBoard.waterlily)]} {...props}/>
+    mosquitoOnBoard.waterlily && backFace(mosquitoOnBoard.waterlily),
+    props.onClick && glow
+  ]} {...props}/>
 }
 
 const style = css`
@@ -74,4 +76,20 @@ const backFace = (waterlily: Waterlily) => css`
 
 const flip = css`
   transform: rotateY(180deg);
+`
+
+const glowKeyframes = keyframes`
+  from {
+    box-shadow: 0 0 0.3em white, 0 0 0.3em white, 0 0 0.3em white;
+  }
+  to {
+    box-shadow: 0 0 0.6em white, 0 0 0.6em white, 0 0 0.6em white, 0 0 0.6em white, 0 0 0.6em white;
+  }
+`
+
+const glow = css`
+  cursor: pointer;
+  &:before, &:after {
+    animation: ${glowKeyframes} 2s infinite alternate ease-in-out;
+  }
 `

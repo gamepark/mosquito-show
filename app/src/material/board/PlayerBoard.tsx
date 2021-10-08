@@ -4,7 +4,6 @@ import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
 import {FunctionComponent, HTMLAttributes} from 'react'
 import Images from '../Images'
-import {Token} from '../token/Token'
 
 type PlayerBoardProps = {
   playerstate: PlayerState
@@ -12,24 +11,24 @@ type PlayerBoardProps = {
 } & HTMLAttributes<HTMLDivElement>
 
 const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({playerstate, activePlayer, ...props}: PlayerBoardProps) => {
-  const token = []
+  /* const token = []
 
-  if (playerstate !== undefined) {
-    for (var i = 0; i < playerstate.availableMosquitoEffects.length; i++) {
-      token.push(
-        <Token effect={playerstate.availableMosquitoEffects[i]} effectIndex={i}/>
-      )
-    }
-  }
+   if (playerstate !== undefined) {
+     for (var i = 0; i < playerstate.eatenMosquitos.length; i++) {
+       token.push(
+         <Token effect={playerstate.eatenMosquitos[i]} effectIndex={i}/>
+       )
+     }
+   }*/
 
   return <div css={outbox} {...props}>
     <div css={victorypointsRow}>
       <div css={tokenStyle} style={{backgroundImage: `url(${Images.goldenMosquito})`}}/>
       <div css={victorypoints}> x</div>
-      <div css={victorypoints}> {playerstate?.ownedGoldenMosquitos}</div>
+      <div css={victorypoints}> {playerstate?.goldenMosquitos}</div>
     </div>
     <div css={tokens}>
-      {token}
+      {/*{token}*/}
     </div>
   </div>
 }

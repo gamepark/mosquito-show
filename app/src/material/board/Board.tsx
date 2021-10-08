@@ -24,7 +24,7 @@ export default function Board({game, ...props}: Props) {
 
   const validDestinations = useMemo(() => {
     if (game.selectedAnimal) {
-      return getValidDestinations(game, playerId, game.selectedAnimal)
+      return getValidDestinations(game, game.selectedAnimal)
     } else {
       return []
     }
@@ -35,7 +35,7 @@ export default function Board({game, ...props}: Props) {
       {[...Array(4)].map((_, x) =>
         [...Array(4)].map((_, y) =>
           <JungleSpace key={x + '_' + y} x={x} y={y}
-                       canMoveHere={animal => isValidDestination(game, playerId, animal, {x, y})}
+                       canMoveHere={animal => isValidDestination(game, animal, {x, y})}
                        onClick={validDestinations.some(destination => destination.x === x && destination.y === y) ?
                          () => play(moveAnimalMove(game.selectedAnimal!, {x, y}))
                          : undefined}/>

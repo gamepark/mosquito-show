@@ -7,7 +7,7 @@ import PlayerState from './PlayerState'
  */
 type GameState = {
   players: PlayerState[],
-  activePlayer: PlayerColor,
+  activePlayer?: PlayerColor,
   mosquitos: MosquitoOnBoard[][][]
   mosquitoEffect: number,
   mosquitoEffectStartFieldId: number

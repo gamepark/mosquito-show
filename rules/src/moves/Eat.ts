@@ -1,4 +1,5 @@
 import Coordinates from '../fields/Coordinates'
+import GameState from '../GameState'
 import GameView from '../GameView'
 import {Mosquito} from '../material/MosquitoEffect'
 import {MoveType} from './MoveType'
@@ -8,30 +9,31 @@ export type Eat = {
 } & Coordinates
 
 export type EatView = Eat & {
-  mosquito: Mosquito
+  mosquito?: Mosquito
 }
 
 export const eatMove = (x: number, y: number): Eat => ({type: MoveType.Eat, x, y})
 
-export const selectMosquitoEffectField = (move: Eat, state: GameView): void => {
-  /*state.selectedAnimalId = move.selectedAnimalId
-  state.inMoveAnimalSwitchNotAllowed=false
-  let mosquitoEffectFields = state.board.mosquitoFields
-  let mosquitoEffect : Effect|undefined
-  if(mosquitoEffectFields != undefined){
-      for (let i = 0; i < mosquitoEffectFields.length; i++) {
-          if(mosquitoEffectFields[i].id == move.mosquitoEffectFieldId){
-              let currentMosquitoEffect = mosquitoEffectFields[i].effects.pop()
-              if(currentMosquitoEffect !== undefined){
-                  mosquitoEffect = currentMosquitoEffect
-              }
-              break;
-          }
-      }
+export function eat(game: GameState, move: Eat) {
+  const mosquito = game.mosquitos[move.x][move.y].pop()!.mosquito
+  takeMosquito(game, mosquito)
+}
+
+export function eatInView(game: GameView, move: EatView) {
+  const mosquito = game.mosquitos[move.x][move.y].pop()!.mosquito ?? move.mosquito!
+  takeMosquito(game, mosquito)
+}
+
+export function takeMosquito(game: GameState | GameView, mosquito: Mosquito) {
+  const player = game.players.find(p => p.color === game.activePlayer)!
+  if (mosquito === Mosquito.Golden) {
+    player.goldenMosquitos++
+  } else {
+    player.eatenMosquitos.push(mosquito)
   }
-  if(mosquitoEffect !== undefined){
-      getActivePlayerState(state)!.availableMosquitoEffects.push(mosquitoEffect)
-      state.pendingChameleonMove = true
+  if (player.pendingToucanEat.length) {
+    player.pendingToucanEat.shift()
+  } else {
+    player.chameleonMustMove = true
   }
-  state.possibleEffectFields = []*/
-} 
+}

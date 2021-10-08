@@ -3,13 +3,14 @@ import Animal from './animals/Animal'
 import Coordinates from './fields/Coordinates'
 import GameState from './GameState'
 import GameView from './GameView'
+import {Mosquito} from './material/MosquitoEffect'
 import {isGameOptions, MosquitoShowOptions} from './MosquitoShowOptions'
-import {eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playMosquitoEffect, selectMosquitoEffectField} from './moves'
+import {eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playMosquitoEffect} from './moves'
 import {MoveView} from './moves/MoveView'
 import PlayerColor from './PlayerColor'
-import PlayerState from './PlayerState'
 import {createMosquitos} from './utils/BoardUtils'
 
+const {Orange, Blue} = PlayerColor
 const {Toucan, Chameleon} = Animal
 
 /**
@@ -28,16 +29,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     if (isGameOptions(arg)) {
       // const board = setupGameBoard()
       super({
-        players: [{
-          color: PlayerColor.Blue, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], toucanChosenEffectId: -1, toucanStartPosition: -1,
-          chameleonMoved: false, toucanBlocked: false, chameleonBlocked: false
-        },
-          {
-            color: PlayerColor.Orange, ownedGoldenMosquitos: 0, availableMosquitoEffects: [], toucanChosenEffectId: -1, toucanStartPosition: -1,
-            chameleonMoved: false, toucanBlocked: false, chameleonBlocked: false
-          }
-        ],
-        activePlayer: Math.random() < 0.5 ? PlayerColor.Orange : PlayerColor.Blue,
+        players: [Blue, Orange].map(color => ({color, goldenMosquitos: 0, eatenMosquitos: [], pendingToucanEat: []})),
+        activePlayer: Math.random() < 0.5 ? Orange : Blue,
         mosquitos: createMosquitos(),
         mosquitoEffect: -1,
         mosquitoEffectStartFieldId: -1,
@@ -74,13 +67,18 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
 
     if (isPlacementPhase(this.state)) {
       if (!activePlayer.toucan) {
-        getValidDestinations(this.state, activePlayer, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))
+        getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))
       }
       if (!activePlayer.chameleon) {
-        getValidDestinations(this.state, activePlayer, Chameleon).forEach(coordinates => moves.push(moveAnimalMove(Chameleon, coordinates)))
+        getValidDestinations(this.state, Chameleon).forEach(coordinates => moves.push(moveAnimalMove(Chameleon, coordinates)))
       }
+    } else if (activePlayer.chameleonMustMove) {
+      getValidDestinations(this.state, Chameleon).forEach(coordinates => moves.push(moveAnimalMove(Chameleon, coordinates)))
+    } else if (activePlayer.eatenMosquitos.length) {
+      // TODO: legal move to apply mosquito effects
     } else {
       getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(pond.x, pond.y)))
+      getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))
     }
     // for activeplayer
     // if from gameboard each animal -> move for all possible fields
@@ -100,12 +98,13 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         moveAnimal(this.state, move)
         break
       case MoveType.Eat:
-        selectMosquitoEffectField(move, this.state)
+        eat(this.state, move)
         break
       case MoveType.PlayMosquitoEffect:
         playMosquitoEffect(move, this.state)
         break
     }
+    endOfTurn(this.state)
   }
 
   /**
@@ -122,6 +121,13 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
    * @return The next automatic consequence that should be played in current game state.
    */
   getAutomaticMove(): void | Move {
+    const activePlayer = this.state.players.find(player => player.color === this.state.activePlayer)
+    if (!activePlayer) return
+    if (activePlayer.pendingToucanEat.length) {
+      const {y, x} = activePlayer.pendingToucanEat[0]
+      return eatMove(x, y)
+    }
+
     // Chameleon
     /*if (this.state.selectedAnimalId == 3 || this.state.selectedAnimalId == 4) {
       const activePlayerState = getActivePlayerState(this.state)!
@@ -246,8 +252,9 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
 
   getMoveView(move: Move): MoveView {
     if (move.type === MoveType.Eat) {
-      let pile = this.state.mosquitos[move.x][move.y]
-      return {...move, mosquito: pile[pile.length - 1].mosquito}
+      const pile = this.state.mosquitos[move.x][move.y]
+      const mosquitoOnBoard = pile[pile.length - 1]
+      return mosquitoOnBoard.revealed ? move : {...move, mosquito: mosquitoOnBoard.mosquito}
     }
     return move
   }
@@ -257,10 +264,13 @@ export function isPlacementPhase(game: GameState | GameView) {
   return game.players.some(player => !player.toucan || !player.chameleon)
 }
 
-export function getValidDestinations(game: GameState | GameView, player: PlayerState, animal: Animal): Coordinates[] {
-  const result: Coordinates[] = []
+export function getValidDestinations(game: GameState | GameView, animal: Animal): Coordinates[] {
+  const player = game.players.find(player => player.color === game.activePlayer)
+  if (!player) return []
   const origin = animal === Animal.Chameleon ? player.chameleon : player.toucan
-  if (!origin) {
+  if (!origin || (!player.chameleonMustMove && player.eatenMosquitos.some(mosquito => mosquito === Mosquito.Blue))) {
+    // Any free space
+    const result: Coordinates[] = []
     for (let x = 0; x < 4; x++) {
       for (let y = 0; y < 4; y++) {
         if (!getAnimalLocations(game).some(location => location.x === x && location.y === y)) {
@@ -268,8 +278,37 @@ export function getValidDestinations(game: GameState | GameView, player: PlayerS
         }
       }
     }
+    return result
   }
-  return result
+  const animalLocations = getAnimalLocations(game)
+  if (animal === Chameleon) {
+    const {x, y} = origin
+    return [{x: x + 1, y}, {x, y: y + 1}, {x: x - 1, y}, {x, y: y - 1}]
+      .filter(({x, y}) => x >= 0 && x <= 3 && y >= 0 && y <= 3 && !animalLocations.some(animal => animal.x === x && animal.y === y))
+  } else {
+    const result: Coordinates[] = []
+    let x = origin.x
+    let y = origin.y
+    while (x > 0 && y > 0 && game.mosquitos[--x][--y].length && !animalLocations.some(animal => animal.x === x && animal.y === y)) {
+      result.push({x, y})
+    }
+    x = origin.x
+    y = origin.y
+    while (x < 3 && y > 0 && game.mosquitos[x++][--y].length && !animalLocations.some(animal => animal.x === x && animal.y === y)) {
+      result.push({x, y})
+    }
+    x = origin.x
+    y = origin.y
+    while (x > 0 && y < 3 && game.mosquitos[--x][y++].length && !animalLocations.some(animal => animal.x === x && animal.y === y)) {
+      result.push({x, y})
+    }
+    x = origin.x
+    y = origin.y
+    while (x < 3 && y < 3 && game.mosquitos[x++][y++].length && !animalLocations.some(animal => animal.x === x && animal.y === y)) {
+      result.push({x, y})
+    }
+    return result
+  }
 }
 
 export function getAnimalLocations(game: GameState | GameView): Coordinates[] {
@@ -281,20 +320,24 @@ export function getAnimalLocations(game: GameState | GameView): Coordinates[] {
   })
 }
 
-export function isValidDestination(game: GameState | GameView, color: PlayerColor, animal: Animal, {x, y}: Coordinates) {
-  const player = game.players.find(p => p.color === color)!
+export function isValidDestination(game: GameState | GameView, animal: Animal, {x, y}: Coordinates) {
+  const player = game.players.find(p => p.color === game.activePlayer)
+  if (!player) return false
   const origin = animal === Chameleon ? player.chameleon : player.toucan
-  if (!origin) {
+  if (!origin || (!player.chameleonMustMove && player.eatenMosquitos.some(mosquito => mosquito === Mosquito.Blue))) {
     return !getAnimalLocations(game).some(location => location.x === x && location.y === y)
   }
-  return false // TODO animal legal moves after setup
+  return getValidDestinations(game, animal).some(destination => destination.x === x && destination.y === y)
 }
 
-export function canMoveAnimal(game: GameView, animal: Animal) {
+export function canMoveAnimal(game: GameState | GameView, animal: Animal) {
   const player = game.players.find(p => p.color === game.activePlayer)!
   const location = animal === Animal.Chameleon ? player.chameleon : player.toucan
   if (!location) {
     return true
+  }
+  if (player.chameleonMustMove) {
+    return animal === Animal.Chameleon
   }
   return true // TODO: implement constraints
 }
@@ -302,13 +345,46 @@ export function canMoveAnimal(game: GameView, animal: Animal) {
 export function getPondsWithMosquitoAroundChameleon(game: GameState) {
   const location = game.players.find(p => p.color === game.activePlayer)?.chameleon
   if (!location) return []
-  const ponds = [
-    {x: location.x, y: location.y},
-    {x: location.x + 1, y: location.y},
-    {x: location.x, y: location.y + 1},
-    {x: location.x + 1, y: location.y + 1}
-  ]
-  return ponds.filter(pond => game.mosquitos[pond.x][pond.y].length > 0)
+  const pondSpaces: Coordinates[] = []
+  if (location.x > 0 && location.y > 0 && game.mosquitos[location.x - 1][location.y - 1].length > 0) {
+    pondSpaces.push({x: location.x - 1, y: location.y - 1})
+  }
+  if (location.x > 0 && location.y < 3 && game.mosquitos[location.x - 1][location.y].length > 0) {
+    pondSpaces.push({x: location.x - 1, y: location.y})
+  }
+  if (location.x < 3 && location.y > 0 && game.mosquitos[location.x][location.y - 1].length > 0) {
+    pondSpaces.push({x: location.x, y: location.y - 1})
+  }
+  if (location.x < 3 && location.y < 3 && game.mosquitos[location.x][location.y].length > 0) {
+    pondSpaces.push({x: location.x, y: location.y})
+  }
+  return pondSpaces
+}
+
+export function chameleonCanEat(game: GameState | GameView, x: number, y: number) {
+  if (!game.mosquitos[x][y].length) return false
+  const player = game.players.find(p => p.color === game.activePlayer)
+  if (!player || !player.chameleon || player.chameleonMustMove) return false
+  return (player.chameleon.x === x || player.chameleon.x === x + 1) && (player.chameleon.y === y || player.chameleon.y === y + 1)
+
+}
+
+export function endOfTurn(game: GameState | GameView) {
+  const player = game.players.find(p => p.color === game.activePlayer)!
+  if (player.goldenMosquitos >= 9) {
+    delete game.activePlayer
+  }
+  if (!player.chameleonMustMove && !player.pendingToucanEat.length && !player.eatenMosquitos.length) {
+    game.activePlayer = player.color === Blue ? Orange : Blue
+    if (!canMoveAnimal(game, Toucan) && !canMoveAnimal(game, Chameleon)) {
+      // TODO: not game over if animal cannot move due to red mosquito
+      delete game.activePlayer
+    }
+  }
+}
+
+export function cannotMove(state: GameState | GameView) {
+
 }
 
 export function getPredictableAutomaticMoves(state: GameState | GameView): Move | void {
