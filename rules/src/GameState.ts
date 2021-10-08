@@ -1,4 +1,3 @@
-import GameBoard from './GameBoard'
 import {MosquitoOnBoard} from './material/MosquitoEffect'
 import PlayerColor from './PlayerColor'
 import PlayerState from './PlayerState'
@@ -10,7 +9,6 @@ type GameState = {
   players: PlayerState[],
   activePlayer: PlayerColor,
   mosquitos: MosquitoOnBoard[][][]
-  board: GameBoard,
   mosquitoEffect: number,
   mosquitoEffectStartFieldId: number
   inMoveAnimalSwitchNotAllowed: boolean

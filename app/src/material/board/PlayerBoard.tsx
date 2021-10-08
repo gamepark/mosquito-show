@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react'
-import GameBoard from '@gamepark/mosquito-show/GameBoard'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
 import {FunctionComponent, HTMLAttributes} from 'react'
@@ -8,12 +7,11 @@ import Images from '../Images'
 import {Token} from '../token/Token'
 
 type PlayerBoardProps = {
-  gameboard: GameBoard
   playerstate: PlayerState
   activePlayer: PlayerColor
 } & HTMLAttributes<HTMLDivElement>
 
-const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({gameboard, playerstate, activePlayer, ...props}: PlayerBoardProps) => {
+const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({playerstate, activePlayer, ...props}: PlayerBoardProps) => {
   const token = []
 
   if (playerstate !== undefined) {

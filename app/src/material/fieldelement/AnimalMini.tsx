@@ -2,10 +2,10 @@
 import {css, keyframes} from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
-import GameBoard from '@gamepark/mosquito-show/GameBoard'
 import {canMoveAnimal} from '@gamepark/mosquito-show/MosquitoShow'
 import {selectAnimalMove} from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
+import PlayerState from '@gamepark/mosquito-show/PlayerState'
 import {usePlay, usePlayerId} from '@gamepark/react-client'
 import {Draggable} from '@gamepark/react-components'
 import LocalGameView from '../../LocalGameView'
@@ -17,7 +17,7 @@ const {Toucan, Chameleon} = Animal
 
 type AnimalProp = {
   game: LocalGameView
-  owner: PlayerColor
+  owner: PlayerState
   animal: Animal
 }
 
@@ -27,8 +27,8 @@ export type AnimalDragObject = { animal: Animal }
 export default function AnimalMini({game, owner, animal}: AnimalProp) {
   const playerId = usePlayerId<PlayerColor>()
   const play = usePlay()
-  const selected = playerId === owner && game.selectedAnimal === animal
-  const canMove = playerId === game.activePlayer && playerId === owner && canMoveAnimal(game, animal)
+  const selected = playerId === owner.color && game.selectedAnimal === animal
+  const canMove = playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal)
 
   const onClick = () => {
     if (canMove) {
@@ -37,8 +37,8 @@ export default function AnimalMini({game, owner, animal}: AnimalProp) {
   }
 
   return <Draggable type={ANIMAL} item={{animal}} canDrag={canMove} drop={play}
-                    css={[style(owner, animal), selected ? selectedAnimal : canMove && filterAnimation]}
-                    preTransform={placeAnimal(game.board, owner, animal)}
+                    css={[style(owner.color, animal), selected ? selectedAnimal : canMove && filterAnimation]}
+                    preTransform={placeAnimal(owner, animal)}
                     onClick={onClick}/>
 }
 
@@ -60,12 +60,12 @@ function animalImage(player: PlayerColor, animal: Animal) {
   }
 }
 
-function placeAnimal(board: GameBoard, player: PlayerColor, animal: Animal) {
-  const location = board.animalLocations.find(location => location.player === player && location.animal === animal)
+function placeAnimal(player: PlayerState, animal: Animal) {
+  const location = animal === Animal.Chameleon ? player.chameleon : player.toucan
   if (location) {
     return animalPosition(location)
   } else {
-    return animalOutsideBoard(player, animal)
+    return animalOutsideBoard(player.color, animal)
   }
 }
 

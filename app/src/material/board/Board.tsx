@@ -3,7 +3,6 @@ import {css} from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import {getValidDestinations, isValidDestination} from '@gamepark/mosquito-show/MosquitoShow'
 import {moveAnimalMove} from '@gamepark/mosquito-show/moves'
-import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import {usePlay, usePlayerId} from '@gamepark/react-client'
 import {useMemo} from 'react'
 import LocalGameView from '../../LocalGameView'
@@ -13,7 +12,6 @@ import PondSpace from '../fieldelement/PondSpace'
 import Images from '../Images'
 import JungleSpace from './JungleSpace'
 
-const {Orange, Blue} = PlayerColor
 const {Toucan, Chameleon} = Animal
 
 type Props = {
@@ -26,26 +24,26 @@ export default function Board({game, ...props}: Props) {
 
   const validDestinations = useMemo(() => {
     if (game.selectedAnimal) {
-      return getValidDestinations(game.board, playerId, game.selectedAnimal)
+      return getValidDestinations(game, playerId, game.selectedAnimal)
     } else {
       return []
     }
-  }, [game.board, playerId, game.selectedAnimal])
+  }, [game, playerId])
 
   return (
     <div css={boardStyle} {...props}>
       {[...Array(4)].map((_, x) =>
         [...Array(4)].map((_, y) =>
           <JungleSpace key={x + '_' + y} x={x} y={y}
-                       canMoveHere={animal => isValidDestination(game.board, playerId, animal, {x, y})}
+                       canMoveHere={animal => isValidDestination(game, playerId, animal, {x, y})}
                        onClick={validDestinations.some(destination => destination.x === x && destination.y === y) ?
                          () => play(moveAnimalMove(game.selectedAnimal!, {x, y}))
                          : undefined}/>
         )
       )}
-      {[Blue, Orange].map(color =>
+      {game.players.map(player =>
         [Chameleon, Toucan].map(animal =>
-          <AnimalMini key={color + '_' + animal} game={game} owner={color} animal={animal}/>
+          <AnimalMini key={player.color + '_' + animal} game={game} owner={player} animal={animal}/>
         )
       )}
 

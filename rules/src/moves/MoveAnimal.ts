@@ -2,6 +2,7 @@ import Animal from '../animals/Animal'
 import Coordinates from '../fields/Coordinates'
 import GameState from '../GameState'
 import GameView from '../GameView'
+import {isPlacementPhase} from '../MosquitoShow'
 import PlayerColor from '../PlayerColor'
 import {MoveType} from './MoveType'
 
@@ -16,11 +17,16 @@ export const moveAnimalMove = (animal: Animal, coordinates: Coordinates): MoveAn
   type: MoveType.MoveAnimal, animal, x: coordinates.x, y: coordinates.y
 })
 
-export const moveAnimal = (state: GameState | GameView, move: MoveAnimal): void => {
-  const location = state.board.animalLocations.find(location => location.player === state.activePlayer && location.animal === move.animal)
-  if (!location) {
-    state.board.animalLocations.push({player: state.activePlayer, animal: move.animal, x: move.x, y: move.y})
-    state.activePlayer = state.activePlayer === Orange ? Blue : Orange
+export const moveAnimal = (game: GameState | GameView, move: MoveAnimal): void => {
+  const placementPhase = isPlacementPhase(game)
+  const player = game.players.find(p => p.color === game.activePlayer)!
+  if (move.animal === Animal.Chameleon) {
+    player.chameleon = {x: move.x, y: move.y}
+  } else {
+    player.toucan = {x: move.x, y: move.y}
+  }
+  if (placementPhase) {
+    game.activePlayer = game.activePlayer === Orange ? Blue : Orange
   }
   /*const animalId = move.animalId
   state.selectedAnimalId = move.animalId
