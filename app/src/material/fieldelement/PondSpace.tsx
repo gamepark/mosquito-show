@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
-import {css} from '@emotion/react'
+import { css } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
-import {chameleonCanEat} from '@gamepark/mosquito-show/MosquitoShow'
-import {eatMove} from '@gamepark/mosquito-show/moves'
-import {usePlay, usePlayerId} from '@gamepark/react-client'
-import {useMemo} from 'react'
+import { chameleonCanEat } from '@gamepark/mosquito-show/MosquitoShow'
+import { eatMove } from '@gamepark/mosquito-show/moves'
+import { usePlay, usePlayerId } from '@gamepark/react-client'
+import { useMemo } from 'react'
 import LocalGameView from '../../LocalGameView'
-import {jungleSpaceDelta, mosquitoTokenSize} from '../../styles'
+import { jungleSpaceDelta, mosquitoTokenSize } from '../../styles'
 import MosquitoToken from './MosquitoToken'
 
 type Props = {
@@ -19,6 +19,7 @@ export default function PondSpace({game, x, y}: Props) {
   const play = usePlay()
   const canEat = useMemo(() => playerId && chameleonCanEat(game, x, y), [game])
   const mosquitos = game.mosquitos[x][y]
+  
   return (
     <div css={[style(x, y)]}>
       {mosquitos.map((mosquitoOnBoard, index) =>

@@ -1,24 +1,25 @@
 /** @jsxImportSource @emotion/react */
-import {css} from '@emotion/react'
+import { css } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
-import {getValidDestinations, isValidDestination} from '@gamepark/mosquito-show/MosquitoShow'
-import {moveAnimalMove} from '@gamepark/mosquito-show/moves'
-import {usePlay, usePlayerId} from '@gamepark/react-client'
-import {useMemo} from 'react'
+import { getValidDestinations, isValidDestination } from '@gamepark/mosquito-show/MosquitoShow'
+import { moveAnimalMove } from '@gamepark/mosquito-show/moves'
+import { usePlay, usePlayerId } from '@gamepark/react-client'
+import { useMemo } from 'react'
 import LocalGameView from '../../LocalGameView'
-import {boardSize, headerHeight, margin} from '../../styles'
+import { boardSize, headerHeight, margin } from '../../styles'
 import AnimalMini from '../fieldelement/AnimalMini'
+import { EatenMosquitoToken } from '../fieldelement/MosquitoToken'
 import PondSpace from '../fieldelement/PondSpace'
 import Images from '../Images'
 import JungleSpace from './JungleSpace'
 
-const {Toucan, Chameleon} = Animal
+const { Toucan, Chameleon } = Animal
 
 type Props = {
   game: LocalGameView
 }
 
-export default function Board({game, ...props}: Props) {
+export default function Board({ game, ...props }: Props) {
   const playerId = usePlayerId()
   const play = usePlay()
 
@@ -35,21 +36,27 @@ export default function Board({game, ...props}: Props) {
       {[...Array(4)].map((_, x) =>
         [...Array(4)].map((_, y) =>
           <JungleSpace key={x + '_' + y} x={x} y={y}
-                       canMoveHere={animal => isValidDestination(game, animal, {x, y})}
-                       onClick={validDestinations.some(destination => destination.x === x && destination.y === y) ?
-                         () => play(moveAnimalMove(game.selectedAnimal!, {x, y}))
-                         : undefined}/>
+            canMoveHere={animal => isValidDestination(game, animal, { x, y })}
+            onClick={validDestinations.some(destination => destination.x === x && destination.y === y) ?
+              () => play(moveAnimalMove(game.selectedAnimal!, { x, y }))
+              : undefined} />
         )
       )}
       {game.players.map(player =>
         [Chameleon, Toucan].map(animal =>
-          <AnimalMini key={player.color + '_' + animal} game={game} owner={player} animal={animal}/>
+          <AnimalMini key={player.color + '_' + animal} game={game} owner={player} animal={animal} />
+        )
+      )}
+
+      {game.players.map(player =>
+        player.eatenMosquitos.map(eatenMosquito =>
+          <EatenMosquitoToken mosquito={eatenMosquito}/>
         )
       )}
 
       {[...Array(3)].map((_, x) =>
         [...Array(3)].map((_, y) =>
-          <PondSpace key={x + '_' + y} game={game} x={x} y={y}/>
+          <PondSpace key={x + '_' + y} game={game} x={x} y={y} />
         )
       )}
     </div>
