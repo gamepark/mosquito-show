@@ -1,32 +1,23 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
-import { Mosquito, MosquitoOnBoard, Waterlily } from '@gamepark/mosquito-show/material/MosquitoEffect'
+import { Mosquito, Waterlily } from '@gamepark/mosquito-show/material/MosquitoEffect'
 import { HTMLAttributes } from 'react'
 import { mosquitoTokenSize } from '../../styles'
 import Images from '../Images'
 
 type Props = {
-  mosquitoOnBoard: Partial<MosquitoOnBoard>
-} & HTMLAttributes<HTMLDivElement>
-
-type EatenMosquitonProps = {
-  mosquito: Mosquito
+  mosquito?: Mosquito
+  waterlily?: Waterlily
 } & HTMLAttributes<HTMLDivElement>
 
 export const MOSQUITO_TOKEN = 'MOSQUITO_TOKEN'
 export type mosquitoTokenDragObject = { token: Animal }
 
-export default function MosquitoToken({mosquitoOnBoard, ...props}: Props) {
+export default function MosquitoToken({mosquito, waterlily, ...props}: Props) {
   return <div css={[style,
-    mosquitoOnBoard.mosquito ? frontFace(mosquitoOnBoard.mosquito) : flip,
-    mosquitoOnBoard.waterlily && backFace(mosquitoOnBoard.waterlily),
-    props.onClick && glow
-  ]} {...props}/>
-}
-
-export function EatenMosquitoToken({mosquito, ...props}: EatenMosquitonProps) {
-  return <div css={[style, frontFace(mosquito), tokenPosition,
+    mosquito ? frontFace(mosquito) : flip,
+    waterlily && backFace(waterlily),
     props.onClick && glow
   ]} {...props}/>
 }
@@ -50,11 +41,6 @@ const waterlilyImage: { [key in Waterlily]: string } = {
   [Waterlily.WaterLily]: Images.waterlily,
   [Waterlily.Flower]: Images.waterlilyFlower
 }
-
-const tokenPosition = css`
-  top: -10em;
-  left: -20em;
-`
 
 const frontFace = (mosquito: Mosquito) => css`
   &:before {

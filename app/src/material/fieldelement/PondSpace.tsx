@@ -23,7 +23,7 @@ export default function PondSpace({game, x, y}: Props) {
   return (
     <div css={[style(x, y)]}>
       {mosquitos.map((mosquitoOnBoard, index) =>
-        <MosquitoToken key={index} mosquitoOnBoard={mosquitoOnBoard} css={tokenPosition(index)}
+        <MosquitoToken key={index} mosquito={mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily} css={tokenPosition(index)}
                        onClick={game.selectedAnimal === Animal.Chameleon && canEat && mosquitos.length === index + 1 ?
                          () => play(eatMove(x, y), {delayed: !mosquitoOnBoard.mosquito}) : undefined}
         />
