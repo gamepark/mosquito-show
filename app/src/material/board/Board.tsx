@@ -8,7 +8,6 @@ import { useMemo } from 'react'
 import LocalGameView from '../../LocalGameView'
 import { boardSize, headerHeight, margin } from '../../styles'
 import AnimalMini from '../fieldelement/AnimalMini'
-import MosquitoToken from '../fieldelement/MosquitoToken'
 import PondSpace from '../fieldelement/PondSpace'
 import Images from '../Images'
 import JungleSpace from './JungleSpace'
@@ -48,12 +47,6 @@ export default function Board({game, ...props}: Props) {
         )
       )}
 
-      {game.players.map(player =>
-        player.eatenMosquitos.map( eatenMosquito =>
-          <MosquitoToken mosquito={eatenMosquito} css={tokenPosition}/>
-        )
-      )}
-
       {[...Array(3)].map((_, x) =>
         [...Array(3)].map((_, y) =>
           <PondSpace key={x + '_' + y} game={game} x={x} y={y}/>
@@ -72,8 +65,4 @@ const boardStyle = css`
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url(${Images.BoardFront});
-`
-const tokenPosition = css`
-  top: -10em;
-  left: -20em;
 `

@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import {css, keyframes} from '@emotion/react'
+import { css, keyframes } from '@emotion/react'
 import GameView from '@gamepark/mosquito-show/GameView'
-import {Letterbox} from '@gamepark/react-components'
+import { Letterbox } from '@gamepark/react-components'
 import Board from './material/board/Board'
+import { PlayerBoard } from './material/board/PlayerBoard'
 
 type Props = {
   game: GameView
@@ -11,10 +12,10 @@ type Props = {
 export default function GameDisplay({game}: Props) {
   return (
     <Letterbox css={letterBoxStyle}>
-      <div css={[display, boardGrid]}>
-        {/*<PlayerBoard playerstate={game.players[0]} gameboard={game.board} activePlayer={game.activePlayer} css={playerBoard}/>*/}
+      <div css={display}>
+        <PlayerBoard playerstate={game.players[0]} activePlayer={game.activePlayer}/>
         <Board game={game}/>
-        {/*<PlayerBoard playerstate={game.players[1]} gameboard={game.board} activePlayer={game.activePlayer} css={playerBoard}/>*/}
+        <PlayerBoard playerstate={game.players[1]} activePlayer={game.activePlayer}/>
       </div>
     </Letterbox>
   )
@@ -39,16 +40,4 @@ const display = css`
   display: grid;
   align-items: center;
   justify-content: center;
-`
-
-/*const playerBoard = css`
-  position: relative;
-  display: inline-grid;
-  height: 100%;
-  width: 100%;
-`*/
-const boardGrid = css`
-  display: grid;
-  grid-template-columns: 22% 56% 22%;
-  grid-template-rows: 100%;
 `

@@ -1,35 +1,22 @@
 /** @jsxImportSource @emotion/react */
-import {css} from '@emotion/react'
+import { css } from '@emotion/react'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
-import {FunctionComponent, HTMLAttributes} from 'react'
-import Images from '../Images'
+import { FunctionComponent, HTMLAttributes } from 'react'
+import { boardSize, headerHeight, margin } from '../../styles'
+import MosquitoToken from '../fieldelement/MosquitoToken'
 
 type PlayerBoardProps = {
   playerstate: PlayerState
-  activePlayer: PlayerColor
+  activePlayer?: PlayerColor
 } & HTMLAttributes<HTMLDivElement>
 
 const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({playerstate, activePlayer, ...props}: PlayerBoardProps) => {
-  /* const token = []
-
-   if (playerstate !== undefined) {
-     for (var i = 0; i < playerstate.eatenMosquitos.length; i++) {
-       token.push(
-         <Token effect={playerstate.eatenMosquitos[i]} effectIndex={i}/>
-       )
-     }
-   }*/
-
-  return <div css={outbox} {...props}>
-    <div css={victorypointsRow}>
-      <div css={tokenStyle} style={{backgroundImage: `url(${Images.goldenMosquito})`}}/>
-      <div css={victorypoints}> x</div>
-      <div css={victorypoints}> {playerstate?.goldenMosquitos}</div>
-    </div>
-    <div css={tokens}>
-      {/*{token}*/}
-    </div>
+  return <div css={outbox(playerstate.color, activePlayer)} {...props}>
+    {playerstate.eatenMosquitos.map( eatenMosquito =>
+      <MosquitoToken mosquito={eatenMosquito} css={tokenPosition}/>
+    )
+  }
   </div>
 }
 
@@ -37,33 +24,17 @@ export {
   PlayerBoard
 }
 
-const tokenStyle = css`
-  position: relative;
-  display: inline-grid;
-  height: 50%;
-  width: 50%;
-  background-size: contain;
-  background-repeat: no-repeat;
+const tokenPosition = css`
+  top: -10em;
+  left: -20em;
 `
 
-const tokens = css`
-  display: grid;
-  grid-template-columns: 33% 33% 33%;
-  grid-template-rows: 100%;
-`
-
-const victorypointsRow = css`
-  display: grid;
-  grid-template-columns: 33% 33% 33%;
-  grid-template-rows: 100%;
-`
-const victorypoints = css`
-  font-size: 70px;
-`
-
-const outbox = css`
+const outbox = (player: PlayerColor, activePlayer?: PlayerColor) => css`
   position: absolute;
-  display: inline-grid;
-  height: 100%;
-  width: 100%;
+  top: ${headerHeight + margin}em;
+  transform: translate(${(player === PlayerColor.Blue ? 1 : 1+(100*16/9-boardSize)/2 + boardSize)}em);
+  height: 45em;
+  width: ${(98*16/9-boardSize)/2}em;
+  border-style: ${player === activePlayer? 'dashed' : 'solid'};
+  border-color: ${(player === PlayerColor.Blue ? 'blue' : 'orange')};
 `
