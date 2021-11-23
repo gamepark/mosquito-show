@@ -1,3 +1,4 @@
+import { Mosquito } from "../material/MosquitoEffect";
 import { MoveType } from "./MoveType";
 
 /**
@@ -5,4 +6,9 @@ import { MoveType } from "./MoveType";
  */
 export type ChooseMosquitoEffect = {
     type: typeof MoveType.ChooseMosquitoEffect
+    mosquito?: Mosquito
 }
+
+export const chooseMosquitoEffectMove = (mosquito?: Mosquito): ChooseMosquitoEffect => ({
+    type: MoveType.ChooseMosquitoEffect, mosquito
+  })

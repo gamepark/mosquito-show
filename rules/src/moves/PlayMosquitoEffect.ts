@@ -1,15 +1,17 @@
 import GameView from '../GameView'
-import {MoveType} from './MoveType'
+import { Mosquito } from '../material/MosquitoEffect'
+import { MoveType } from './MoveType'
 
 export type PlayMosquitoEffect = {
   type: typeof MoveType.PlayMosquitoEffect
-  selectedEffectIndex: number
-  startMosquitoEffectFieldId: number
-  targetMosquitoEffectFieldId: number
+  selectedEffect: Mosquito
+  // selectedEffectIndex: number
+  // startMosquitoEffectFieldId: number
+  // targetMosquitoEffectFieldId: number
 }
 
-export const playMosquitoEffectMove = (selectedEffectIndex: number, startMosquitoEffectFieldId: number, targetMosquitoEffectFieldId: number): PlayMosquitoEffect => ({
-  type: MoveType.PlayMosquitoEffect, selectedEffectIndex, startMosquitoEffectFieldId, targetMosquitoEffectFieldId
+export const playMosquitoEffectMove = (selectedEffect: Mosquito): PlayMosquitoEffect => ({
+  type: MoveType.PlayMosquitoEffect, selectedEffect
 })
 
 export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): void => {

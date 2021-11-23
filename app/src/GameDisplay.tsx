@@ -13,9 +13,9 @@ export default function GameDisplay({game}: Props) {
   return (
     <Letterbox css={letterBoxStyle}>
       <div css={display}>
-        <PlayerBoard playerstate={game.players[0]} activePlayer={game.activePlayer}/>
+        <PlayerBoard game={game} playerIndex={0}/>
         <Board game={game}/>
-        <PlayerBoard playerstate={game.players[1]} activePlayer={game.activePlayer}/>
+        <PlayerBoard game={game} playerIndex={1}/>
       </div>
     </Letterbox>
   )

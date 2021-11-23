@@ -1,9 +1,9 @@
 import GameView from '@gamepark/mosquito-show/GameView'
-import {endOfTurn} from '@gamepark/mosquito-show/MosquitoShow'
-import {eatInView, Move, moveAnimal, MoveType, playMosquitoEffect} from '@gamepark/mosquito-show/moves'
-import {MoveView} from '@gamepark/mosquito-show/moves/MoveView'
-import {revealMosquitoInView} from '@gamepark/mosquito-show/moves/RevealMosquito'
-import {Game} from '@gamepark/rules-api'
+import { endOfTurn } from '@gamepark/mosquito-show/MosquitoShow'
+import { eatInView, Move, moveAnimal, MoveType, playMosquitoEffect } from '@gamepark/mosquito-show/moves'
+import { MoveView } from '@gamepark/mosquito-show/moves/MoveView'
+import { revealMosquitoInView } from '@gamepark/mosquito-show/moves/RevealMosquito'
+import { Game } from '@gamepark/rules-api'
 import LocalGameView from './LocalGameView'
 
 /**
@@ -48,6 +48,9 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
         } else ...*/
         this.state.selectedAnimal = move.animal
         return
+      case MoveType.ChooseMosquitoEffect:
+        this.state.selectedMosquito = move.mosquito
+        return
       case MoveType.MoveAnimal:
         moveAnimal(this.state, move)
         delete this.state.selectedAnimal
@@ -57,6 +60,7 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
         break
       case MoveType.PlayMosquitoEffect:
         playMosquitoEffect(move, this.state)
+        delete this.state.selectedMosquito
         break
       case MoveType.RevealMosquito:
         revealMosquitoInView(this.state, move)

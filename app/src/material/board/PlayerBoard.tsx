@@ -1,26 +1,31 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
+import { chooseMosquitoEffectMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
-import PlayerState from '@gamepark/mosquito-show/PlayerState'
+import { usePlay } from '@gamepark/react-client'
 import { FunctionComponent, HTMLAttributes } from 'react'
+import LocalGameView from 'src/LocalGameView'
 import { boardSize, headerHeight, margin, mosquitoTokenSize, playerboardSize } from '../../styles'
 import MosquitoToken from '../fieldelement/MosquitoToken'
 
 type PlayerBoardProps = {
-  playerstate: PlayerState
-  activePlayer?: PlayerColor
+  game: LocalGameView
+  playerIndex: number
 } & HTMLAttributes<HTMLDivElement>
 
-const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ playerstate, activePlayer, ...props }: PlayerBoardProps) => {
-  return <div css={outbox(playerstate.color, activePlayer)} {...props}>
+const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ game, playerIndex, ...props }: PlayerBoardProps) => {
+  const play = usePlay()
+  const playerstate = game.players[playerIndex]
+  
+  return <div css={outbox(playerstate.color, game.activePlayer)} {...props}>
     {
       [...Array(playerstate.goldenMosquitos)].map((_, index) =>
         <MosquitoToken mosquito={Mosquito.Golden} css={goldenMosquitoPosition(index)} />
       )
     }
     {playerstate.eatenMosquitos.map((eatenMosquito, index) =>
-      <MosquitoToken mosquito={eatenMosquito} css={eatenMosquitoPosition(index, playerstate.eatenMosquitos.length)} />
+      <MosquitoToken mosquito={eatenMosquito} onClick={game.selectedMosquito === undefined ? () => play(chooseMosquitoEffectMove(eatenMosquito)) : undefined} css={eatenMosquitoPosition(index, playerstate.eatenMosquitos.length)} />
     )
     }
   </div>
