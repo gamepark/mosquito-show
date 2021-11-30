@@ -1,3 +1,5 @@
+import Coordinates from '../fields/Coordinates'
+import GameState from '../GameState'
 import GameView from '../GameView'
 import { Mosquito } from '../material/MosquitoEffect'
 import { MoveType } from './MoveType'
@@ -8,14 +10,48 @@ export type PlayMosquitoEffect = {
   // selectedEffectIndex: number
   // startMosquitoEffectFieldId: number
   // targetMosquitoEffectFieldId: number
+} & Coordinates
+
+export type PlayMosquitoEffectView = PlayMosquitoEffect & {
+  mosquito?: Mosquito
 }
 
-export const playMosquitoEffectMove = (selectedEffect: Mosquito): PlayMosquitoEffect => ({
-  type: MoveType.PlayMosquitoEffect, selectedEffect
+export const playMosquitoEffectMove = (selectedEffect: Mosquito, x: number, y: number): PlayMosquitoEffect => ({
+  type: MoveType.PlayMosquitoEffect, selectedEffect, x, y
 })
 
-export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): void => {
-  /*const activePlayerState = getActivePlayerState(state)
+export function playMosquitoEffect(game: GameState, move: PlayMosquitoEffect) {
+  switch (move.selectedEffect) {
+    case Mosquito.White:
+      game.mosquitos[move.x][move.y].pop()!.mosquito
+      break;
+    default:
+      break;
+  }
+  removeMosquitoFromPlayer(game, move.selectedEffect)
+}
+
+export function playMosquitoEffectInView(game: GameView, move: PlayMosquitoEffectView) {
+  switch (move.selectedEffect) {
+    case Mosquito.White:
+      game.mosquitos[move.x][move.y].pop()!.mosquito ?? move.mosquito!
+      break;
+    default:
+      break;
+  }
+  removeMosquitoFromPlayer(game, move.selectedEffect)
+}
+
+export function removeMosquitoFromPlayer(game: GameState | GameView, mosquito: Mosquito) {
+  const player = game.players.find(p => p.color === game.activePlayer)!
+  const mosquitoIndex = player.eatenMosquitos.findIndex(m => m == mosquito)
+  if(mosquitoIndex > -1){
+    player.eatenMosquitos.splice(mosquitoIndex, 1)
+  }
+}
+
+/*export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): void => {
+  const activePlayerState = getActivePlayerState(state)
   if (activePlayerState !== undefined) {
     if (move.selectedEffectIndex > -1) {
       const selectedEffect = activePlayerState.availableMosquitoEffects.splice(move.selectedEffectIndex, 1)[0]
@@ -69,7 +105,7 @@ export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): v
   }
 
   function handleEffectEnd(activePlayerState: PlayerState) {
-    // Chameleon  
+    // Chameleon
     if (state.selectedAnimalId == 3 || state.selectedAnimalId == 4) {
       if (activePlayerState.chameleonMoved) {
         activePlayerState.chameleonMoved = false
@@ -207,5 +243,5 @@ export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): v
   function handleGoldenMosquitoEffect(activePlayerState: PlayerState) {
     activePlayerState.ownedGoldenMosquitos++
     handleEffectEnd(activePlayerState)
-  }*/
-}
+  }
+}*/

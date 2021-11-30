@@ -1,15 +1,15 @@
-import {IncompleteInformation, SequentialGame} from '@gamepark/rules-api'
+import { IncompleteInformation, SequentialGame } from '@gamepark/rules-api'
 import Animal from './animals/Animal'
 import Coordinates from './fields/Coordinates'
 import GameState from './GameState'
 import GameView from './GameView'
-import {Mosquito, Waterlily} from './material/MosquitoEffect'
-import {isGameOptions, MosquitoShowOptions} from './MosquitoShowOptions'
-import {eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playMosquitoEffect} from './moves'
-import {MoveView} from './moves/MoveView'
-import {revealMosquito, revealMosquitoMove} from './moves/RevealMosquito'
+import { Mosquito, Waterlily } from './material/MosquitoEffect'
+import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
+import { eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playMosquitoEffect } from './moves'
+import { MoveView } from './moves/MoveView'
+import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
-import {createMosquitos} from './utils/BoardUtils'
+import { createMosquitos } from './utils/BoardUtils'
 
 const {Orange, Blue} = PlayerColor
 const {Toucan, Chameleon} = Animal
@@ -102,7 +102,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         eat(this.state, move)
         break
       case MoveType.PlayMosquitoEffect:
-        playMosquitoEffect(move, this.state)
+        playMosquitoEffect(this.state, move)
         break
       case MoveType.RevealMosquito:
         revealMosquito(this.state, move)
@@ -130,7 +130,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     if (activePlayer.pendingToucanEat.length) {
       const {y, x} = activePlayer.pendingToucanEat[0]
       return eatMove(x, y)
-    } else if (!activePlayer.chameleonMustMove) {
+    } else if (!activePlayer.eatenMosquitos.length) {
       const mosquito = mosquitoToReveal(this.state)
       if (mosquito) {
         return revealMosquitoMove(mosquito.x, mosquito.y)
