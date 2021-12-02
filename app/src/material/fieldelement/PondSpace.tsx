@@ -15,34 +15,34 @@ type Props = {
   game: LocalGameView
 } & Coordinates
 
-export default function PondSpace({game, x, y}: Props) {
+export default function PondSpace({ game, x, y }: Props) {
   const playerId = usePlayerId()
   const play = usePlay()
   const canEat = useMemo(() => playerId && chameleonCanEat(game, x, y), [game])
   const mosquitos = game.mosquitos[x][y]
 
-  const onClick = (game:LocalGameView, canEat:boolean, mosquitoOnTop:boolean, x:number, y:number, mosquitoOnBoard:Partial<MosquitoOnBoard>) => {
-    if(game.selectedMosquito == Mosquito.White){
+  const onClick = (game: LocalGameView, canEat: boolean, mosquitoOnTop: boolean, x: number, y: number, mosquitoOnBoard: Partial<MosquitoOnBoard>) => {
+    if (game.selectedMosquito == Mosquito.White) {
       return () => play(playWhiteMosquitoEffectMove(x, y))
     }
-    if(game.selectedMosquito == Mosquito.Grey){
-      if(!game.selectedPondSpace){
+    if (game.selectedMosquito == Mosquito.Grey) {
+      if (!game.selectedPondSpace) {
         return () => play(selectMosquitoTokenMove(x, y))
       } else {
-        return () => play(moveMosquitoTokenMove(game.selectedPondSpace!, {x,y}))
+        return game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y ?  () => play(moveMosquitoTokenMove(game.selectedPondSpace!, { x, y })) : undefined
       }
     }
-    if(game.selectedAnimal === Animal.Chameleon && canEat && mosquitoOnTop) {
-      return () => play(eatMove(x, y), {delayed: !mosquitoOnBoard.mosquito})
+    if (game.selectedAnimal === Animal.Chameleon && canEat && mosquitoOnTop) {
+      return () => play(eatMove(x, y), { delayed: !mosquitoOnBoard.mosquito })
     }
     return undefined
   }
-  
+
   return (
     <div css={[style(x, y)]}>
       {mosquitos.map((mosquitoOnBoard, index) =>
         <MosquitoToken key={index} mosquito={mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily} css={tokenPosition(index)}
-                onClick={onClick(game, canEat, mosquitos.length === index + 1, x, y, mosquitoOnBoard)}
+          onClick={onClick(game, canEat, mosquitos.length === index + 1, x, y, mosquitoOnBoard)}
         />
       )}
     </div>

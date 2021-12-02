@@ -61,6 +61,7 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
       case MoveType.MoveMosquitoToken:
         moveMosquitoTokenInView(this.state, move)
         delete this.state.selectedPondSpace
+        delete this.state.selectedMosquito
         break
       case MoveType.Eat:
         eatInView(this.state, move)
