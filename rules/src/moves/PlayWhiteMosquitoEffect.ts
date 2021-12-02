@@ -2,52 +2,29 @@ import Coordinates from '../fields/Coordinates'
 import GameState from '../GameState'
 import GameView from '../GameView'
 import { Mosquito } from '../material/MosquitoEffect'
+import { removeMosquitoFromPlayer } from '../utils/BoardUtils'
 import { MoveType } from './MoveType'
 
-export type PlayMosquitoEffect = {
-  type: typeof MoveType.PlayMosquitoEffect
-  selectedEffect: Mosquito
-  // selectedEffectIndex: number
-  // startMosquitoEffectFieldId: number
-  // targetMosquitoEffectFieldId: number
+export type PlayWhiteMosquitoEffect = {
+  type: typeof MoveType.PlayWhiteMosquitoEffect
 } & Coordinates
 
-export type PlayMosquitoEffectView = PlayMosquitoEffect & {
+export type PlayWhiteMosquitoEffectView = PlayWhiteMosquitoEffect & {
   mosquito?: Mosquito
 }
 
-export const playMosquitoEffectMove = (selectedEffect: Mosquito, x: number, y: number): PlayMosquitoEffect => ({
-  type: MoveType.PlayMosquitoEffect, selectedEffect, x, y
+export const playWhiteMosquitoEffectMove = (x: number, y: number): PlayWhiteMosquitoEffect => ({
+  type: MoveType.PlayWhiteMosquitoEffect,  x, y
 })
 
-export function playMosquitoEffect(game: GameState, move: PlayMosquitoEffect) {
-  switch (move.selectedEffect) {
-    case Mosquito.White:
-      game.mosquitos[move.x][move.y].pop()!.mosquito
-      break;
-    default:
-      break;
-  }
-  removeMosquitoFromPlayer(game, move.selectedEffect)
+export function playWhiteMosquitoEffect(game: GameState, move: PlayWhiteMosquitoEffect) {
+  game.mosquitos[move.x][move.y].pop()!.mosquito
+  removeMosquitoFromPlayer(game, Mosquito.White)
 }
 
-export function playMosquitoEffectInView(game: GameView, move: PlayMosquitoEffectView) {
-  switch (move.selectedEffect) {
-    case Mosquito.White:
-      game.mosquitos[move.x][move.y].pop()!.mosquito ?? move.mosquito!
-      break;
-    default:
-      break;
-  }
-  removeMosquitoFromPlayer(game, move.selectedEffect)
-}
-
-export function removeMosquitoFromPlayer(game: GameState | GameView, mosquito: Mosquito) {
-  const player = game.players.find(p => p.color === game.activePlayer)!
-  const mosquitoIndex = player.eatenMosquitos.findIndex(m => m == mosquito)
-  if(mosquitoIndex > -1){
-    player.eatenMosquitos.splice(mosquitoIndex, 1)
-  }
+export function playMosquitoEffectInView(game: GameView, move: PlayWhiteMosquitoEffectView) {
+  game.mosquitos[move.x][move.y].pop()!.mosquito ?? move.mosquito!
+  removeMosquitoFromPlayer(game, Mosquito.White)
 }
 
 /*export const playMosquitoEffect = (move: PlayMosquitoEffect, state: GameView): void => {

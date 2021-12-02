@@ -15,7 +15,7 @@ const Token: FunctionComponent<TokenProps> = ({effect, effectIndex}: TokenProps)
   const play = usePlay()
 
   function playEffect() {
-    play({type: MoveType.PlayMosquitoEffect, selectedEffectIndex: effectIndex, startMosquitoEffectFieldId: -1, targetMosquitoEffectFieldId: -1})
+    play({type: MoveType.PlayWhiteMosquitoEffect, selectedEffectIndex: effectIndex, startMosquitoEffectFieldId: -1, targetMosquitoEffectFieldId: -1})
   }
 
   return (

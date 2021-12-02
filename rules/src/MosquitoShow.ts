@@ -5,7 +5,7 @@ import GameState from './GameState'
 import GameView from './GameView'
 import { Mosquito, Waterlily } from './material/MosquitoEffect'
 import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
-import { eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playMosquitoEffect } from './moves'
+import { eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playWhiteMosquitoEffect } from './moves'
 import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
@@ -101,8 +101,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       case MoveType.Eat:
         eat(this.state, move)
         break
-      case MoveType.PlayMosquitoEffect:
-        playMosquitoEffect(this.state, move)
+      case MoveType.PlayWhiteMosquitoEffect:
+        playWhiteMosquitoEffect(this.state, move)
         break
       case MoveType.RevealMosquito:
         revealMosquito(this.state, move)
