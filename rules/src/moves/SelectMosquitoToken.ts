@@ -1,15 +1,14 @@
+import Coordinates from '../fields/Coordinates'
 import GameState from '../GameState'
 import GameView from '../GameView'
-import { Mosquito } from '../material/MosquitoEffect'
 import { MoveType } from './MoveType'
 
 export type SelectMosquitoToken = {
   type: typeof MoveType.SelectMosquitoToken
-  mosquitoToken?: Mosquito
-}
+} & Coordinates
 
-export const selectMosquitoTokenMove = (mosquitoToken?: Mosquito): SelectMosquitoToken => ({
-  type: MoveType.SelectMosquitoToken, mosquitoToken
+export const selectMosquitoTokenMove = (x: number, y: number): SelectMosquitoToken => ({
+  type: MoveType.SelectMosquitoToken, x, y
 })
 
 export function selectMosquitoToken(state: GameView | GameState, move: SelectMosquitoToken) {
