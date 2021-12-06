@@ -3,7 +3,7 @@ import { css, keyframes } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { canMoveAnimal } from '@gamepark/mosquito-show/MosquitoShow'
+import { canMoveAnimal, getActivePlayerState } from '@gamepark/mosquito-show/MosquitoShow'
 import { selectAnimalMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
@@ -29,7 +29,7 @@ export default function AnimalMini({game, owner, animal}: AnimalProp) {
   const playerId = usePlayerId<PlayerColor>()
   const play = usePlay()
   const selected = playerId === owner.color && game.selectedAnimal === animal
-  const canMove = (playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal) && game.selectedMosquito !== Mosquito.Red) || (game.selectedMosquito === Mosquito.Red && owner.color != game.activePlayer)
+  const canMove = (playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal) && getActivePlayerState(game).selectedMosquito !== Mosquito.Red) || (getActivePlayerState(game).selectedMosquito === Mosquito.Red && owner.color != game.activePlayer)
 
   const onClick = () => {
     if (canMove) {

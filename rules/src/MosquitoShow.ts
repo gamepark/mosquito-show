@@ -5,7 +5,7 @@ import GameState from './GameState'
 import GameView from './GameView'
 import { Mosquito, Waterlily } from './material/MosquitoEffect'
 import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
-import { eat, eatMove, Move, moveAnimal, moveAnimalMove, moveMosquitoToken, MoveType, playWhiteMosquitoEffect } from './moves'
+import { chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, moveMosquitoToken, MoveType, playWhiteMosquitoEffect } from './moves'
 import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
@@ -76,7 +76,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     } else if (activePlayer.chameleonMustMove) {
       getValidDestinations(this.state, Chameleon).forEach(coordinates => moves.push(moveAnimalMove(Chameleon, coordinates)))
     } else if (activePlayer.eatenMosquitos.length) {
-      // TODO: legal move to apply mosquito effects
+      activePlayer.eatenMosquitos.forEach(mosquitoEffect => moves.push(chooseMosquitoEffectMove(mosquitoEffect)))
     } else {
       getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(pond.x, pond.y)))
       getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))
@@ -416,6 +416,11 @@ export function mosquitoToReveal(game: GameState | GameView) {
   }
   return
 }
+
+export function getActivePlayerState(state: GameState | GameView) {
+  return state.players.find(player => player.color === state.activePlayer)!
+}
+
 
 export function getPredictableAutomaticMoves(state: GameState | GameView): Move | void {
 

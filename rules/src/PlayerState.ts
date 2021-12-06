@@ -1,6 +1,6 @@
 import Animal from './animals/Animal'
 import Coordinates from './fields/Coordinates'
-import {Mosquito} from './material/MosquitoEffect'
+import { Mosquito } from './material/MosquitoEffect'
 import PlayerColor from './PlayerColor'
 
 export default interface PlayerState {
@@ -11,5 +11,6 @@ export default interface PlayerState {
   eatenMosquitos: Mosquito[],
   pendingToucanEat: Coordinates[],
   chameleonMustMove?: boolean,
-  animalForcedToMove?: Animal
+  animalForcedToMove?: Animal,
+  selectedMosquito?: Mosquito
 }

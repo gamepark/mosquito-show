@@ -1,4 +1,4 @@
-import {MosquitoOnBoard} from './material/MosquitoEffect'
+import { MosquitoOnBoard } from './material/MosquitoEffect'
 import PlayerColor from './PlayerColor'
 import PlayerState from './PlayerState'
 
@@ -13,16 +13,6 @@ type GameState = {
   mosquitoEffectStartFieldId: number
   inMoveAnimalSwitchNotAllowed: boolean
   pendingChameleonMove: boolean
-}
-
-export function getActivePlayerState(state: GameState) {
-  for (let i = 0; i < state.players.length; i++) {
-    const currentPlayerState = state.players[i]
-    if (currentPlayerState.color == state.activePlayer)
-      return currentPlayerState
-  }
-  //TODO Maybe throw an exceprtion
-  return undefined
 }
 
 export function switchPlayer(state: GameState) {

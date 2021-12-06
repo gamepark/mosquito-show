@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
+import { getActivePlayerState } from '@gamepark/mosquito-show/MosquitoShow'
 import { chooseMosquitoEffectMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import { usePlay } from '@gamepark/react-client'
@@ -25,7 +26,7 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ game, playerIndex, .
       )
     }
     {playerstate.eatenMosquitos.map((eatenMosquito, index) =>
-      <MosquitoToken mosquito={eatenMosquito} onClick={game.selectedMosquito === undefined ? () => play(chooseMosquitoEffectMove(eatenMosquito)) : undefined} css={eatenMosquitoPosition(index, playerstate.eatenMosquitos.length)} />
+      <MosquitoToken mosquito={eatenMosquito} onClick={getActivePlayerState(game).selectedMosquito === undefined ? () => play(chooseMosquitoEffectMove(eatenMosquito)) : undefined} css={eatenMosquitoPosition(index, playerstate.eatenMosquitos.length)} />
     )
     }
   </div>
