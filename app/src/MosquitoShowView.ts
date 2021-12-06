@@ -1,7 +1,7 @@
 import GameView from '@gamepark/mosquito-show/GameView'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
 import { endOfTurn, getActivePlayerState } from '@gamepark/mosquito-show/MosquitoShow'
-import { eatInView, Move, moveAnimal, moveMosquitoTokenInView, MoveType, playMosquitoEffectInView } from '@gamepark/mosquito-show/moves'
+import { eatInView, Move, moveAnimal, moveMosquitoTokenInView, MoveType, playMosquitoEffectInView, playRedMosquitoEffect } from '@gamepark/mosquito-show/moves'
 import { MoveView } from '@gamepark/mosquito-show/moves/MoveView'
 import { revealMosquitoInView } from '@gamepark/mosquito-show/moves/RevealMosquito'
 import { removeMosquitoFromPlayer } from '@gamepark/mosquito-show/utils/BoardUtils'
@@ -45,14 +45,7 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
   play(move: MoveView): void {
     switch (move.type) {
       case MoveType.SelectAnimal:
-       if (getActivePlayerState(this.state).selectedMosquito == Mosquito.Red) {
-         this.state.selectedEnemyAnimal = move.animal
-         delete getActivePlayerState(this.state).selectedMosquito
-         removeMosquitoFromPlayer(this.state, Mosquito.Red)
-
-        } else {
         this.state.selectedAnimal = move.animal
-        }
         return
       case MoveType.SelectMosquitoToken:
         this.state.selectedPondSpace = {x: move.x, y: move.y}
@@ -83,6 +76,10 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
         playMosquitoEffectInView(this.state, move)
         delete getActivePlayerState(this.state).selectedMosquito
         break
+      case MoveType.PlayRedMosquitoEffect:
+          playRedMosquitoEffect(this.state, move)
+          delete getActivePlayerState(this.state).selectedMosquito
+          break  
       case MoveType.RevealMosquito:
         revealMosquitoInView(this.state, move)
         break
