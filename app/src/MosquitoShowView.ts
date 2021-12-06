@@ -4,6 +4,7 @@ import { endOfTurn } from '@gamepark/mosquito-show/MosquitoShow'
 import { eatInView, Move, moveAnimal, moveMosquitoTokenInView, MoveType, playMosquitoEffectInView } from '@gamepark/mosquito-show/moves'
 import { MoveView } from '@gamepark/mosquito-show/moves/MoveView'
 import { revealMosquitoInView } from '@gamepark/mosquito-show/moves/RevealMosquito'
+import { removeMosquitoFromPlayer } from '@gamepark/mosquito-show/utils/BoardUtils'
 import { Game } from '@gamepark/rules-api'
 import LocalGameView from './LocalGameView'
 
@@ -60,6 +61,9 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
         return
       case MoveType.MoveAnimal:
         moveAnimal(this.state, move)
+        if(this.state.selectedMosquito == Mosquito.Blue){
+          removeMosquitoFromPlayer(this.state, Mosquito.Blue)
+        }
         delete this.state.selectedAnimal
         delete this.state.selectedMosquito
         break

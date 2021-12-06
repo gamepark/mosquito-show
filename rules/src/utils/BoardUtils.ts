@@ -9,7 +9,7 @@ export const createMosquitos = (): MosquitoOnBoard[][][] => {
   // Golden : 17 total 5 hidden
   for (let i = 0; i < 12; i++) {
     mosquito.push(
-      { mosquito: Mosquito.Grey, waterlily: Waterlily.WaterLily, revealed: false }
+      { mosquito: Mosquito.Blue, waterlily: Waterlily.WaterLily, revealed: false }
     )
   }
   for (let i = 0; i < 5; i++) {
