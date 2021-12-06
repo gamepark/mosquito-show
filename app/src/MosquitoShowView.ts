@@ -45,10 +45,14 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
   play(move: MoveView): void {
     switch (move.type) {
       case MoveType.SelectAnimal:
-        /*if (moquito effect to force to move opponent animal) {
-          selectAnimal(this.state, move)
-        } else ...*/
+       if (this.state.selectedMosquito == Mosquito.Red) {
+         this.state.selectedEnemyAnimal = move.animal
+         delete this.state.selectedMosquito
+         removeMosquitoFromPlayer(this.state, Mosquito.Red)
+
+        } else {
         this.state.selectedAnimal = move.animal
+        }
         return
       case MoveType.SelectMosquitoToken:
         this.state.selectedPondSpace = {x: move.x, y: move.y}

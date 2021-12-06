@@ -1,15 +1,16 @@
 /** @jsxImportSource @emotion/react */
-import {css, keyframes} from '@emotion/react'
+import { css, keyframes } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
-import {canMoveAnimal} from '@gamepark/mosquito-show/MosquitoShow'
-import {selectAnimalMove} from '@gamepark/mosquito-show/moves'
+import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
+import { canMoveAnimal } from '@gamepark/mosquito-show/MosquitoShow'
+import { selectAnimalMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
-import {usePlay, usePlayerId} from '@gamepark/react-client'
-import {Draggable} from '@gamepark/react-components'
+import { usePlay, usePlayerId } from '@gamepark/react-client'
+import { Draggable } from '@gamepark/react-components'
 import LocalGameView from '../../LocalGameView'
-import {animalHeight, animalWidth, boardSize, jungleSpaceDelta} from '../../styles'
+import { animalHeight, animalWidth, boardSize, jungleSpaceDelta } from '../../styles'
 import Images from '../Images'
 
 const {Orange, Blue} = PlayerColor
@@ -28,7 +29,7 @@ export default function AnimalMini({game, owner, animal}: AnimalProp) {
   const playerId = usePlayerId<PlayerColor>()
   const play = usePlay()
   const selected = playerId === owner.color && game.selectedAnimal === animal
-  const canMove = playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal)
+  const canMove = (playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal) && game.selectedMosquito !== Mosquito.Red) || (game.selectedMosquito === Mosquito.Red && owner.color != game.activePlayer)
 
   const onClick = () => {
     if (canMove) {

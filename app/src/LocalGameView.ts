@@ -5,6 +5,7 @@ import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
 
 type LocalGameView = GameView & {
   selectedAnimal?: Animal
+  selectedEnemyAnimal?: Animal;
   selectedPondSpace?: Coordinates
   selectedMosquito?: Mosquito
 }
