@@ -5,7 +5,7 @@ import GameState from './GameState'
 import GameView from './GameView'
 import { Mosquito, Waterlily } from './material/MosquitoEffect'
 import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
-import { chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, moveMosquitoToken, MoveType, playRedMosquitoEffect, playWhiteMosquitoEffect } from './moves'
+import { chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, moveMosquitoToken, moveMosquitoTokenMove, MoveType, playRedMosquitoEffect, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove } from './moves'
 import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
@@ -75,8 +75,24 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       }
     } else if (activePlayer.chameleonMustMove) {
       getValidDestinations(this.state, Chameleon).forEach(coordinates => moves.push(moveAnimalMove(Chameleon, coordinates)))
-    } else if (activePlayer.eatenMosquitos.length) {
+    } else if (activePlayer.eatenMosquitos.length && !activePlayer.selectedMosquito) {
       activePlayer.eatenMosquitos.forEach(mosquitoEffect => moves.push(chooseMosquitoEffectMove(mosquitoEffect)))
+    } else if (activePlayer.selectedMosquito) {
+      if (activePlayer.selectedMosquito == Mosquito.White) {
+        this.state.mosquitos.map((yz, x) => yz.map((z, y) => z.length ? moves.push(playWhiteMosquitoEffectMove(x, y)) : undefined))
+      }
+      if (activePlayer.selectedMosquito == Mosquito.Grey) {
+        const origins: Coordinates[] = []
+        this.state.mosquitos.map((yz, x) => yz.map((z, y) => z.length ? origins.push({ x, y }) : undefined))
+        origins.forEach(origin => {
+          [...Array(3)].map((_, x) =>
+            [...Array(3)].map((_, y) =>
+              origin.x != x || origin.y != y ? moves.push(moveMosquitoTokenMove(origin, { x, y })) : undefined
+            )
+          )
+        }
+        )
+      }
     } else {
       getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(pond.x, pond.y)))
       getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))
