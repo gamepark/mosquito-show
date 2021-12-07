@@ -1,4 +1,7 @@
+import GameState from "../GameState";
+import GameView from "../GameView";
 import { Mosquito } from "../material/MosquitoEffect";
+import { getActivePlayerState } from "../MosquitoShow";
 import { MoveType } from "./MoveType";
 
 /**
@@ -12,3 +15,9 @@ export type ChooseMosquitoEffect = {
 export const chooseMosquitoEffectMove = (mosquito?: Mosquito): ChooseMosquitoEffect => ({
     type: MoveType.ChooseMosquitoEffect, mosquito
   })
+
+
+  export const chooseMosquitoEffect = (game: GameState | GameView, move: ChooseMosquitoEffect): void => {
+    getActivePlayerState(game).selectedMosquito = move.mosquito
+  }
+   

@@ -12,5 +12,6 @@ export default interface PlayerState {
   pendingToucanEat: Coordinates[],
   chameleonMustMove?: boolean,
   animalForcedToMove?: Animal,
-  selectedMosquito?: Mosquito
+  selectedMosquito?: Mosquito,
+  hasPlayerToMoveAnimal?: Animal 
 }
