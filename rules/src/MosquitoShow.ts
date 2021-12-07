@@ -93,10 +93,12 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         }
         )
       }
+      if (activePlayer.selectedMosquito == Mosquito.Blue) {
+        getValidDestinations(this.state, Chameleon).forEach(coordinates => moves.push(moveAnimalMove(Chameleon, coordinates)))
+        getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))
+      }
       if (activePlayer.selectedMosquito == Mosquito.Red) {
-        const playerColorWhoHasToPlay = this.state.activePlayer == PlayerColor.Blue ? PlayerColor.Orange : PlayerColor.Blue;
-        moves.push(playRedMosquitoEffectMove(Animal.Chameleon, playerColorWhoHasToPlay));
-        moves.push(playRedMosquitoEffectMove(Animal.Toucan, playerColorWhoHasToPlay));
+        [Chameleon, Toucan].forEach(animal => moves.push(playRedMosquitoEffectMove(animal)))
       }
     } else {
       getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(pond.x, pond.y)))
@@ -319,8 +321,7 @@ export function getValidDestinations(game: GameState | GameView, animal: Animal)
   const player = game.players.find(player => player.color === game.activePlayer)
   if (!player) return []
   const origin = animal === Animal.Chameleon ? player.chameleon : player.toucan
-  if (!origin || (!player.chameleonMustMove && player.eatenMosquitos.some(mosquito => mosquito === Mosquito.Blue))) {
-    // Any free space
+  if (!origin || (!player.chameleonMustMove && player.selectedMosquito == Mosquito.Blue)) {
     const result: Coordinates[] = []
     for (let x = 0; x < 4; x++) {
       for (let y = 0; y < 4; y++) {
@@ -376,7 +377,7 @@ export function isValidDestination(game: GameState | GameView, animal: Animal, {
   const player = game.players.find(p => p.color === game.activePlayer)
   if (!player) return false
   const origin = animal === Chameleon ? player.chameleon : player.toucan
-  if (!origin || (!player.chameleonMustMove && player.eatenMosquitos.some(mosquito => mosquito === Mosquito.Blue))) {
+  if (!origin || (!player.chameleonMustMove && player.selectedMosquito == Mosquito.Blue)) {
     return !getAnimalLocations(game).some(location => location.x === x && location.y === y)
   }
   return getValidDestinations(game, animal).some(destination => destination.x === x && destination.y === y)
@@ -432,6 +433,7 @@ export function endOfTurn(game: GameState | GameView) {
       // TODO: not game over if animal cannot move due to red mosquito
       delete game.activePlayer
     }
+    delete getActivePlayerState(game).hasPlayerToMoveAnimal
   }
 }
 

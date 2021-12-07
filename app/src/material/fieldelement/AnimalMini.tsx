@@ -31,8 +31,7 @@ export default function AnimalMini({game, owner, animal}: AnimalProp) {
   const selected = playerId === owner.color && game.selectedAnimal === animal
   const canMove = (playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal) && getActivePlayerState(game).selectedMosquito !== Mosquito.Red)
   const chooseEnemyAnimal = (getActivePlayerState(game).selectedMosquito === Mosquito.Red && owner.color != game.activePlayer)
-  const enemyColor = game.activePlayer == PlayerColor.Blue ? PlayerColor.Orange : PlayerColor.Blue;
-
+  
   const onClick = () => {
     if (canMove) {
       if(getActivePlayerState(game).hasPlayerToMoveAnimal !== animal){
@@ -40,7 +39,7 @@ export default function AnimalMini({game, owner, animal}: AnimalProp) {
       }
       play(selectAnimalMove(animal === game.selectedAnimal ? undefined : animal), {local: true})
     } else if (chooseEnemyAnimal){
-      play(playRedMosquitoEffectMove(animal,enemyColor))
+      play(playRedMosquitoEffectMove(animal))
     }
   }
 
