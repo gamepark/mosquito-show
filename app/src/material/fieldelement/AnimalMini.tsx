@@ -34,7 +34,7 @@ export default function AnimalMini({game, owner, animal}: AnimalProp) {
   
   const onClick = () => {
     if (canMove) {
-      if(getActivePlayerState(game).hasPlayerToMoveAnimal !== animal){
+      if(getActivePlayerState(game).hasPlayerToMoveAnimal && getActivePlayerState(game).hasPlayerToMoveAnimal !== animal){
         return
       }
       play(selectAnimalMove(animal === game.selectedAnimal ? undefined : animal), {local: true})
