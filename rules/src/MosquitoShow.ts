@@ -76,6 +76,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     } else if (activePlayer.chameleonMustMove) {
       getValidDestinations(this.state, Chameleon).forEach(coordinates => moves.push(moveAnimalMove(Chameleon, coordinates)))
     } else if (activePlayer.eatenMosquitos.length && !activePlayer.selectedMosquito) {
+      // TODO: for every Mosquito just one move!
       activePlayer.eatenMosquitos.forEach(mosquitoEffect => moves.push(chooseMosquitoEffectMove(mosquitoEffect)))
     } else if (activePlayer.selectedMosquito) {
       if (activePlayer.selectedMosquito == Mosquito.White) {
@@ -112,6 +113,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     // if from gameboard each animal -> move for all possible fields
     // else if -> move for toucan possible fields && (eat for possible token fields (when !chameleonmoved) || move for chameleon possible fields)
     //
+    console.log(moves)
     return moves
   }
 
@@ -172,107 +174,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         return revealMosquitoMove(mosquito.x, mosquito.y)
       }
     }
-
-    // Chameleon
-    /*if (this.state.selectedAnimalId == 3 || this.state.selectedAnimalId == 4) {
-      const activePlayerState = getActivePlayerState(this.state)!
-      // Handle Mosquito Effect after Moving
-      if (activePlayerState.availableMosquitoEffects.length > 0 && activePlayerState.chameleonMoved) {
-        return playMosquitoEffectMove(0, -1, -1)
-      }
-    }*/
-    // // Toucan
-    // if (this.state.selectedAnimalId == 1 || this.state.selectedAnimalId == 2) {
-    //   var activePlayerState = getActivePlayerState(this.state)
-    //   const currentAnimalField = this.getCurrentAnimalField();
-    //   var nextToucanPosition: number = -1
-    //   var effectFieldToEat: number
-    //   if (activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition !== currentAnimalField.fieldId) {
-    //     var upDownIndicator = currentAnimalField.fieldId - activePlayerState.toucanStartPosition
-    //     if (upDownIndicator % 3 == 0 && upDownIndicator % 5 == 0) {
-    //       if (upDownIndicator > 0) {
-    //         // bottom right
-    //         nextToucanPosition = activePlayerState.toucanStartPosition + 5
-    //       }
-    //       if (upDownIndicator < 0) {
-    //         // up left
-    //         nextToucanPosition = activePlayerState.toucanStartPosition - 5
-    //       }
-    //     } else {
-    //       if (upDownIndicator > 0 && upDownIndicator % 3 == 0) {
-    //         // bottom left
-    //         nextToucanPosition = activePlayerState.toucanStartPosition + 3
-    //       }
-    //       if (upDownIndicator > 0 && upDownIndicator % 5 == 0) {
-    //         // bottom right
-    //         nextToucanPosition = activePlayerState.toucanStartPosition + 5
-    //       }
-    //       if (upDownIndicator < 0 && upDownIndicator % 3 == 0) {
-    //         // up right
-    //         nextToucanPosition = activePlayerState.toucanStartPosition - 3
-    //       }
-    //       if (upDownIndicator < 0 && upDownIndicator % 5 == 0) {
-    //         // up left
-    //         nextToucanPosition = activePlayerState.toucanStartPosition - 5
-    //       }
-    //     }
-    //     // Handle Up to three Eat Moves
-    //     if (nextToucanPosition !== -1) {
-    //       effectFieldToEat = activePlayerState.toucanStartPosition + nextToucanPosition
-    //       activePlayerState.toucanStartPosition = nextToucanPosition
-    //       return eatMove(effectFieldToEat, nextToucanPosition)
-    //     } else {
-    //       console.error('Could not get nextToucanPosition')
-    //     }
-    //   }
-    //   // Handle Up to three Mosquito Effects
-    //   if (activePlayerState !== undefined && currentAnimalField !== undefined && activePlayerState.toucanStartPosition === currentAnimalField.fieldId && activePlayerState.availableMosquitoEffects.length > 0) {
-    //     // Handle Golden Mosquitos first
-    //     for (let i = 0; i < activePlayerState.availableMosquitoEffects.length; i++) {
-    //       const effect = activePlayerState.availableMosquitoEffects[i];
-    //       if (effect.front == 5) {
-    //         return playMosquitoEffectMove(i, -1, -1)
-    //       }
-    //     }
-    //     // In case of one left Effect play it automatically, otherwise let Player choose
-    //     if (activePlayerState.availableMosquitoEffects.length > 1) {
-    //       if (activePlayerState.toucanChosenEffectId == -1) {
-    //         //choose
-    //         console.error("still something to do")
-    //       } else {
-    //         for (let i = 0; i < activePlayerState.availableMosquitoEffects.length; i++) {
-    //           const effect = activePlayerState.availableMosquitoEffects[i];
-    //           if (effect.id == activePlayerState.toucanChosenEffectId) {
-    //             return playMosquitoEffectMove(i, -1, -1)
-    //           }
-    //         }
-    //       }
-    //     } else if (activePlayerState.availableMosquitoEffects.length == 1) {
-    //       return playMosquitoEffectMove(0, -1, -1)
-    //     }
-    //   }
-    // }
-    // // Handle Red Mosquito Effect after PlayerSwitch
-    // if (this.state.mosquitoEffect === 3 && this.state.selectedAnimalId === undefined && this.state.mosquitoEffectStartFieldId > -1) {
-    //   for (let i = 0; i < this.state.board.animalFields.length; i++) {
-    //     const animalField = this.state.board.animalFields[i];
-    //     if (animalField.fieldId == this.state.mosquitoEffectStartFieldId) {
-    //       this.state.inMoveAnimalSwitchNotAllowed = false
-    //       return selectAnimalMove(animalField.animalId)
-    //     }
-    //   }
-    // }
   }
-
-  /*getCurrentAnimalField() {
-    var animalFieldIds = this.state.board.animalLocations
-    for (let j = 0; j < animalFieldIds.length; j++) {
-      if (animalFieldIds[j].animalId == this.state.selectedAnimalId) {
-        return animalFieldIds[j]
-      }
-    }
-    return undefined
-  }*/
 
   /**
    * If your game has incomplete information, you must hide some of the game's state to the players and spectators.
