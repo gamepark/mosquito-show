@@ -27,10 +27,8 @@ export default function PondSpace({ game, x, y }: Props) {
     }
     if (getActivePlayerState(game).selectedMosquito == Mosquito.Grey) {
       if (!game.selectedPondSpace) {
-        console.log('i select a Token' + game.selectedPondSpace)
-        return () => play(selectMosquitoTokenMove(x, y))
+        return () => play(selectMosquitoTokenMove(x, y), {local: true})
       } else {
-        console.log('i move a Token!' + game.selectedPondSpace)
         return game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y ?  () => play(moveMosquitoTokenMove(game.selectedPondSpace!, { x, y })) : undefined
       }
     }

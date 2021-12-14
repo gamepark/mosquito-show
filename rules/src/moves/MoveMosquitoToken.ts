@@ -2,6 +2,7 @@ import Coordinates from '../fields/Coordinates'
 import GameState from '../GameState'
 import GameView from '../GameView'
 import { Mosquito } from '../material/MosquitoEffect'
+import { getActivePlayerState } from '../MosquitoShow'
 import { removeMosquitoFromPlayer } from '../utils/BoardUtils'
 import { MoveType } from './MoveType'
 
@@ -19,10 +20,12 @@ export const moveMosquitoToken = (game: GameState, move: MoveMosquitoToken): voi
   const mosquito = game.mosquitos[move.origin.x][move.origin.y].pop()!
   game.mosquitos[move.destination.x][move.destination.y].push(mosquito)
   removeMosquitoFromPlayer(game, Mosquito.Grey)
+  delete getActivePlayerState(game).selectedMosquito
 }
 
 export const moveMosquitoTokenInView = (game: GameView, move: MoveMosquitoToken): void => {
   const mosquito = game.mosquitos[move.origin.x][move.origin.y].pop()!
   game.mosquitos[move.destination.x][move.destination.y].push(mosquito)
   removeMosquitoFromPlayer(game, Mosquito.Grey)
+  delete getActivePlayerState(game).selectedMosquito
 }
