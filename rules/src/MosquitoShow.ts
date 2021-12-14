@@ -133,15 +133,15 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       case MoveType.Eat:
         eat(this.state, move)
         break
-      case MoveType.ChooseMosquitoEffect:
-        chooseMosquitoEffect(this.state, move)
-        return
       case MoveType.PlayWhiteMosquitoEffect:
         playWhiteMosquitoEffect(this.state, move)
         break
       case MoveType.PlayRedMosquitoEffect:
         playRedMosquitoEffect(this.state, move)
         break
+      case MoveType.ChooseMosquitoEffect:
+        chooseMosquitoEffect(this.state, move)
+        return
       case MoveType.RevealMosquito:
         revealMosquito(this.state, move)
         break

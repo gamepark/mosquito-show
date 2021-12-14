@@ -50,12 +50,6 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
       case MoveType.SelectMosquitoToken:
         this.state.selectedPondSpace = { x: move.x, y: move.y }
         return
-      case MoveType.ChooseMosquitoEffect:
-        chooseMosquitoEffect(this.state, move)
-        if (move.mosquito == Mosquito.Blue) {
-          this.state.selectedAnimal = undefined
-        }
-        return
       case MoveType.MoveAnimal:
         moveAnimal(this.state, move)
         if (getActivePlayerState(this.state).selectedMosquito == Mosquito.Blue) {
@@ -79,6 +73,12 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
         playRedMosquitoEffect(this.state, move)
         delete getActivePlayerState(this.state).selectedMosquito
         break
+      case MoveType.ChooseMosquitoEffect:
+        chooseMosquitoEffect(this.state, move)
+        if (move.mosquito == Mosquito.Blue) {
+          this.state.selectedAnimal = undefined
+        }
+        return
       case MoveType.RevealMosquito:
         revealMosquitoInView(this.state, move)
         break
