@@ -2,7 +2,7 @@ import Animal from '../animals/Animal'
 import Coordinates from '../fields/Coordinates'
 import GameState from '../GameState'
 import GameView from '../GameView'
-import {MoveType} from './MoveType'
+import { MoveType } from './MoveType'
 
 export type MoveAnimal = {
   type: typeof MoveType.MoveAnimal

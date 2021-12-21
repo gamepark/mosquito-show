@@ -5,7 +5,7 @@ import GameState from './GameState'
 import GameView from './GameView'
 import { Mosquito, Waterlily } from './material/MosquitoEffect'
 import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
-import { chooseMosquitoEffect, chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, moveMosquitoToken, moveMosquitoTokenMove, MoveType, playRedMosquitoEffect, playRedMosquitoEffectMove, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove } from './moves'
+import { chooseMosquitoEffect, chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playBlueMosquitoEffect, playBlueMosquitoEffectMove, playGreyMosquitoEffect, playGreyMosquitoEffectMove, playRedMosquitoEffect, playRedMosquitoEffectMove, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove } from './moves'
 import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
@@ -88,15 +88,15 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         origins.forEach(origin => {
           [...Array(3)].map((_, x) =>
             [...Array(3)].map((_, y) =>
-              origin.x != x || origin.y != y ? moves.push(moveMosquitoTokenMove(origin, { x, y })) : undefined
+              origin.x != x || origin.y != y ? moves.push(playGreyMosquitoEffectMove(origin, { x, y })) : undefined
             )
           )
         }
         )
       }
       if (activePlayer.selectedMosquito == Mosquito.Blue) {
-        getValidDestinations(this.state, Chameleon).forEach(coordinates => moves.push(moveAnimalMove(Chameleon, coordinates)))
-        getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))
+        getValidDestinations(this.state, Chameleon).forEach(coordinates => moves.push(playBlueMosquitoEffectMove(Chameleon, coordinates)))
+        getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(playBlueMosquitoEffectMove(Toucan, coordinates)))
       }
       if (activePlayer.selectedMosquito == Mosquito.Red) {
         [Chameleon, Toucan].forEach(animal => moves.push(playRedMosquitoEffectMove(animal)))
@@ -127,17 +127,20 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       case MoveType.MoveAnimal:
         moveAnimal(this.state, move)
         break
-      case MoveType.MoveMosquitoToken:
-        moveMosquitoToken(this.state, move)
-        break
       case MoveType.Eat:
         eat(this.state, move)
+        break
+      case MoveType.PlayGreyMosquitoEffect:
+        playGreyMosquitoEffect(this.state, move)
         break
       case MoveType.PlayWhiteMosquitoEffect:
         playWhiteMosquitoEffect(this.state, move)
         break
       case MoveType.PlayRedMosquitoEffect:
         playRedMosquitoEffect(this.state, move)
+        break
+      case MoveType.PlayBlueMosquitoEffect:
+        playBlueMosquitoEffect(this.state, move)
         break
       case MoveType.ChooseMosquitoEffect:
         chooseMosquitoEffect(this.state, move)

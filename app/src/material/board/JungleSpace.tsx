@@ -1,29 +1,34 @@
 /** @jsxImportSource @emotion/react */
-import {css, keyframes} from '@emotion/react'
+import { css, keyframes } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
-import {moveAnimalMove} from '@gamepark/mosquito-show/moves'
-import {HTMLAttributes} from 'react'
-import {DropTargetMonitor, useDrop} from 'react-dnd'
-import {jungleSpaceDelta} from '../../styles'
-import {ANIMAL, AnimalDragObject} from '../fieldelement/AnimalMini'
+import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
+import { getActivePlayerState } from '@gamepark/mosquito-show/MosquitoShow'
+import { moveAnimalMove, playBlueMosquitoEffectMove } from '@gamepark/mosquito-show/moves'
+import { HTMLAttributes } from 'react'
+import { DropTargetMonitor, useDrop } from 'react-dnd'
+import LocalGameView from 'src/LocalGameView'
+import { jungleSpaceDelta } from '../../styles'
+import { ANIMAL, AnimalDragObject } from '../fieldelement/AnimalMini'
 
 type Props = Coordinates & {
+  game: LocalGameView
   canMoveHere: (animal: Animal) => boolean
 } & HTMLAttributes<HTMLDivElement>
 
-export default function JungleSpace({x, y, canMoveHere, ...props}: Props) {
-  const [{canDrop, isOver}, ref] = useDrop({
+export default function JungleSpace({ x, y, game, canMoveHere, ...props }: Props) {
+  console.log('selectedMosquito ' + getActivePlayerState(game).selectedMosquito)
+  const [{ canDrop, isOver }, ref] = useDrop({
     accept: ANIMAL,
     canDrop: (item: AnimalDragObject) => canMoveHere(item.animal),
     collect: (monitor: DropTargetMonitor<AnimalDragObject>) => ({
       canDrop: monitor.canDrop(),
       isOver: monitor.isOver()
     }),
-    drop: ({animal}: AnimalDragObject) => moveAnimalMove(animal, {x, y})
+    drop: ({ animal }: AnimalDragObject) => getActivePlayerState(game).selectedMosquito && getActivePlayerState(game).selectedMosquito == Mosquito.Blue ? playBlueMosquitoEffectMove(animal, { x, y }) : moveAnimalMove(animal, { x, y })
   })
   return (
-    <div ref={ref} css={[style(x, y), (props.onClick || canDrop) && !isOver && display, canDrop && isOver && overStyle]} {...props}/>
+    <div ref={ref} css={[style(x, y), (props.onClick || canDrop) && !isOver && display, canDrop && isOver && overStyle]} {...props} />
   )
 }
 

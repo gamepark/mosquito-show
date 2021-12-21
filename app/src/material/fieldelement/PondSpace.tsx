@@ -4,7 +4,7 @@ import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
 import { Mosquito, MosquitoOnBoard } from '@gamepark/mosquito-show/material/MosquitoEffect'
 import { chameleonCanEat, getActivePlayerState } from '@gamepark/mosquito-show/MosquitoShow'
-import { eatMove, moveMosquitoTokenMove, playWhiteMosquitoEffectMove, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
+import { eatMove, playGreyMosquitoEffectMove, playWhiteMosquitoEffectMove, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
 import { usePlay, usePlayerId } from '@gamepark/react-client'
 import { useMemo } from 'react'
 import LocalGameView from '../../LocalGameView'
@@ -29,7 +29,7 @@ export default function PondSpace({ game, x, y }: Props) {
       if (!game.selectedPondSpace) {
         return () => play(selectMosquitoTokenMove(x, y), {local: true})
       } else {
-        return game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y ?  () => play(moveMosquitoTokenMove(game.selectedPondSpace!, { x, y })) : undefined
+        return game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y ?  () => play(playGreyMosquitoEffectMove(game.selectedPondSpace!, { x, y })) : undefined
       }
     }
     if (game.selectedAnimal === Animal.Chameleon && canEat && mosquitoOnTop) {

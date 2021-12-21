@@ -6,24 +6,24 @@ import { getActivePlayerState } from '../MosquitoShow'
 import { removeMosquitoFromPlayer } from '../utils/BoardUtils'
 import { MoveType } from './MoveType'
 
-export type MoveMosquitoToken = {
-  type: typeof MoveType.MoveMosquitoToken
+export type PlayGreyMosquitoEffect = {
+  type: typeof MoveType.PlayGreyMosquitoEffect
   origin: Coordinates
   destination: Coordinates
 }
 
-export const moveMosquitoTokenMove = (origin: Coordinates, destination: Coordinates): MoveMosquitoToken => ({
-  type: MoveType.MoveMosquitoToken, origin, destination
+export const playGreyMosquitoEffectMove = (origin: Coordinates, destination: Coordinates): PlayGreyMosquitoEffect => ({
+  type: MoveType.PlayGreyMosquitoEffect, origin, destination
 })
 
-export const moveMosquitoToken = (game: GameState, move: MoveMosquitoToken): void => {
+export const playGreyMosquitoEffect = (game: GameState, move: PlayGreyMosquitoEffect): void => {
   const mosquito = game.mosquitos[move.origin.x][move.origin.y].pop()!
   game.mosquitos[move.destination.x][move.destination.y].push(mosquito)
   removeMosquitoFromPlayer(game, Mosquito.Grey)
   delete getActivePlayerState(game).selectedMosquito
 }
 
-export const moveMosquitoTokenInView = (game: GameView, move: MoveMosquitoToken): void => {
+export const playGreyMosquitoEffectInView = (game: GameView, move: PlayGreyMosquitoEffect): void => {
   const mosquito = game.mosquitos[move.origin.x][move.origin.y].pop()!
   game.mosquitos[move.destination.x][move.destination.y].push(mosquito)
   removeMosquitoFromPlayer(game, Mosquito.Grey)

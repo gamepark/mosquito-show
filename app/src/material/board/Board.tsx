@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
-import { getValidDestinations, isValidDestination } from '@gamepark/mosquito-show/MosquitoShow'
-import { moveAnimalMove } from '@gamepark/mosquito-show/moves'
+import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
+import { getActivePlayerState, getValidDestinations, isValidDestination } from '@gamepark/mosquito-show/MosquitoShow'
+import { moveAnimalMove, playBlueMosquitoEffectMove } from '@gamepark/mosquito-show/moves'
 import { usePlay, usePlayerId } from '@gamepark/react-client'
 import { useMemo } from 'react'
 import LocalGameView from '../../LocalGameView'
@@ -36,8 +37,9 @@ export default function Board({game, ...props}: Props) {
         [...Array(4)].map((_, y) =>
           <JungleSpace key={x + '_' + y} x={x} y={y}
                        canMoveHere={animal => isValidDestination(game, animal, {x, y})}
+                       game={game}
                        onClick={validDestinations.some(destination => destination.x === x && destination.y === y) ?
-                         () => play(moveAnimalMove(game.selectedAnimal!, {x, y}))
+                         () => play(getActivePlayerState(game).selectedMosquito && getActivePlayerState(game).selectedMosquito == Mosquito.Blue ? playBlueMosquitoEffectMove(game.selectedAnimal!, { x, y }) : moveAnimalMove(game.selectedAnimal!, { x, y }))
                          : undefined}/>
         )
       )}

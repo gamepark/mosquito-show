@@ -48,7 +48,7 @@ export const createMosquitos = (): MosquitoOnBoard[][][] => {
   // )
 
   for (let i = 0; i < 27; i++) {
-    mosquito.push({mosquito: Mosquito.Grey, waterlily: Waterlily.WaterLily, revealed: false})
+    mosquito.push({mosquito: Mosquito.Blue, waterlily: Waterlily.WaterLily, revealed: false})
   }
 
   const shuffledMosquitos = shuffle(mosquito)
