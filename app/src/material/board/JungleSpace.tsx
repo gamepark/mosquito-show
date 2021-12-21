@@ -17,7 +17,6 @@ type Props = Coordinates & {
 } & HTMLAttributes<HTMLDivElement>
 
 export default function JungleSpace({ x, y, game, canMoveHere, ...props }: Props) {
-  console.log('selectedMosquito ' + getActivePlayerState(game).selectedMosquito)
   const [{ canDrop, isOver }, ref] = useDrop({
     accept: ANIMAL,
     canDrop: (item: AnimalDragObject) => canMoveHere(item.animal),

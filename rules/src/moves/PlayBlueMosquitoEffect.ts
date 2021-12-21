@@ -25,5 +25,4 @@ export const playBlueMosquitoEffect = (game: GameState | GameView, move: PlayBlu
   }
   removeMosquitoFromPlayer(game, Mosquito.Blue)
   delete getActivePlayerState(game).selectedMosquito
-  console.log('played Blue Effect')
 }
