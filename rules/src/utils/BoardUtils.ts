@@ -6,50 +6,50 @@ import { Mosquito, MosquitoOnBoard, Waterlily } from '../material/MosquitoEffect
 export const createMosquitos = (): MosquitoOnBoard[][][] => {
 
   const mosquito: MosquitoOnBoard[] = []
-  // // Golden : 17 total 5 hidden
-  // for (let i = 0; i < 12; i++) {
-  //   mosquito.push(
-  //     { mosquito: Mosquito.Red, waterlily: Waterlily.WaterLily, revealed: false }
-  //   )
-  // }
-  // for (let i = 0; i < 5; i++) {
-  //   mosquito.push(
-  //     { mosquito: Mosquito.Golden, waterlily: Waterlily.Flower, revealed: false }
-  //   )
-  // }
-  // // Grey: 4 total 1 hidden
-  // for (let i = 0; i < 3; i++) {
-  //   mosquito.push(
-  //     { mosquito: Mosquito.Grey, waterlily: Waterlily.WaterLily, revealed: false }
-  //   )
-  // }
-  // mosquito.push(
-  //   { mosquito: Mosquito.Grey, waterlily: Waterlily.Flower, revealed: false }
-  // )
-  // // Blue: 3 total 1 hidden
-  // for (let i = 0; i < 2; i++) {
-  //   mosquito.push(
-  //     { mosquito: Mosquito.Blue, waterlily: Waterlily.WaterLily, revealed: false }
-  //   )
-  // }
-  // mosquito.push(
-  //   { mosquito: Mosquito.Blue, waterlily: Waterlily.Flower, revealed: false }
-  // )
-  // // Red: 2 total 1 hidden
-  // mosquito.push(
-  //   { mosquito: Mosquito.Red, waterlily: Waterlily.WaterLily, revealed: false }
-  // )
-  // mosquito.push(
-  //   { mosquito: Mosquito.Red, waterlily: Waterlily.Flower, revealed: false }
-  // )
-  // // White: 1 total 1 hidden
-  // mosquito.push(
-  //   { mosquito: Mosquito.White, waterlily: Waterlily.Flower, revealed: false }
-  // )
-
-  for (let i = 0; i < 27; i++) {
-    mosquito.push({mosquito: Mosquito.Red, waterlily: Waterlily.WaterLily, revealed: false})
+  // Golden : 17 total 5 hidden
+  for (let i = 0; i < 12; i++) {
+    mosquito.push(
+      { mosquito: Mosquito.Golden, waterlily: Waterlily.WaterLily, revealed: false }
+    )
   }
+  for (let i = 0; i < 5; i++) {
+    mosquito.push(
+      { mosquito: Mosquito.Golden, waterlily: Waterlily.Flower, revealed: false }
+    )
+  }
+  // Grey: 4 total 1 hidden
+  for (let i = 0; i < 3; i++) {
+    mosquito.push(
+      { mosquito: Mosquito.Grey, waterlily: Waterlily.WaterLily, revealed: false }
+    )
+  }
+  mosquito.push(
+    { mosquito: Mosquito.Grey, waterlily: Waterlily.Flower, revealed: false }
+  )
+  // Blue: 3 total 1 hidden
+  for (let i = 0; i < 2; i++) {
+    mosquito.push(
+      { mosquito: Mosquito.Blue, waterlily: Waterlily.WaterLily, revealed: false }
+    )
+  }
+  mosquito.push(
+    { mosquito: Mosquito.Blue, waterlily: Waterlily.Flower, revealed: false }
+  )
+  // Red: 2 total 1 hidden
+  mosquito.push(
+    { mosquito: Mosquito.Red, waterlily: Waterlily.WaterLily, revealed: false }
+  )
+  mosquito.push(
+    { mosquito: Mosquito.Red, waterlily: Waterlily.Flower, revealed: false }
+  )
+  // White: 1 total 1 hidden
+  mosquito.push(
+    { mosquito: Mosquito.White, waterlily: Waterlily.Flower, revealed: false }
+  )
+
+  // for (let i = 0; i < 27; i++) {
+  //   mosquito.push({mosquito: Mosquito.Red, waterlily: Waterlily.WaterLily, revealed: false})
+  // }
 
   const shuffledMosquitos = shuffle(mosquito)
 

@@ -17,9 +17,7 @@ export const playRedMosquitoEffectMove = (selectedEnemyAnimal: Animal
 })
 
 export function playRedMosquitoEffect(game: GameState | GameView, move: PlayRedMosquitoEffect) {
-  console.log('play Red Effect Animal: '+move.selectedEnemyAnimal)
   game.players.find(player => player.color !== game.activePlayer)!.animalForcedToMove = move.selectedEnemyAnimal
-  console.log('set -> '+game.players.find(player => player.color !== game.activePlayer)!.animalForcedToMove)
   removeMosquitoFromPlayer(game, Mosquito.Red)
   delete getActivePlayerState(game).selectedMosquito
 }

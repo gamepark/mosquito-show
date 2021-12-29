@@ -5,7 +5,7 @@ import { getActivePlayerState } from '@gamepark/mosquito-show/MosquitoShow'
 import { chooseMosquitoEffectMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import { usePlay } from '@gamepark/react-client'
-import { FunctionComponent, HTMLAttributes } from 'react'
+import { HTMLAttributes } from 'react'
 import LocalGameView from 'src/LocalGameView'
 import { boardSize, headerHeight, margin, mosquitoTokenSize, playerboardSize } from '../../styles'
 import MosquitoToken from '../fieldelement/MosquitoToken'
@@ -15,10 +15,17 @@ type PlayerBoardProps = {
   playerIndex: number
 } & HTMLAttributes<HTMLDivElement>
 
-const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ game, playerIndex, ...props }: PlayerBoardProps) => {
+export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoardProps) {
   const play = usePlay()
   const playerstate = game.players[playerIndex]
-  
+
+  const onClick = (eatenMosquito : Mosquito) => {
+    if(!getActivePlayerState(game).selectedMosquito && !getActivePlayerState(game).chameleonMustMove){
+      return () => play(chooseMosquitoEffectMove(eatenMosquito))
+    }
+    return undefined
+  }
+
   return <div css={outbox(playerstate.color, game.activePlayer)} {...props}>
     {
       [...Array(playerstate.goldenMosquitos)].map((_, index) =>
@@ -26,14 +33,10 @@ const PlayerBoard: FunctionComponent<PlayerBoardProps> = ({ game, playerIndex, .
       )
     }
     {playerstate.eatenMosquitos.map((eatenMosquito, index) =>
-      <MosquitoToken mosquito={eatenMosquito} onClick={getActivePlayerState(game).selectedMosquito === undefined ? () => play(chooseMosquitoEffectMove(eatenMosquito)) : undefined} css={eatenMosquitoPosition(index, playerstate.eatenMosquitos.length)} />
+      <MosquitoToken mosquito={eatenMosquito} onClick={onClick(eatenMosquito)} css={eatenMosquitoPosition(index, playerstate.eatenMosquitos.length)} />
     )
     }
   </div>
-}
-
-export {
-  PlayerBoard
 }
 
 const goldenMosquitoPosition = (index: number) => css`

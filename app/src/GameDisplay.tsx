@@ -3,7 +3,7 @@ import { css, keyframes } from '@emotion/react'
 import GameView from '@gamepark/mosquito-show/GameView'
 import { Letterbox } from '@gamepark/react-components'
 import Board from './material/board/Board'
-import { PlayerBoard } from './material/board/PlayerBoard'
+import PlayerBoard from './material/board/PlayerBoard'
 
 type Props = {
   game: GameView

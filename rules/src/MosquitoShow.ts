@@ -113,7 +113,6 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     // if from gameboard each animal -> move for all possible fields
     // else if -> move for toucan possible fields && (eat for possible token fields (when !chameleonmoved) || move for chameleon possible fields)
     //
-    console.log(moves)
     return moves
   }
 
@@ -301,7 +300,6 @@ export function canMoveAnimal(game: GameState | GameView, animal: Animal) {
     return animal === Animal.Chameleon
   }
   if(player.animalForcedToMove) {
-    console.log('constraint playerhastomoveanimal '+player.animalForcedToMove)
     return animal === player.animalForcedToMove
   }
   return true // TODO: implement constraints
