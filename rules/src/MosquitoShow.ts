@@ -169,7 +169,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     if (activePlayer.pendingToucanEat.length) {
       const { y, x } = activePlayer.pendingToucanEat[0]
       return eatMove(x, y)
-    } else if (!activePlayer.eatenMosquitos.length) {
+    } else if (!activePlayer.eatenMosquitos.length && !activePlayer.chameleonMustMove) {
       const mosquito = mosquitoToReveal(this.state)
       if (mosquito) {
         return revealMosquitoMove(mosquito.x, mosquito.y)
