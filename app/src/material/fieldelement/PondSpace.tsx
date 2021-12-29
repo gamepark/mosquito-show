@@ -33,6 +33,9 @@ export default function PondSpace({ game, x, y }: Props) {
         return game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y ? () => play(playGreyMosquitoEffectMove(game.selectedPondSpace!, { x, y })) : undefined
       }
     }
+    if(getActivePlayerState(game).selectedMosquito == Mosquito.Blue){
+      return undefined
+    }
     if (game.selectedAnimal === Animal.Chameleon && canEat && mosquitoOnTop) {
       return () => play(eatMove(x, y), { delayed: !mosquitoOnBoard.mosquito })
     }

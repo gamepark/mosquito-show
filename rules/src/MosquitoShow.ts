@@ -28,7 +28,6 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
   constructor(options: MosquitoShowOptions)
   constructor(arg: GameState | MosquitoShowOptions) {
     if (isGameOptions(arg)) {
-      // const board = setupGameBoard()
       super({
         players: [Blue, Orange].map(color => ({ color, goldenMosquitos: 0, eatenMosquitos: [], pendingToucanEat: [], hasPlayerToMoveAnimal: undefined })),
         activePlayer: Math.random() < 0.5 ? Orange : Blue,

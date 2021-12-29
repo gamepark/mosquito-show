@@ -11,6 +11,7 @@ import { usePlay, usePlayerId } from '@gamepark/react-client'
 import { Draggable } from '@gamepark/react-components'
 import LocalGameView from '../../LocalGameView'
 import { animalHeight, animalWidth, boardSize, jungleSpaceDelta } from '../../styles'
+import { canSelect } from '../../util/GameUtils'
 import Images from '../Images'
 
 const {Orange, Blue} = PlayerColor
@@ -31,7 +32,8 @@ export default function AnimalMini({game, owner, animal}: AnimalProp) {
   const selected = playerId === owner.color && game.selectedAnimal === animal
   const canMove = (playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal) && getActivePlayerState(game).selectedMosquito !== Mosquito.Red)
   const chooseEnemyAnimal = (getActivePlayerState(game).selectedMosquito === Mosquito.Red && owner.color != game.activePlayer)
-  
+  const canSelectAnimal = canSelect(game)
+
   const onClick = () => {
     if (canMove) {
       if(getActivePlayerState(game).animalForcedToMove && getActivePlayerState(game).animalForcedToMove !== animal){
@@ -43,8 +45,8 @@ export default function AnimalMini({game, owner, animal}: AnimalProp) {
     }
   }
 
-  return <Draggable type={ANIMAL} item={{animal}} canDrag={canMove} drop={play}
-                    css={[style(owner.color, animal), selected ? selectedAnimal : (canMove || chooseEnemyAnimal) && filterAnimation]}
+  return <Draggable type={ANIMAL} item={{animal}} canDrag={canSelectAnimal && canMove} drop={play}
+                    css={[style(owner.color, animal), selected ? selectedAnimal : (canSelectAnimal && (canMove || chooseEnemyAnimal)) && filterAnimation]}
                     preTransform={placeAnimal(owner, animal)}
                     onClick={onClick}/>
 }

@@ -6,6 +6,7 @@ import { MoveView } from '@gamepark/mosquito-show/moves/MoveView'
 import { revealMosquitoInView } from '@gamepark/mosquito-show/moves/RevealMosquito'
 import { Game } from '@gamepark/rules-api'
 import LocalGameView from './LocalGameView'
+import { canSelect } from './util/GameUtils'
 
 /**
  * This class is useful when the game has "IncompleteInformation" (or "SecretInformation").
@@ -44,12 +45,12 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
   play(move: MoveView): void {
     switch (move.type) {
       case MoveType.SelectAnimal:
-        if(getActivePlayerState(this.state).animalForcedToMove){
-          this.state.selectedAnimal = getActivePlayerState(this.state).animalForcedToMove
-        } else if (getActivePlayerState(this.state).chameleonMustMove) {
-          return
-        } else {
-          this.state.selectedAnimal = move.animal
+        if(canSelect(this.state)){
+          if(getActivePlayerState(this.state).animalForcedToMove){
+            this.state.selectedAnimal = getActivePlayerState(this.state).animalForcedToMove
+          } else {
+            this.state.selectedAnimal = move.animal
+          }
         }
         return
       case MoveType.SelectMosquitoToken:
