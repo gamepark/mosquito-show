@@ -20,6 +20,7 @@ export default function PondSpace({ game, x, y }: Props) {
   const play = usePlay()
   const canEat = useMemo(() => playerId && chameleonCanEat(game, x, y), [game])
   const mosquitos = game.mosquitos[x][y]
+  const isPondSpaceEmpty = getActivePlayerState(game).selectedMosquito == Mosquito.Grey && mosquitos.length == 0
 
   const onMosquitoTokenClick = (mosquitoOnTop: boolean, mosquitoOnBoard: Partial<MosquitoOnBoard>) => {
     if (getActivePlayerState(game).selectedMosquito == Mosquito.White) {
@@ -48,8 +49,8 @@ export default function PondSpace({ game, x, y }: Props) {
   return (
     <div onClick={onPondSpaceClick}
       css={[style(x, y),
-      getActivePlayerState(game).selectedMosquito == Mosquito.Grey && mosquitos.length == 0 && emptyPondSpace,
-      getActivePlayerState(game).selectedMosquito == Mosquito.Grey && mosquitos.length == 0 && game.selectedPondSpace && glow]}>
+      isPondSpaceEmpty && emptyPondSpace,
+      isPondSpaceEmpty && game.selectedPondSpace && glow]}>
       {mosquitos.map((mosquitoOnBoard, index) =>
         <MosquitoToken key={index} mosquito={mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily} css={tokenPosition(index)}
           onClick={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard)}
