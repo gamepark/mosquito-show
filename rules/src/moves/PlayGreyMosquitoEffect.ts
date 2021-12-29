@@ -20,12 +20,12 @@ export const playGreyMosquitoEffect = (game: GameState, move: PlayGreyMosquitoEf
   const mosquito = game.mosquitos[move.origin.x][move.origin.y].pop()!
   game.mosquitos[move.destination.x][move.destination.y].push(mosquito)
   removeMosquitoFromPlayer(game, Mosquito.Grey)
-  delete getActivePlayerState(game).selectedMosquito
+  delete getActivePlayerState(game)?.selectedMosquito
 }
 
 export const playGreyMosquitoEffectInView = (game: GameView, move: PlayGreyMosquitoEffect): void => {
   const mosquito = game.mosquitos[move.origin.x][move.origin.y].pop()!
   game.mosquitos[move.destination.x][move.destination.y].push(mosquito)
   removeMosquitoFromPlayer(game, Mosquito.Grey)
-  delete getActivePlayerState(game).selectedMosquito
+  delete getActivePlayerState(game)?.selectedMosquito
 }

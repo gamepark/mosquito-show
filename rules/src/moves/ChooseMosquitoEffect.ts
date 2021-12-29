@@ -18,6 +18,6 @@ export const chooseMosquitoEffectMove = (mosquito?: Mosquito): ChooseMosquitoEff
 
 
   export const chooseMosquitoEffect = (game: GameState | GameView, move: ChooseMosquitoEffect): void => {
-    getActivePlayerState(game).selectedMosquito = move.mosquito
+    getActivePlayerState(game)!.selectedMosquito = move.mosquito
   }
    

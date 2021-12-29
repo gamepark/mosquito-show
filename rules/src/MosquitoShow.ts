@@ -102,7 +102,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       }
     } else {
       getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(pond.x, pond.y)))
-      if (getActivePlayerState(this.state).animalForcedToMove === Animal.Chameleon) {
+      if (getActivePlayerState(this.state)?.animalForcedToMove === Animal.Chameleon) {
         // Just for testing, this is shit
       } else {
         getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))
@@ -302,7 +302,7 @@ export function canMoveAnimal(game: GameState | GameView, animal: Animal) {
 }
 
 export function getPondsWithMosquitoAroundChameleon(game: GameState) {
-  if (getActivePlayerState(game).animalForcedToMove === Animal.Toucan) return []
+  if (getActivePlayerState(game)?.animalForcedToMove === Animal.Toucan) return []
   const location = game.players.find(p => p.color === game.activePlayer)?.chameleon
   if (!location) return []
   const pondSpaces: Coordinates[] = []
@@ -334,7 +334,7 @@ export function endOfTurn(game: GameState | GameView) {
   if (player.goldenMosquitos >= 9) {
     delete game.activePlayer
   } else if (!player.chameleonMustMove && !player.pendingToucanEat.length && !player.eatenMosquitos.length && !mosquitoToReveal(game)) {
-    delete getActivePlayerState(game).animalForcedToMove
+    delete getActivePlayerState(game)?.animalForcedToMove
     game.activePlayer = player.color === Blue ? Orange : Blue
     if (!canMoveAnimal(game, Toucan) && !canMoveAnimal(game, Chameleon)) {
       // TODO: not game over if animal cannot move due to red mosquito
@@ -358,7 +358,7 @@ export function mosquitoToReveal(game: GameState | GameView) {
 }
 
 export function getActivePlayerState(state: GameState | GameView) {
-  return state.players.find(player => player.color === state.activePlayer)!
+  return state.players.find(player => player.color === state.activePlayer)
 }
 
 

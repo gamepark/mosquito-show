@@ -24,5 +24,5 @@ export const playBlueMosquitoEffect = (game: GameState | GameView, move: PlayBlu
     player.toucan = {x: move.x, y: move.y}
   }
   removeMosquitoFromPlayer(game, Mosquito.Blue)
-  delete getActivePlayerState(game).selectedMosquito
+  delete getActivePlayerState(game)?.selectedMosquito
 }

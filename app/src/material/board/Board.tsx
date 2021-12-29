@@ -39,7 +39,7 @@ export default function Board({game, ...props}: Props) {
                        canMoveHere={animal => isValidDestination(game, animal, {x, y})}
                        game={game}
                        onClick={validDestinations.some(destination => destination.x === x && destination.y === y) ?
-                         () => play(getActivePlayerState(game).selectedMosquito && getActivePlayerState(game).selectedMosquito == Mosquito.Blue ? playBlueMosquitoEffectMove(game.selectedAnimal!, { x, y }) : moveAnimalMove(game.selectedAnimal!, { x, y }))
+                         () => play(getActivePlayerState(game)?.selectedMosquito == Mosquito.Blue ? playBlueMosquitoEffectMove(game.selectedAnimal!, { x, y }) : moveAnimalMove(game.selectedAnimal!, { x, y }))
                          : undefined}/>
         )
       )}

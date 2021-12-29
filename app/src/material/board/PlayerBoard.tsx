@@ -20,7 +20,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
   const playerstate = game.players[playerIndex]
 
   const onClick = (eatenMosquito : Mosquito) => {
-    if(!getActivePlayerState(game).selectedMosquito && !getActivePlayerState(game).chameleonMustMove){
+    if(getActivePlayerState(game) !== undefined && !getActivePlayerState(game)!.selectedMosquito && !getActivePlayerState(game)!.chameleonMustMove){
       return () => play(chooseMosquitoEffectMove(eatenMosquito))
     }
     return undefined

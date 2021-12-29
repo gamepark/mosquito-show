@@ -20,20 +20,20 @@ export default function PondSpace({ game, x, y }: Props) {
   const play = usePlay()
   const canEat = useMemo(() => playerId && chameleonCanEat(game, x, y), [game])
   const mosquitos = game.mosquitos[x][y]
-  const isPondSpaceEmpty = getActivePlayerState(game).selectedMosquito == Mosquito.Grey && mosquitos.length == 0
+  const isPondSpaceEmpty = getActivePlayerState(game)?.selectedMosquito == Mosquito.Grey && mosquitos.length == 0
 
   const onMosquitoTokenClick = (mosquitoOnTop: boolean, mosquitoOnBoard: Partial<MosquitoOnBoard>) => {
-    if (getActivePlayerState(game).selectedMosquito == Mosquito.White) {
+    if (getActivePlayerState(game)?.selectedMosquito == Mosquito.White) {
       return () => play(playWhiteMosquitoEffectMove(x, y))
     }
-    if (getActivePlayerState(game).selectedMosquito == Mosquito.Grey) {
+    if (getActivePlayerState(game)?.selectedMosquito == Mosquito.Grey) {
       if (!game.selectedPondSpace) {
         return () => play(selectMosquitoTokenMove(x, y), { local: true })
       } else {
         return game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y ? () => play(playGreyMosquitoEffectMove(game.selectedPondSpace!, { x, y })) : undefined
       }
     }
-    if(getActivePlayerState(game).selectedMosquito == Mosquito.Blue){
+    if(getActivePlayerState(game)?.selectedMosquito == Mosquito.Blue){
       return undefined
     }
     if (game.selectedAnimal === Animal.Chameleon && canEat && mosquitoOnTop) {
@@ -43,7 +43,7 @@ export default function PondSpace({ game, x, y }: Props) {
   }
 
   const onPondSpaceClick = () => {
-    if (getActivePlayerState(game).selectedMosquito == Mosquito.Grey && mosquitos.length == 0 && game.selectedPondSpace && (game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y)) {
+    if (getActivePlayerState(game)?.selectedMosquito == Mosquito.Grey && mosquitos.length == 0 && game.selectedPondSpace && (game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y)) {
       play(playGreyMosquitoEffectMove(game.selectedPondSpace!, { x, y }))
     }
     return undefined

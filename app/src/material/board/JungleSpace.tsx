@@ -24,7 +24,7 @@ export default function JungleSpace({ x, y, game, canMoveHere, ...props }: Props
       canDrop: monitor.canDrop(),
       isOver: monitor.isOver()
     }),
-    drop: ({ animal }: AnimalDragObject) => getActivePlayerState(game).selectedMosquito && getActivePlayerState(game).selectedMosquito == Mosquito.Blue ? playBlueMosquitoEffectMove(animal, { x, y }) : moveAnimalMove(animal, { x, y })
+    drop: ({ animal }: AnimalDragObject) => getActivePlayerState(game)?.selectedMosquito == Mosquito.Blue ? playBlueMosquitoEffectMove(animal, { x, y }) : moveAnimalMove(animal, { x, y })
   })
   return (
     <div ref={ref} css={[style(x, y), (props.onClick || canDrop) && !isOver && display, canDrop && isOver && overStyle]} {...props} />
