@@ -136,10 +136,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         playWhiteMosquitoEffect(this.state, move)
         break
       case MoveType.PlayRedMosquitoEffect:
-        console.log(this.state)
-        console.log(move)
         playRedMosquitoEffect(this.state, move)
-        console.log(this.state)
         break
       case MoveType.PlayBlueMosquitoEffect:
         playBlueMosquitoEffect(this.state, move)

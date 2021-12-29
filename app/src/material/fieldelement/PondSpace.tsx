@@ -21,15 +21,15 @@ export default function PondSpace({ game, x, y }: Props) {
   const canEat = useMemo(() => playerId && chameleonCanEat(game, x, y), [game])
   const mosquitos = game.mosquitos[x][y]
 
-  const onClick = (mosquitoOnTop: boolean, mosquitoOnBoard: Partial<MosquitoOnBoard>) => {
+  const onMosquitoTokenClick = (mosquitoOnTop: boolean, mosquitoOnBoard: Partial<MosquitoOnBoard>) => {
     if (getActivePlayerState(game).selectedMosquito == Mosquito.White) {
       return () => play(playWhiteMosquitoEffectMove(x, y))
     }
     if (getActivePlayerState(game).selectedMosquito == Mosquito.Grey) {
       if (!game.selectedPondSpace) {
-        return () => play(selectMosquitoTokenMove(x, y), {local: true})
+        return () => play(selectMosquitoTokenMove(x, y), { local: true })
       } else {
-        return game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y ?  () => play(playGreyMosquitoEffectMove(game.selectedPondSpace!, { x, y })) : undefined
+        return game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y ? () => play(playGreyMosquitoEffectMove(game.selectedPondSpace!, { x, y })) : undefined
       }
     }
     if (game.selectedAnimal === Animal.Chameleon && canEat && mosquitoOnTop) {
@@ -38,11 +38,18 @@ export default function PondSpace({ game, x, y }: Props) {
     return undefined
   }
 
+  const onPondSpaceClick = () => {
+    if (getActivePlayerState(game).selectedMosquito == Mosquito.Grey && mosquitos.length == 0 && (game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y)) {
+      play(playGreyMosquitoEffectMove(game.selectedPondSpace!, { x, y }))
+    }
+    return undefined
+  }
+
   return (
-    <div css={[style(x, y)]}>
+    <div onClick={onPondSpaceClick} css={[style(x, y)]}>
       {mosquitos.map((mosquitoOnBoard, index) =>
         <MosquitoToken key={index} mosquito={mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily} css={tokenPosition(index)}
-          onClick={onClick(mosquitos.length === index + 1, mosquitoOnBoard)}
+          onClick={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard)}
         />
       )}
     </div>
