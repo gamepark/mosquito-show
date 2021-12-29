@@ -46,6 +46,8 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
       case MoveType.SelectAnimal:
         if(getActivePlayerState(this.state).animalForcedToMove){
           this.state.selectedAnimal = getActivePlayerState(this.state).animalForcedToMove
+        } else if (getActivePlayerState(this.state).chameleonMustMove) {
+          return
         } else {
           this.state.selectedAnimal = move.animal
         }
