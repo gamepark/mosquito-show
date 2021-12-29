@@ -238,9 +238,7 @@ export function getValidDestinations(game: GameState | GameView, animal: Animal)
   const animalLocations = getAnimalLocations(game)
   if (animal === Chameleon) {
     if (!player.chameleonMustMove) return []
-    const { x, y } = origin
-    return [{ x: x + 1, y }, { x, y: y + 1 }, { x: x - 1, y }, { x, y: y - 1 }]
-      .filter(({ x, y }) => x >= 0 && x <= 3 && y >= 0 && y <= 3 && !animalLocations.some(animal => animal.x === x && animal.y === y))
+    return getValidChameleonDestinations(origin, animalLocations)
   } else {
     const result: Coordinates[] = []
     let x = origin.x
@@ -265,6 +263,12 @@ export function getValidDestinations(game: GameState | GameView, animal: Animal)
     }
     return result
   }
+}
+
+function getValidChameleonDestinations(origin: Coordinates, animalLocations: Coordinates[]) {
+  const { x, y } = origin
+  return [{ x: x + 1, y }, { x, y: y + 1 }, { x: x - 1, y }, { x, y: y - 1 }]
+    .filter(({ x, y }) => x >= 0 && x <= 3 && y >= 0 && y <= 3 && !animalLocations.some(animal => animal.x === x && animal.y === y))
 }
 
 export function getAnimalLocations(game: GameState | GameView): Coordinates[] {
@@ -295,13 +299,25 @@ export function canMoveAnimal(game: GameState | GameView, animal: Animal) {
   if (player.chameleonMustMove) {
     return animal === Animal.Chameleon
   }
-  if(player.animalForcedToMove) {
+  if (player.animalForcedToMove) {
     return animal === player.animalForcedToMove
   }
+
+  if (animal === Animal.Chameleon && player.chameleon && (getPondsWithMosquitoAroundChameleon(game).length == 0 || getValidChameleonDestinations(player.chameleon, getAnimalLocations(game)).length == 0)) {
+    return false;
+  }
+
+  if(animal === Animal.Toucan && getValidDestinations(game, Animal.Toucan).length == 0){
+    return false;
+  }
+
   return true // TODO: implement constraints
+
+  // chameleon muss essen und moven können
+  // toucan muss moven können
 }
 
-export function getPondsWithMosquitoAroundChameleon(game: GameState) {
+export function getPondsWithMosquitoAroundChameleon(game: GameState | GameView) {
   if (getActivePlayerState(game)?.animalForcedToMove === Animal.Toucan) return []
   const location = game.players.find(p => p.color === game.activePlayer)?.chameleon
   if (!location) return []
