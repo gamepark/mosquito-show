@@ -2,6 +2,7 @@ import Animal from '../animals/Animal'
 import Coordinates from '../fields/Coordinates'
 import GameState from '../GameState'
 import GameView from '../GameView'
+import { getActivePlayerState } from '../MosquitoShow'
 import { MoveType } from './MoveType'
 
 export type MoveAnimal = {
@@ -25,6 +26,7 @@ export const moveAnimal = (game: GameState | GameView, move: MoveAnimal): void =
       player.pendingToucanEat.push(...getPondsBetween(origin, player.toucan))
     }
   }
+  delete getActivePlayerState(game)?.animalForcedToMove
 }
 
 function getPondsBetween(origin: Coordinates, destination: Coordinates) {
