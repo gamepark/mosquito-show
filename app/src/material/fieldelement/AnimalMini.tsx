@@ -30,7 +30,7 @@ export default function AnimalMini({game, owner, animal}: AnimalProp) {
   const playerId = usePlayerId<PlayerColor>()
   const play = usePlay()
   const selected = playerId === owner.color && game.selectedAnimal === animal
-  const canMove = (playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal) && getActivePlayerState(game)?.selectedMosquito !== Mosquito.Red)
+  const canMove = (playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal) && (getActivePlayerState(game)?.animalForcedToMove === undefined || getActivePlayerState(game)?.animalForcedToMove === animal) && getActivePlayerState(game)?.selectedMosquito !== Mosquito.Red)
   const chooseEnemyAnimal = (getActivePlayerState(game)?.selectedMosquito === Mosquito.Red && owner.color != game.activePlayer)
   const canSelectAnimal = canSelect(game)
 
