@@ -9,6 +9,7 @@ import { chooseMosquitoEffect, chooseMosquitoEffectMove, eat, eatMove, Move, mov
 import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
+import PlayerState from './PlayerState'
 import { createMosquitos } from './utils/BoardUtils'
 
 const { Orange, Blue } = PlayerColor
@@ -219,7 +220,9 @@ export function isPlacementPhase(game: GameState | GameView) {
 }
 
 export function getValidDestinations(game: GameState | GameView, animal: Animal): Coordinates[] {
-  const player = game.players.find(player => player.color === game.activePlayer)
+  return getValidDestinationsOfPlayer(game,animal,getActivePlayerState(game))
+}
+export function getValidDestinationsOfPlayer(game: GameState | GameView, animal: Animal, player: PlayerState | undefined): Coordinates[] {
   if (!player) return []
   const origin = animal === Animal.Chameleon ? player.chameleon : player.toucan
   if (!origin || (!player.chameleonMustMove && player.selectedMosquito == Mosquito.Blue)) {
@@ -289,7 +292,10 @@ export function isValidDestination(game: GameState | GameView, animal: Animal, {
 }
 
 export function canMoveAnimal(game: GameState | GameView, animal: Animal) {
-  const player = game.players.find(p => p.color === game.activePlayer)!
+  return canMoveAnimalOfPlayer(game, animal, getActivePlayerState(game)!)
+}
+
+export function canMoveAnimalOfPlayer(game: GameState | GameView, animal: Animal, player: PlayerState) {
   const location = animal === Animal.Chameleon ? player.chameleon : player.toucan
   if (!location) {
     return true
@@ -297,17 +303,21 @@ export function canMoveAnimal(game: GameState | GameView, animal: Animal) {
   if (player.chameleonMustMove) {
     return animal === Animal.Chameleon
   }
-  if (animal === Animal.Chameleon && player.chameleon && (getPondsWithMosquitoAroundChameleon(game).length == 0 || getValidChameleonDestinations(player.chameleon, getAnimalLocations(game)).length == 0)) {
+  if (animal === Animal.Chameleon && player.chameleon && (getPondsWithMosquitoAroundChameleonOfPlayer(game, player).length == 0 || getValidChameleonDestinations(player.chameleon, getAnimalLocations(game)).length == 0)) {
     return false
   }
-  if (animal === Animal.Toucan && getValidDestinations(game, Animal.Toucan).length == 0) {
+  if (animal === Animal.Toucan && getValidDestinationsOfPlayer(game, Animal.Toucan, player).length == 0) {
     return false
   }
   return true
 }
 
 export function getPondsWithMosquitoAroundChameleon(game: GameState | GameView) {
-  if (getActivePlayerState(game)?.animalForcedToMove === Animal.Toucan) return []
+  return getPondsWithMosquitoAroundChameleonOfPlayer(game, getActivePlayerState(game))
+}
+
+export function getPondsWithMosquitoAroundChameleonOfPlayer(game: GameState | GameView, player: PlayerState | undefined) {
+  if (player?.animalForcedToMove === Animal.Toucan) return []
   const location = game.players.find(p => p.color === game.activePlayer)?.chameleon
   if (!location) return []
   const pondSpaces: Coordinates[] = []
