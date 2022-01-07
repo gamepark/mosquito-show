@@ -32,11 +32,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       super({
         players: [Blue, Orange].map(color => ({ color, goldenMosquitos: 0, eatenMosquitos: [], pendingToucanEat: [], hasPlayerToMoveAnimal: undefined })),
         activePlayer: Math.random() < 0.5 ? Orange : Blue,
-        mosquitos: createMosquitos(),
-        mosquitoEffect: -1,
-        mosquitoEffectStartFieldId: -1,
-        inMoveAnimalSwitchNotAllowed: true,
-        pendingChameleonMove: false
+        mosquitos: createMosquitos()
       })
     } else {
       super(arg)
@@ -377,6 +373,10 @@ export function mosquitoToReveal(game: GameState | GameView) {
 
 export function getActivePlayerState(state: GameState | GameView) {
   return state.players.find(player => player.color === state.activePlayer)
+}
+
+export function getPlayerState(state: GameState | GameView, playercolor: PlayerColor){
+  return state.players.find(player => player.color === playercolor)
 }
 
 

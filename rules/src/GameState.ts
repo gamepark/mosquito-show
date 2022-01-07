@@ -6,21 +6,9 @@ import PlayerState from './PlayerState'
  * In here, you describe what a GameState will look like at any time during a game.
  */
 type GameState = {
-  players: PlayerState[],
-  activePlayer?: PlayerColor,
+  players: PlayerState[]
+  activePlayer?: PlayerColor
   mosquitos: MosquitoOnBoard[][][]
-  mosquitoEffect: number,
-  mosquitoEffectStartFieldId: number
-  inMoveAnimalSwitchNotAllowed: boolean
-  pendingChameleonMove: boolean
-}
-
-export function switchPlayer(state: GameState) {
-  if (state.activePlayer === PlayerColor.Blue) {
-    state.activePlayer = PlayerColor.Orange
-  } else if (state.activePlayer === PlayerColor.Orange) {
-    state.activePlayer = PlayerColor.Blue
-  }
 }
 
 export default GameState
