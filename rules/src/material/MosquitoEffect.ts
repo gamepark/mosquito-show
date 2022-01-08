@@ -11,15 +11,3 @@ export type MosquitoOnBoard = {
   waterlily: Waterlily
   revealed: boolean
 }
-
-export default class MosquitoEffectToken {
-
-  front: Waterlily
-  back: Mosquito
-
-  constructor(front: Waterlily, back: Mosquito) {
-    this.front = front
-    this.back = back
-  }
-
-}

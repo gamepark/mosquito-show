@@ -3,48 +3,51 @@ import GameState from '../GameState'
 import GameView from '../GameView'
 import { Mosquito, MosquitoOnBoard, Waterlily } from '../material/MosquitoEffect'
 
+const { Golden, Grey, Blue, Red, White } = Mosquito
+const { WaterLily, Flower} = Waterlily
+
 export const createMosquitos = (): MosquitoOnBoard[][][] => {
 
   const mosquito: MosquitoOnBoard[] = []
   // Golden : 17 total 5 hidden
   for (let i = 0; i < 12; i++) {
     mosquito.push(
-      { mosquito: Mosquito.Golden, waterlily: Waterlily.WaterLily, revealed: false }
+      { mosquito: Golden, waterlily: WaterLily, revealed: false }
     )
   }
   for (let i = 0; i < 5; i++) {
     mosquito.push(
-      { mosquito: Mosquito.Golden, waterlily: Waterlily.Flower, revealed: false }
+      { mosquito: Golden, waterlily: Flower, revealed: false }
     )
   }
   // Grey: 4 total 1 hidden
   for (let i = 0; i < 3; i++) {
     mosquito.push(
-      { mosquito: Mosquito.Grey, waterlily: Waterlily.WaterLily, revealed: false }
+      { mosquito: Grey, waterlily: WaterLily, revealed: false }
     )
   }
   mosquito.push(
-    { mosquito: Mosquito.Grey, waterlily: Waterlily.Flower, revealed: false }
+    { mosquito: Grey, waterlily: Flower, revealed: false }
   )
   // Blue: 3 total 1 hidden
   for (let i = 0; i < 2; i++) {
     mosquito.push(
-      { mosquito: Mosquito.Blue, waterlily: Waterlily.WaterLily, revealed: false }
+      { mosquito: Blue, waterlily: WaterLily, revealed: false }
     )
   }
   mosquito.push(
-    { mosquito: Mosquito.Blue, waterlily: Waterlily.Flower, revealed: false }
+    { mosquito: Blue, waterlily: Flower, revealed: false }
   )
   // Red: 2 total 1 hidden
   mosquito.push(
-    { mosquito: Mosquito.Red, waterlily: Waterlily.WaterLily, revealed: false }
+    { mosquito: Red, waterlily: WaterLily, revealed: false }
   )
   mosquito.push(
-    { mosquito: Mosquito.Red, waterlily: Waterlily.Flower, revealed: false }
+    { mosquito: Red, waterlily: Flower, revealed: false }
   )
   // White: 1 total 1 hidden
   mosquito.push(
-    { mosquito: Mosquito.White, waterlily: Waterlily.Flower, revealed: false }
+    { mosquito: White, waterlily: Flower, revealed: false }
   )
 
   // for (let i = 0; i < 27; i++) {
@@ -59,7 +62,7 @@ export const createMosquitos = (): MosquitoOnBoard[][][] => {
     for (let y = 0; y < 3; y++) {
       const pile = shuffledMosquitos.splice(0, 3)
       row.push(pile)
-      if (pile[2].waterlily === Waterlily.WaterLily) {
+      if (pile[2].waterlily === WaterLily) {
         pile[2].revealed = true
       }
     }
@@ -77,3 +80,16 @@ export function removeMosquitoFromPlayer(game: GameState | GameView, mosquito: M
   }
 }
 
+export function mosquitoToReveal(game: GameState | GameView) {
+  for (let x = 0; x < 3; x++) {
+    for (let y = 0; y < 3; y++) {
+      const pile = game.mosquitos[x][y]
+      if (!pile.length) continue
+      const mosquito = pile[pile.length - 1]
+      if (mosquito.waterlily === WaterLily && !mosquito.revealed) {
+        return { x, y }
+      }
+    }
+  }
+  return
+}

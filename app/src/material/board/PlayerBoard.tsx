@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { getActivePlayerState } from '@gamepark/mosquito-show/MosquitoShow'
 import { chooseMosquitoEffectMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
+import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
 import { usePlay } from '@gamepark/react-client'
 import { HTMLAttributes } from 'react'
 import LocalGameView from 'src/LocalGameView'

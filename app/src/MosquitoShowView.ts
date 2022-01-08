@@ -1,9 +1,9 @@
 import GameView from '@gamepark/mosquito-show/GameView'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { endOfTurn, getActivePlayerState } from '@gamepark/mosquito-show/MosquitoShow'
 import { chooseMosquitoEffect, eatInView, Move, moveAnimal, MoveType, playBlueMosquitoEffect, playGreyMosquitoEffectInView, playMosquitoEffectInView, playRedMosquitoEffect } from '@gamepark/mosquito-show/moves'
 import { MoveView } from '@gamepark/mosquito-show/moves/MoveView'
 import { revealMosquitoInView } from '@gamepark/mosquito-show/moves/RevealMosquito'
+import { endOfTurn, getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
 import { Game } from '@gamepark/rules-api'
 import LocalGameView from './LocalGameView'
 import { canSelect } from './util/GameUtils'
@@ -89,5 +89,4 @@ export default class MosquitoShowView implements Game<LocalGameView, Move> {
     }
     endOfTurn(this.state)
   }
-
 }

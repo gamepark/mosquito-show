@@ -2,8 +2,8 @@ import Animal from '../animals/Animal'
 import GameState from '../GameState'
 import GameView from '../GameView'
 import { Mosquito } from '../material/MosquitoEffect'
-import { getActivePlayerState } from '../MosquitoShow'
 import { removeMosquitoFromPlayer } from '../utils/BoardUtils'
+import { getActivePlayerState } from '../utils/GameUtils'
 import { MoveType } from './MoveType'
 
 export type PlayRedMosquitoEffect = {

@@ -1,8 +1,9 @@
 import { Animal } from '@gamepark/mosquito-show/animals/Animal'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { canMoveAnimalOfPlayer, getActivePlayerState, isPlacementPhase } from '@gamepark/mosquito-show/MosquitoShow'
 import { getPlayerName } from '@gamepark/mosquito-show/MosquitoShowOptions'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
+import { canMoveAnimalOfPlayer } from '@gamepark/mosquito-show/utils/AnimalUtils'
+import { getActivePlayerState, isPlacementPhase } from '@gamepark/mosquito-show/utils/GameUtils'
 import { usePlayerId } from '@gamepark/react-client'
 import { TFunction } from 'i18next'
 import { useTranslation } from 'react-i18next'
@@ -120,11 +121,7 @@ function getEndOfGameText(t: TFunction, game: LocalGameView, playerId: PlayerCol
       playerIsBlocked = player
     }
   }
-
-  console.log(playerHas9Golden)
-  console.log(playerIsBlocked)
-  console.log(playerId)
-
+  
   if (playerHas9Golden) {
     if (playerHas9Golden.color === playerId) {
       return t('Victory! You win the game with {score} golden mosquitos', { score: playerHas9Golden.goldenMosquitos })

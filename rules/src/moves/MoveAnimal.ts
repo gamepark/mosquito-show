@@ -2,7 +2,7 @@ import Animal from '../animals/Animal'
 import Coordinates from '../fields/Coordinates'
 import GameState from '../GameState'
 import GameView from '../GameView'
-import { getActivePlayerState } from '../MosquitoShow'
+import { getActivePlayerState } from '../utils/GameUtils'
 import { MoveType } from './MoveType'
 
 export type MoveAnimal = {

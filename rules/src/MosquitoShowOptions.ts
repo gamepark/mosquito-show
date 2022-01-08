@@ -1,5 +1,5 @@
-import {OptionsSpec} from '@gamepark/rules-api'
-import {TFunction} from 'i18next'
+import { OptionsSpec } from '@gamepark/rules-api'
+import { TFunction } from 'i18next'
 import GameState from './GameState'
 import PlayerColor from './PlayerColor'
 
@@ -20,13 +20,9 @@ export type MosquitoShowOptions = { players: MosquitoShowPlayerOptions[] }
  * @return true if arg is a Game options
  */
 export function isGameOptions(arg: GameState | MosquitoShowOptions): arg is MosquitoShowOptions {
-  return (arg as GameState).mosquitos === undefined // TODO: implement Typeguard to identify ne game (like typeof (arg as GameState).deck === 'undefined')
+  return (arg as GameState).mosquitos === undefined
 }
 
-/**
- * This object describes all the options a game can have, and will be used by GamePark website to create automatically forms for you game
- * (forms for friendly games, or forms for matchmaking preferences, for instance).
- */
 export const MosquitoShowOptionsSpec: OptionsSpec<MosquitoShowOptions> = {
   players: {
     id: {

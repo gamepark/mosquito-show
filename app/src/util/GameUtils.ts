@@ -1,5 +1,5 @@
 import { Mosquito } from "@gamepark/mosquito-show/material/MosquitoEffect"
-import { getActivePlayerState } from "@gamepark/mosquito-show/MosquitoShow"
+import { getActivePlayerState } from "@gamepark/mosquito-show/utils/GameUtils"
 import LocalGameView from "src/LocalGameView"
 
 export function canSelect(state: LocalGameView): boolean {
