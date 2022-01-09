@@ -17,5 +17,5 @@ export * from './SelectAnimal';
 export { selectAnimal } from './SelectAnimal';
 export * from './SelectMosquitoToken';
 export { selectMosquitoToken } from './SelectMosquitoToken';
-
-
+export * from './SkipTurn';
+export { skipTurn } from './SkipTurn';

@@ -1,3 +1,3 @@
-import { ChooseMosquitoEffect, Eat, MoveAnimal, PlayBlueMosquitoEffect, PlayGreyMosquitoEffect, PlayRedMosquitoEffect, PlayWhiteMosquitoEffect, RevealMosquito, SelectAnimal, SelectMosquitoToken } from './'
+import { ChooseMosquitoEffect, Eat, MoveAnimal, PlayBlueMosquitoEffect, PlayGreyMosquitoEffect, PlayRedMosquitoEffect, PlayWhiteMosquitoEffect, RevealMosquito, SelectAnimal, SelectMosquitoToken, SkipTurn } from './'
 
-export type Move = Eat | MoveAnimal | RevealMosquito | PlayWhiteMosquitoEffect | ChooseMosquitoEffect | SelectAnimal | SelectMosquitoToken | PlayRedMosquitoEffect| PlayBlueMosquitoEffect | PlayGreyMosquitoEffect
+export type Move = Eat | MoveAnimal | RevealMosquito | PlayWhiteMosquitoEffect | ChooseMosquitoEffect | SelectAnimal | SelectMosquitoToken | PlayRedMosquitoEffect| PlayBlueMosquitoEffect | PlayGreyMosquitoEffect | SkipTurn

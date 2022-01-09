@@ -5,11 +5,11 @@ import GameState from './GameState'
 import GameView from './GameView'
 import { Mosquito } from './material/MosquitoEffect'
 import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
-import { chooseMosquitoEffect, chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playBlueMosquitoEffect, playBlueMosquitoEffectMove, playGreyMosquitoEffect, playGreyMosquitoEffectMove, playRedMosquitoEffect, playRedMosquitoEffectMove, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove } from './moves'
+import { chooseMosquitoEffect, chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playBlueMosquitoEffect, playBlueMosquitoEffectMove, playGreyMosquitoEffect, playGreyMosquitoEffectMove, playRedMosquitoEffect, playRedMosquitoEffectMove, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove, skipTurn, skipTurnMove } from './moves'
 import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
-import { getPondsWithMosquitoAroundChameleon, getValidDestinations } from './utils/AnimalUtils'
+import { canMoveAnimal, getPondsWithMosquitoAroundChameleon, getValidDestinations } from './utils/AnimalUtils'
 import { createMosquitos, mosquitoToReveal } from './utils/BoardUtils'
 import { endOfTurn, isPlacementPhase } from './utils/GameUtils'
 
@@ -51,10 +51,14 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     } else if (activePlayer.chameleonMustMove) {
       getValidDestinations(this.state, Chameleon).forEach(coordinates => moves.push(moveAnimalMove(Chameleon, coordinates)))
     } else if (activePlayer.animalForcedToMove) {
-      if (activePlayer.animalForcedToMove === Chameleon) {
-        getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(pond.x, pond.y)))
+      if (!canMoveAnimal(this.state, activePlayer.animalForcedToMove)) {
+        moves.push(skipTurnMove())
       } else {
-        getValidDestinations(this.state, activePlayer.animalForcedToMove).forEach(coordinates => moves.push(moveAnimalMove(activePlayer.animalForcedToMove!, coordinates)))
+        if (activePlayer.animalForcedToMove === Chameleon) {
+          getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(pond.x, pond.y)))
+        } else {
+          getValidDestinations(this.state, activePlayer.animalForcedToMove).forEach(coordinates => moves.push(moveAnimalMove(activePlayer.animalForcedToMove!, coordinates)))
+        }
       }
     } else if (activePlayer.eatenMosquitos.length && !activePlayer.selectedMosquito) {
       const uniqueEatenMosquitos = activePlayer.eatenMosquitos.filter((element, index) => { return activePlayer.eatenMosquitos.indexOf(element) === index })
@@ -114,6 +118,9 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         return
       case MoveType.RevealMosquito:
         revealMosquito(this.state, move)
+        break
+      case MoveType.SkipTurn:
+        skipTurn(this.state, move)
         break
     }
     endOfTurn(this.state)

@@ -1,8 +1,9 @@
 import Coordinates from '../fields/Coordinates'
 import GameState from '../GameState'
 import GameView from '../GameView'
-import {Mosquito} from '../material/MosquitoEffect'
-import {MoveType} from './MoveType'
+import { Mosquito } from '../material/MosquitoEffect'
+import { getActivePlayerState } from '../utils/GameUtils'
+import { MoveType } from './MoveType'
 
 export type Eat = {
   type: typeof MoveType.Eat
@@ -25,7 +26,7 @@ export function eatInView(game: GameView, move: EatView) {
 }
 
 export function takeMosquito(game: GameState | GameView, mosquito: Mosquito) {
-  const player = game.players.find(p => p.color === game.activePlayer)!
+  const player = getActivePlayerState(game)!
   if (mosquito === Mosquito.Golden) {
     player.goldenMosquitos++
   } else {
