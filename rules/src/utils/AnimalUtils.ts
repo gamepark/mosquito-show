@@ -73,7 +73,7 @@ export function getValidDestinations(game: GameState | GameView, animal: Animal)
   export function isValidDestination(game: GameState | GameView, animal: Animal, { x, y }: Coordinates) {
     const player = game.players.find(p => p.color === game.activePlayer)
     if (!player) return false
-    const origin = animal === Animal.Chameleon ? player.chameleon : player.toucan
+    const origin = animal === Chameleon ? player.chameleon : player.toucan
     if (!origin || (!player.chameleonMustMove && player.selectedMosquito == Mosquito.Blue)) {
       return !getAnimalLocations(game).some(location => location.x === x && location.y === y)
     }
@@ -106,8 +106,7 @@ export function getValidDestinations(game: GameState | GameView, animal: Animal)
   }
   
   export function getPondsWithMosquitoAroundChameleonOfPlayer(game: GameState | GameView, player: PlayerState | undefined) {
-    if (player?.animalForcedToMove === Toucan) return []
-    const location = game.players.find(p => p.color === game.activePlayer)?.chameleon
+    const location = player?.chameleon
     if (!location) return []
     const pondSpaces: Coordinates[] = []
     if (location.x > 0 && location.y > 0 && game.mosquitos[location.x - 1][location.y - 1].length > 0) {
