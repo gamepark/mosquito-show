@@ -10,6 +10,7 @@ import { TFunction } from 'i18next'
 import { Trans, useTranslation } from 'react-i18next'
 import LocalGameView from './LocalGameView'
 import Button from './material/util/Button'
+import { playerColorBlue, playerColorOrange } from './util/Styles'
 
 const { Blue, Grey, Red, White } = Mosquito
 const { Toucan, Chameleon } = Animal
@@ -116,33 +117,34 @@ function getText(t: TFunction, play: (move: Move) => void, game: LocalGameView, 
     }
   } else if (game.players.some(player => player.animalForcedToMove !== undefined)) {
     const forcedAnimal = getActivePlayerState(game)!.animalForcedToMove!
+    const forcedAnimalString = forcedAnimal === Chameleon ? 'chameleon' : 'toucan'
     if (!canMoveAnimal(game, forcedAnimal)) {
       if (!getActivePlayerState(game)?.skippedTurn) {
         if (game.activePlayer === playerId) {
           return <Trans defaults='<0>skip your turn</0> because you cannot move the forced {forcedAnimalString}!'
-            components={[<Button onClick={() => play(skipTurnMove())} />]}
-            values={{ forcedAnimalString: (forcedAnimal === Chameleon ? 'chameleon' : 'toucan') }} />
+            components={[<Button color={playerId === PlayerColor.Blue ? playerColorBlue : playerColorOrange} onClick={() => play(skipTurnMove())} />]}
+            values={{ forcedAnimalString: forcedAnimalString }} />
         } else {
-          return t('{player} has to skip the turn because the ' + (forcedAnimal === Chameleon ? 'chameleon' : 'toucan') + ' cannot move!', { player: getPlayerName(game.activePlayer!, t) })
+          return t('{player} has to skip the turn because the ' + forcedAnimalString + ' cannot move!', { player: getPlayerName(game.activePlayer!, t) })
         }
       }
     } else {
       if (game.activePlayer === playerId) {
-        return t('Your opponent forced you to select the ' + (forcedAnimal === Chameleon ? 'chameleon' : 'toucan') + '!')
+        return t('Your opponent forced you to select the ' + forcedAnimalString + '!')
       } else {
-        return t('{player} has to select the ' + (forcedAnimal === Chameleon ? 'chameleon' : 'toucan') + '!', { player: getPlayerName(game.activePlayer!, t) })
+        return t('{player} has to select the ' + forcedAnimalString + '!', { player: getPlayerName(game.activePlayer!, t) })
       }
     }
   }
-  
+
   let selectableAnimals = []
-  if(canMoveAnimal(game, Chameleon)){
+  if (canMoveAnimal(game, Chameleon)) {
     selectableAnimals.push(Chameleon)
   }
-  if(canMoveAnimal(game, Toucan)){
+  if (canMoveAnimal(game, Toucan)) {
     selectableAnimals.push(Toucan)
   }
-  return game.activePlayer === playerId ? t('Select '+ (selectableAnimals.length > 1 ?'an animal': selectableAnimals[0] === Chameleon ? 'the chameleon' : 'the toucan')) : t('{player} has to select'+ (selectableAnimals.length > 1 ?'an animal': selectableAnimals[0] === Chameleon ? 'the chameleon' : 'the toucan'), { player: getPlayerName(game.activePlayer!, t) })
+  return game.activePlayer === playerId ? t('Select ' + (selectableAnimals.length > 1 ? 'an animal' : (selectableAnimals[0] === Chameleon ? 'the chameleon' : 'the toucan') + ' (the other cannot move)')) : t('{player} has to select ' + (selectableAnimals.length > 1 ? 'an animal' : ((selectableAnimals[0] === Chameleon ? 'the chameleon' : 'the toucan') + ' (the other cannot move)')), { player: getPlayerName(game.activePlayer!, t) })
 }
 
 function getEndOfGameText(t: TFunction, game: LocalGameView, playerId: PlayerColor) {

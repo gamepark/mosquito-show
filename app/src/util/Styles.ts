@@ -14,6 +14,9 @@ export const playerBoardHeight = 22 * 100 / boardHeight;
 
 export const playerBoardRatio = playerBoardWidth / playerBoardHeight;
 
+export const playerColorBlue = '#3e7ad4'
+export const playerColorOrange = '#eb6d41'
+
 export const popupBackgroundStyle = css`
   position: fixed;
   top: -100%;

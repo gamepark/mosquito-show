@@ -8,6 +8,7 @@ import { usePlay } from '@gamepark/react-client'
 import { HTMLAttributes } from 'react'
 import LocalGameView from 'src/LocalGameView'
 import { boardSize, headerHeight, margin, mosquitoTokenSize, playerboardSize } from '../../styles'
+import { playerColorBlue, playerColorOrange } from '../../util/Styles'
 import MosquitoToken from '../fieldelement/MosquitoToken'
 
 type PlayerBoardProps = {
@@ -19,8 +20,8 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
   const play = usePlay()
   const playerstate = game.players[playerIndex]
 
-  const onClick = (eatenMosquito : Mosquito) => {
-    if(getActivePlayerState(game) !== undefined && !getActivePlayerState(game)!.selectedMosquito && !getActivePlayerState(game)!.chameleonMustMove){
+  const onClick = (eatenMosquito: Mosquito) => {
+    if (getActivePlayerState(game) !== undefined && !getActivePlayerState(game)!.selectedMosquito && !getActivePlayerState(game)!.chameleonMustMove) {
       return () => play(chooseMosquitoEffectMove(eatenMosquito))
     }
     return undefined
@@ -29,7 +30,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
   return <div css={outbox(playerstate.color, game.activePlayer)} {...props}>
     {
       [...Array(playerstate.goldenMosquitos)].map((_, index) =>
-        <MosquitoToken mosquito={Mosquito.Golden} css={goldenMosquitoPosition(index)} />
+          <MosquitoToken mosquito={Mosquito.Golden} css={goldenMosquitoPosition(index)} />
       )
     }
     {playerstate.eatenMosquitos.map((eatenMosquito, index) =>
@@ -42,7 +43,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
 const goldenMosquitoPosition = (index: number) => css`
   position: absolute;
   top: 10em;
-  left: ${1 + (index * ((playerboardSize - mosquitoTokenSize - 2) / 11))}em;
+  left: ${1 + (index * ((playerboardSize - mosquitoTokenSize - 2) / 9))}em;
 `
 
 const eatenMosquitoPosition = (index: number, length: number) => css`
@@ -58,5 +59,5 @@ const outbox = (player: PlayerColor, activePlayer?: PlayerColor) => css`
   height: 45em;
   width: ${playerboardSize}em;
   border-style: ${player === activePlayer ? 'dashed' : 'solid'};
-  border-color: ${(player === PlayerColor.Blue ? 'blue' : 'orange')};
+  border-color: ${(player === PlayerColor.Blue ? playerColorBlue : playerColorOrange)};
 `
