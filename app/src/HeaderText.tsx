@@ -134,8 +134,15 @@ function getText(t: TFunction, play: (move: Move) => void, game: LocalGameView, 
       }
     }
   }
-  //TODO SelectableAnimals?
-  return game.activePlayer === playerId ? t('Select an animal') : t('{player} has to select an animal', { player: getPlayerName(game.activePlayer!, t) })
+  
+  let selectableAnimals = []
+  if(canMoveAnimal(game, Chameleon)){
+    selectableAnimals.push(Chameleon)
+  }
+  if(canMoveAnimal(game, Toucan)){
+    selectableAnimals.push(Toucan)
+  }
+  return game.activePlayer === playerId ? t('Select '+ (selectableAnimals.length > 1 ?'an animal': selectableAnimals[0] === Chameleon ? 'the chameleon' : 'the toucan')) : t('{player} has to select'+ (selectableAnimals.length > 1 ?'an animal': selectableAnimals[0] === Chameleon ? 'the chameleon' : 'the toucan'), { player: getPlayerName(game.activePlayer!, t) })
 }
 
 function getEndOfGameText(t: TFunction, game: LocalGameView, playerId: PlayerColor) {

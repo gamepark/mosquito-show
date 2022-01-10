@@ -1,7 +1,7 @@
 import Animal from '../animals/Animal'
 import GameState from '../GameState'
 import GameView from '../GameView'
-import {MoveType} from './MoveType'
+import { MoveType } from './MoveType'
 
 export type SelectAnimal = {
   type: typeof MoveType.SelectAnimal
@@ -13,5 +13,5 @@ export const selectAnimalMove = (animal?: Animal): SelectAnimal => ({
 })
 
 export function selectAnimal(state: GameView | GameState, move: SelectAnimal) {
-  // TODO
+  // nothing to do
 }

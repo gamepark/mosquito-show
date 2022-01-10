@@ -12,5 +12,5 @@ export const selectMosquitoTokenMove = (x: number, y: number): SelectMosquitoTok
 })
 
 export function selectMosquitoToken(state: GameView | GameState, move: SelectMosquitoToken) {
-  // TODO
+  // nothing to do
 }
