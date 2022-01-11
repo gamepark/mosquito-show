@@ -30,7 +30,10 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
   return <div css={outbox(playerstate.color, game.activePlayer)} {...props}>
     {
       [...Array(playerstate.goldenMosquitos)].map((_, index) =>
-          <MosquitoToken mosquito={Mosquito.Golden} css={goldenMosquitoPosition(index)} />
+        <MosquitoToken mosquito={Mosquito.Golden} css={goldenMosquitoPosition(index)}>
+          <div css={goldenMosquitoFont}>{index + 1}</div>
+        </MosquitoToken>
+
       )
     }
     {playerstate.eatenMosquitos.map((eatenMosquito, index) =>
@@ -39,6 +42,14 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
     }
   </div>
 }
+
+const goldenMosquitoFont = () => css`
+  color: black;
+  font-size: 5em; 
+  position: absolute;
+  top: 0.7em;
+  left: 1.3em;
+`
 
 const goldenMosquitoPosition = (index: number) => css`
   position: absolute;
