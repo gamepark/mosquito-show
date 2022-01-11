@@ -10,7 +10,7 @@ import { TFunction } from 'i18next'
 import { Trans, useTranslation } from 'react-i18next'
 import LocalGameView from './LocalGameView'
 import Button from './material/util/Button'
-import { playerColorBlue, playerColorOrange } from './util/Styles'
+import { playerColorBlue, playerColorOrange } from './styles'
 
 const { Blue, Grey, Red, White } = Mosquito
 const { Toucan, Chameleon } = Animal

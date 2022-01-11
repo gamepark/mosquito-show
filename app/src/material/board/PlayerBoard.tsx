@@ -7,8 +7,7 @@ import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
 import { usePlay } from '@gamepark/react-client'
 import { HTMLAttributes } from 'react'
 import LocalGameView from 'src/LocalGameView'
-import { boardSize, headerHeight, margin, mosquitoTokenSize, playerboardSize } from '../../styles'
-import { playerColorBlue, playerColorOrange } from '../../util/Styles'
+import { boardSize, headerHeight, margin, mosquitoTokenSize, playerboardSize, playerColorBlue, playerColorOrange } from '../../styles'
 import MosquitoToken from '../fieldelement/MosquitoToken'
 
 type PlayerBoardProps = {
