@@ -29,14 +29,14 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
   return <div css={outbox(playerstate.color, game.activePlayer)} {...props}>
     {
       [...Array(playerstate.goldenMosquitos)].map((_, index) =>
-        <MosquitoToken mosquito={Mosquito.Golden} css={goldenMosquitoPosition(index)}>
+        <MosquitoToken key={index} mosquito={Mosquito.Golden} css={goldenMosquitoPosition(index)}>
           <div css={goldenMosquitoFont}>{index + 1}</div>
         </MosquitoToken>
 
       )
     }
     {playerstate.eatenMosquitos.map((eatenMosquito, index) =>
-      <MosquitoToken mosquito={eatenMosquito} onClick={onClick(eatenMosquito)} css={eatenMosquitoPosition(index, playerstate.eatenMosquitos.length)} />
+      <MosquitoToken key={index} mosquito={eatenMosquito} onClick={onClick(eatenMosquito)} css={eatenMosquitoPosition(index, playerstate.eatenMosquitos.length)} />
     )
     }
   </div>
