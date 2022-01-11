@@ -34,105 +34,104 @@ export default function HeaderText({ loading, game }: Props) {
 function getText(t: TFunction, play: (move: Move) => void, game: LocalGameView, playerId: PlayerColor) {
   if (isPlacementPhase(game)) {
     if (game.activePlayer === playerId) {
-      return t('You ({player}) have to place an animal on an empty jungle space', { player: getPlayerName(playerId, t) })
+      return t('placement')
     } else {
-      return t('{player} has to place an animal on an empty jungle space', { player: getPlayerName(game.activePlayer!, t) })
+      return t('placement.other', { player: getPlayerName(game.activePlayer!, t) })
     }
   } else if (game.selectedAnimal) {
     if (game.selectedAnimal === Chameleon) {
       if (getActivePlayerState(game)!.selectedMosquito === Blue) {
         if (game.activePlayer === playerId) {
-          return t('Choose an empty jungle space on the board')
+          return t('effect.blue.step2')
         } else {
-          return t('{player} has to choose an empty jungle space on the board', { player: getPlayerName(game.activePlayer!, t) })
+          return t('effect.blue.step2.other', { player: getPlayerName(game.activePlayer!, t) })
         }
       } else if (getActivePlayerState(game)?.chameleonMustMove) {
         if (game.activePlayer === playerId) {
-          return t('Move your chameleon to an empty orthogonal jungle space')
+          return t('chameleon.move')
         } else {
-          return t('{player} has to move the chameleon to an empty orthogonal jungle space', { player: getPlayerName(game.activePlayer!, t) })
+          return t('chameleon.move.other', { player: getPlayerName(game.activePlayer!, t) })
         }
       } else {
         if (game.activePlayer === playerId) {
-          return t('Eat a mosquito from an adjacent pond')
+          return t('chameleon.eat')
         } else {
-          return t('{player} has to eat a mosquito from an adjacent pond', { player: getPlayerName(game.activePlayer!, t) })
+          return t('chameleo.eat.other', { player: getPlayerName(game.activePlayer!, t) })
         }
       }
     } else {
       if (getActivePlayerState(game)!.selectedMosquito === Blue) {
         if (game.activePlayer === playerId) {
-          return t('Choose an empty jungle space on the board')
+          return t('effect.blue.step2')
         } else {
-          return t('{player} has to choose an empty jungle space on the board', { player: getPlayerName(game.activePlayer!, t) })
+          return t('effect.blue.step2.other', { player: getPlayerName(game.activePlayer!, t) })
         }
       } else {
         if (game.activePlayer === playerId) {
-          return t('Select a diagonally destination you want your toucan to move to')
+          return t('toucan.move')
         } else {
-          return t('{player} has to select a diagonally destination for the toucan', { player: getPlayerName(game.activePlayer!, t) })
+          return t('toucan.move.other', { player: getPlayerName(game.activePlayer!, t) })
         }
       }
     }
   } else if (game.players.some(player => player.eatenMosquitos.length > 0) && !game.players.some(player => player.selectedMosquito !== undefined)) {
     if (game.activePlayer === playerId) {
-      return t('Choose an eaten mosquito to apply his effect')
+      return t('effect.choose')
     } else {
-      return t('{player} has to choose an eaten mosquito to apply his effect', { player: getPlayerName(game.activePlayer!, t) })
+      return t('effect.choose.other', { player: getPlayerName(game.activePlayer!, t) })
     }
   } else if (game.players.some(player => player.selectedMosquito !== undefined)) {
     const selectedMoquito = getActivePlayerState(game)!.selectedMosquito
     if (selectedMoquito === Blue) {
       if (game.activePlayer === playerId) {
-        return t('Choose an animal to move it to any other empty jungle space on the board')
+        return t('effect.blue.step1')
       } else {
-        return t('{player} has to choose an animal to move it to any other empty jungle space on the board', { player: getPlayerName(game.activePlayer!, t) })
+        return t('effect.blue.step1.other', { player: getPlayerName(game.activePlayer!, t) })
       }
     } else if (selectedMoquito === Grey) {
       if (game.selectedPondSpace) {
         if (game.activePlayer === playerId) {
-          return t('Choose another or an empty pond')
+          return t('effect.grey.step2')
         } else {
-          return t('{player} has to choose another or an empty pond', { player: getPlayerName(game.activePlayer!, t) })
+          return t('effect.grey.step2.other', { player: getPlayerName(game.activePlayer!, t) })
         }
       } else {
         if (game.activePlayer === playerId) {
-          return t('Choose a mosquito to move it on the top of another or empty pond')
+          return t('effect.grey.step1')
         } else {
-          return t('{player} has to choose a mosquito to move it on the top of another or empty pond', { player: getPlayerName(game.activePlayer!, t) })
+          return t('effect.grey.step1.other', { player: getPlayerName(game.activePlayer!, t) })
         }
       }
     } else if (selectedMoquito === Red) {
       if (game.activePlayer === playerId) {
-        return t('Choose an opponent animal. Your opponent must move this animal on their next move')
+        return t('effect.red')
       } else {
-        return t('{player} has to choose one of your animals. You must move this animal on your next move', { player: getPlayerName(game.activePlayer!, t) })
+        return t('effect.red.other', { player: getPlayerName(game.activePlayer!, t) })
       }
     } else if (selectedMoquito === White) {
       if (game.activePlayer === playerId) {
-        return t('Choose a mosquito to discard it')
+        return t('effect.white')
       } else {
-        return t('{player} has to choose a mosquito to discard it', { player: getPlayerName(game.activePlayer!, t) })
+        return t('effect.white.other', { player: getPlayerName(game.activePlayer!, t) })
       }
     }
   } else if (game.players.some(player => player.animalForcedToMove !== undefined)) {
     const forcedAnimal = getActivePlayerState(game)!.animalForcedToMove!
-    const forcedAnimalString = forcedAnimal === Chameleon ? 'chameleon' : 'toucan'
     if (!canMoveAnimal(game, forcedAnimal)) {
       if (!getActivePlayerState(game)?.skippedTurn) {
         if (game.activePlayer === playerId) {
-          return <Trans defaults='<0>skip your turn</0> because you cannot move the forced {forcedAnimalString}!'
+          return <Trans defaults='skip.turn'
             components={[<Button color={playerId === PlayerColor.Blue ? playerColorBlue : playerColorOrange} onClick={() => play(skipTurnMove())} />]}
-            values={{ forcedAnimalString: forcedAnimalString }} />
+            values={{ animal: forcedAnimal }} />
         } else {
-          return t('{player} has to skip the turn because the ' + forcedAnimalString + ' cannot move!', { player: getPlayerName(game.activePlayer!, t) })
+          return t('skip.turn.other', { player: getPlayerName(game.activePlayer!, t), animal: forcedAnimal })
         }
       }
     } else {
       if (game.activePlayer === playerId) {
-        return t('Your opponent forced you to select the ' + forcedAnimalString + '!')
+        return t('animal.select.forced', {animal: forcedAnimal})
       } else {
-        return t('{player} has to select the ' + forcedAnimalString + '!', { player: getPlayerName(game.activePlayer!, t) })
+        return t('animal.select.forced.other', { player: getPlayerName(game.activePlayer!, t), animal: forcedAnimal })
       }
     }
   }
@@ -144,7 +143,19 @@ function getText(t: TFunction, play: (move: Move) => void, game: LocalGameView, 
   if (canMoveAnimal(game, Toucan)) {
     selectableAnimals.push(Toucan)
   }
-  return game.activePlayer === playerId ? t('Select ' + (selectableAnimals.length > 1 ? 'an animal' : (selectableAnimals[0] === Chameleon ? 'the chameleon' : 'the toucan') + ' (the other cannot move)')) : t('{player} has to select ' + (selectableAnimals.length > 1 ? 'an animal' : ((selectableAnimals[0] === Chameleon ? 'the chameleon' : 'the toucan') + ' (the other cannot move)')), { player: getPlayerName(game.activePlayer!, t) })
+  if(selectableAnimals.length === 2){
+    if (game.activePlayer === playerId) {
+      return t('animal.select')
+    } else {
+      return t('animal.select.other', { player: getPlayerName(game.activePlayer!, t)})
+    }
+  } else {
+    if (game.activePlayer === playerId) {
+      return t('animal.select.specific', {animal: selectableAnimals[0]})
+    } else {
+      return t('animal.select.specific.other', { player: getPlayerName(game.activePlayer!, t) , animal: selectableAnimals[0]})
+    }
+  }
 }
 
 function getEndOfGameText(t: TFunction, game: LocalGameView, playerId: PlayerColor) {
@@ -160,15 +171,15 @@ function getEndOfGameText(t: TFunction, game: LocalGameView, playerId: PlayerCol
 
   if (playerHas9Golden) {
     if (playerHas9Golden.color === playerId) {
-      return t('Victory! You win the game with 9 golden mosquitos')
+      return t('game.end.golden')
     } else {
-      return t('Game Over! {player} wins the game with 9 golden mosquitos', { player: getPlayerName(playerHas9Golden.color, t) })
+      return t('game.end.golden.other', { player: getPlayerName(playerHas9Golden.color, t) })
     }
   } else if (playerIsBlocked) {
     if (playerIsBlocked.color !== playerId) {
-      return t('Victory! You blocked your opponent!')
+      return t('game.end.block')
     } else {
-      return t('Game Over! You are blocked by your opponent!')
+      return t('game.end.block.other!', { player: getPlayerName(playerIsBlocked.color, t) })
     }
   }
 
