@@ -3,8 +3,9 @@ import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
 import { chooseMosquitoEffect, eatInView, Move, moveAnimal, MoveType, playBlueMosquitoEffect, playGreyMosquitoEffectInView, playMosquitoEffectInView, playRedMosquitoEffect, skipTurn } from '@gamepark/mosquito-show/moves'
 import { MoveView } from '@gamepark/mosquito-show/moves/MoveView'
 import { revealMosquitoInView } from '@gamepark/mosquito-show/moves/RevealMosquito'
+import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import { endOfTurn, getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
-import { Game } from '@gamepark/rules-api'
+import { Action, Game, Undo } from '@gamepark/rules-api'
 import LocalGameView from './LocalGameView'
 import { canSelect } from './util/GameUtils'
 
@@ -12,11 +13,18 @@ import { canSelect } from './util/GameUtils'
  * This class is useful when the game has "IncompleteInformation" (or "SecretInformation").
  * It allows to handle, in a different way than the backend side, the moves that involve hidden information.
  */
-export default class MosquitoShowView implements Game<LocalGameView, Move> {
+export default class MosquitoShowView implements Game<LocalGameView, Move>, Undo<LocalGameView, Move, PlayerColor> {
   state: LocalGameView
 
   constructor(state: GameView) {
     this.state = state
+  }
+  
+  canUndo(action: Action<Move, PlayerColor>, consecutiveActions: Action<Move, PlayerColor>[]): boolean {
+    if(consecutiveActions.length){
+      return false
+    }
+    return true
   }
 
   /**
