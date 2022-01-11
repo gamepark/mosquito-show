@@ -160,9 +160,9 @@ function getEndOfGameText(t: TFunction, game: LocalGameView, playerId: PlayerCol
 
   if (playerHas9Golden) {
     if (playerHas9Golden.color === playerId) {
-      return t('Victory! You win the game with {score} golden mosquitos', { score: playerHas9Golden.goldenMosquitos })
+      return t('Victory! You win the game with 9 golden mosquitos')
     } else {
-      return t('Game Over! {player} wins the game with {score} golden mosquitos', { player: getPlayerName(playerHas9Golden.color, t), score: playerHas9Golden.goldenMosquitos })
+      return t('Game Over! {player} wins the game with 9 golden mosquitos', { player: getPlayerName(playerHas9Golden.color, t) })
     }
   } else if (playerIsBlocked) {
     if (playerIsBlocked.color !== playerId) {
