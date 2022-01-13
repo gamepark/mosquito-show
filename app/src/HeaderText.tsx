@@ -174,10 +174,10 @@ function getEndOfGameText(t: TFunction, game: LocalGameView, playerId: PlayerCol
       return t('game.end.golden.other', { player: getPlayerName(playerHas9Golden.color, t) })
     }
   } else if (playerIsBlocked) {
-    if (playerIsBlocked.color !== playerId) {
+    if (playerIsBlocked.color === playerId) {
       return t('game.end.block')
     } else {
-      return t('game.end.block.other!', { player: getPlayerName(playerId, t) })
+      return t('game.end.block.other', { player: getPlayerName(playerIsBlocked.color, t) })
     }
   }
 
