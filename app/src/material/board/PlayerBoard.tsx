@@ -51,9 +51,10 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
 
 const buttonPosition = () => css`
   position: absolute;
-  top: 39em;
-  height: 5em;
-  width: ${playerboardSize-1}em;
+  top: 12.5em;
+  height: 2em;
+  width: 100%;
+  font-size: 3em;
 `
 
 const goldenMosquitoFont = () => css`
