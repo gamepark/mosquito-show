@@ -1,14 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { chooseMosquitoEffectMove } from '@gamepark/mosquito-show/moves'
+import { chooseMosquitoEffectMove, skipTurnMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
+import { canMoveAnimal } from '@gamepark/mosquito-show/utils/AnimalUtils'
 import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
 import { usePlay } from '@gamepark/react-client'
 import { HTMLAttributes } from 'react'
+import { useTranslation } from 'react-i18next'
 import LocalGameView from 'src/LocalGameView'
 import { boardSize, headerHeight, margin, mosquitoTokenSize, playerboardSize, playerColorBlue, playerColorOrange } from '../../styles'
 import MosquitoToken from '../fieldelement/MosquitoToken'
+import Button from '../util/Button'
 
 type PlayerBoardProps = {
   game: LocalGameView
@@ -17,6 +20,7 @@ type PlayerBoardProps = {
 
 export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoardProps) {
   const play = usePlay()
+  const { t } = useTranslation()
   const playerstate = game.players[playerIndex]
 
   const onClick = (eatenMosquito: Mosquito) => {
@@ -39,8 +43,18 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
       <MosquitoToken key={index} mosquito={eatenMosquito} onClick={onClick(eatenMosquito)} css={eatenMosquitoPosition(index, playerstate.eatenMosquitos.length)} />
     )
     }
+    { playerstate.animalForcedToMove && !canMoveAnimal(game, playerstate.animalForcedToMove) ?
+      <Button children={t('skip.turn.button')} color={playerstate.color === PlayerColor.Blue ? playerColorBlue : playerColorOrange} onClick={() => play(skipTurnMove())} css={buttonPosition} /> : undefined
+    }
   </div>
 }
+
+const buttonPosition = () => css`
+  position: absolute;
+  top: 39em;
+  height: 5em;
+  width: ${playerboardSize-1}em;
+`
 
 const goldenMosquitoFont = () => css`
   color: black;
