@@ -137,12 +137,10 @@ function getText(t: TFunction, play: (move: Move) => void, game: LocalGameView, 
   }
 
   let selectableAnimals = []
-  if (canMoveAnimal(game, Chameleon)) {
-    selectableAnimals.push(Chameleon)
-  }
-  if (canMoveAnimal(game, Toucan)) {
-    selectableAnimals.push(Toucan)
-  }
+  let blockedAnimals = []
+  canMoveAnimal(game, Chameleon)?selectableAnimals.push(Chameleon):blockedAnimals.push(Chameleon)
+  canMoveAnimal(game, Toucan)?selectableAnimals.push(Toucan):blockedAnimals.push(Toucan)
+  
   if(selectableAnimals.length === 2){
     if (game.activePlayer === playerId) {
       return t('animal.select')
@@ -151,9 +149,9 @@ function getText(t: TFunction, play: (move: Move) => void, game: LocalGameView, 
     }
   } else {
     if (game.activePlayer === playerId) {
-      return t('animal.select.specific', {animal: selectableAnimals[0]})
+      return t('animal.select.specific', {animal: selectableAnimals[0], blocked: blockedAnimals[0]})
     } else {
-      return t('animal.select.specific.other', { player: getPlayerName(game.activePlayer!, t) , animal: selectableAnimals[0]})
+      return t('animal.select.specific.other', { player: getPlayerName(game.activePlayer!, t) , animal: selectableAnimals[0], blocked: blockedAnimals[0]})
     }
   }
 }
@@ -179,7 +177,7 @@ function getEndOfGameText(t: TFunction, game: LocalGameView, playerId: PlayerCol
     if (playerIsBlocked.color !== playerId) {
       return t('game.end.block')
     } else {
-      return t('game.end.block.other!', { player: getPlayerName(playerIsBlocked.color, t) })
+      return t('game.end.block.other!', { player: getPlayerName(playerId, t) })
     }
   }
 
