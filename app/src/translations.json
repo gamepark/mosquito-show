@@ -8,7 +8,7 @@
             "animal.select.other": "{player} has to select an animal",
             "animal.select.specific": "Select the {animal, select, 1{toucan} other{chameleon}} ({blocked, select, 1{toucan} other{chameleon}} is blocked)",
             "animal.select.specific.other": "{player} has to select the {animal, select, 1{toucan} other{chameleon}} ({blocked, select, 1{toucan} other{chameleon}} is blocked)",
-            "animal.select.forced": "Your opponent forced you to select the {animal, select, 1{toucan} other{chameleon}",
+            "animal.select.forced": "Your opponent forced you to select the {animal, select, 1{toucan} other{chameleon}}",
             "animal.select.forced.other": "{player} has to select the {animal, select, 1{toucan} other{chameleon}}",
             "chameleon.move": "Move the chameleon to an empty orthogonal jungle space",
             "chameleon.move.other": "{player} has to move the chameleon to an empty orthogonal jungle space",
