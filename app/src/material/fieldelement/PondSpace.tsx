@@ -38,7 +38,7 @@ export default function PondSpace({ game, x, y }: Props) {
       return undefined
     }
     if (game.selectedAnimal === Animal.Chameleon && canEat && mosquitoOnTop) {
-      return () => play(eatMove(x, y), { delayed: !mosquitoOnBoard.mosquito })
+      return () => play(eatMove((!mosquitoOnBoard.mosquito && !mosquitoOnBoard.revealed), x, y), { delayed: !mosquitoOnBoard.mosquito })
     }
     return undefined
   }

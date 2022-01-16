@@ -21,8 +21,18 @@ export default class MosquitoShowView implements Game<LocalGameView, Move>, Undo
   }
   
   canUndo(action: Action<Move, PlayerColor>, consecutiveActions: Action<Move, PlayerColor>[]): boolean {
+    // WRONG?!?
+    console.log(action)
+    console.log(consecutiveActions)
     if(consecutiveActions.length){
       return false
+    }
+    switch (action.move.type) {
+      case MoveType.Eat:
+        if(action.move.tokenForcedToReveal){
+          return false
+        }
+        break
     }
     return true
   }

@@ -24,7 +24,7 @@ export function endOfTurn(game: GameState | GameView) {
   if (getActivePlayerState(game)!.goldenMosquitos >= 9) {
     delete game.activePlayer
   } else if (!getActivePlayerState(game)!.chameleonMustMove && !getActivePlayerState(game)!.pendingToucanEat.length && !getActivePlayerState(game)!.eatenMosquitos.length && !mosquitoToReveal(game)) {
-    if(!game.players.some(player => player.skippedTurn)){
+    if (!game.players.some(player => player.skippedTurn)) {
       game.activePlayer = getActivePlayerState(game)!.color === Blue ? Orange : Blue
     }
     if (!canMoveAnimal(game, Toucan) && !canMoveAnimal(game, Chameleon)) {

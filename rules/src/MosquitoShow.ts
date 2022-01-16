@@ -10,7 +10,7 @@ import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
 import { canMoveAnimal, getPondsWithMosquitoAroundChameleon, getValidDestinations } from './utils/AnimalUtils'
-import { createMosquitos, mosquitoToReveal } from './utils/BoardUtils'
+import { createMosquitos, mosquitoToReveal, tokenForcedToReveal } from './utils/BoardUtils'
 import { endOfTurn, isPlacementPhase } from './utils/GameUtils'
 
 const { Orange, Blue } = PlayerColor
@@ -55,7 +55,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         moves.push(skipTurnMove())
       } else {
         if (activePlayer.animalForcedToMove === Chameleon) {
-          getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(pond.x, pond.y)))
+          getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(tokenForcedToReveal(this.state, pond.x, pond.y), pond.x, pond.y)))
         } else {
           getValidDestinations(this.state, activePlayer.animalForcedToMove).forEach(coordinates => moves.push(moveAnimalMove(activePlayer.animalForcedToMove!, coordinates)))
         }
@@ -87,7 +87,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         [Chameleon, Toucan].forEach(animal => moves.push(playRedMosquitoEffectMove(animal)))
       }
     } else {
-      getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(pond.x, pond.y)))
+      getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(tokenForcedToReveal(this.state, pond.x, pond.y), pond.x, pond.y)))
       getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))
     }
     return moves
@@ -131,7 +131,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     if (!activePlayer) return
     if (activePlayer.pendingToucanEat.length) {
       const { y, x } = activePlayer.pendingToucanEat[0]
-      return eatMove(x, y)
+      return eatMove(tokenForcedToReveal(this.state, x, y), x, y)
     } else if (!activePlayer.eatenMosquitos.length && !activePlayer.chameleonMustMove) {
       const mosquito = mosquitoToReveal(this.state)
       if (mosquito) {
