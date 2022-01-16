@@ -7,14 +7,14 @@ import { MoveType } from './MoveType'
 
 export type Eat = {
   type: typeof MoveType.Eat
-  tokenForcedToReveal: boolean
+  revealToken: boolean
 } & Coordinates
 
 export type EatView = Eat & {
   mosquito?: Mosquito
 }
 
-export const eatMove = (tokenForcedToReveal: boolean, x: number, y: number): Eat => ({type: MoveType.Eat, tokenForcedToReveal, x, y})
+export const eatMove = (revealToken: boolean, x: number, y: number): Eat => ({type: MoveType.Eat, revealToken: revealToken, x, y})
 
 export function eat(game: GameState, move: Eat) {
   const mosquito = game.mosquitos[move.x][move.y].pop()!.mosquito
