@@ -1,4 +1,4 @@
-import { IncompleteInformation, SequentialGame } from '@gamepark/rules-api'
+import { Action, IncompleteInformation, SequentialGame, Undo } from '@gamepark/rules-api'
 import Animal from './animals/Animal'
 import Coordinates from './fields/Coordinates'
 import GameState from './GameState'
@@ -11,13 +11,13 @@ import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
 import { canMoveAnimal, getPondsWithMosquitoAroundChameleon, getValidDestinations } from './utils/AnimalUtils'
 import { createMosquitos, mosquitoToReveal, tokenForcedToReveal } from './utils/BoardUtils'
-import { endOfTurn, isPlacementPhase } from './utils/GameUtils'
+import { canUndo, endOfTurn, isPlacementPhase } from './utils/GameUtils'
 
 const { Orange, Blue } = PlayerColor
 const { Toucan, Chameleon } = Animal
 
 export default class MosquitoShow extends SequentialGame<GameState, Move, PlayerColor>
-  implements IncompleteInformation<GameState, GameView, Move, MoveView, PlayerColor> {
+  implements IncompleteInformation<GameState, GameView, Move, MoveView, PlayerColor>, Undo<GameState, Move, PlayerColor> {
 
   constructor(state: GameState)
   constructor(options: MosquitoShowOptions)
@@ -32,11 +32,15 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       super(arg)
     }
   }
-
+  
+  canUndo(action: Action<Move, PlayerColor>, consecutiveActions: Action<Move, PlayerColor>[]): boolean {
+    return canUndo(action, consecutiveActions)
+  }
+  
   getActivePlayer(): PlayerColor | undefined {
     return this.state.activePlayer
   }
-
+  
   getLegalMoves(): Move[] {
     const moves: Move[] = []
     const activePlayer = this.state.players.find(player => player.color === this.state.activePlayer)!

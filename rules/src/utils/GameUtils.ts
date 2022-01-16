@@ -1,6 +1,8 @@
+import { Action } from "@gamepark/rules-api"
 import Animal from "../animals/Animal"
 import GameState from "../GameState"
 import GameView from "../GameView"
+import { Move, MoveType } from "../moves"
 import PlayerColor from "../PlayerColor"
 import { canMoveAnimal } from "./AnimalUtils"
 import { mosquitoToReveal } from "./BoardUtils"
@@ -39,4 +41,18 @@ export function endOfTurn(game: GameState | GameView) {
       }
     }
   }
+}
+
+export function canUndo(action: Action<Move, PlayerColor>, consecutiveActions: Action<Move, PlayerColor>[]): boolean {
+  if(consecutiveActions.length){
+    return false
+  }
+  switch (action.move.type) {
+    case MoveType.Eat:
+      if(action.move.revealToken){
+        return false
+      }
+      break
+  }
+  return true
 }

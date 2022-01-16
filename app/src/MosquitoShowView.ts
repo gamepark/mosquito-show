@@ -4,7 +4,7 @@ import { chooseMosquitoEffect, eatInView, Move, moveAnimal, MoveType, playBlueMo
 import { MoveView } from '@gamepark/mosquito-show/moves/MoveView'
 import { revealMosquitoInView } from '@gamepark/mosquito-show/moves/RevealMosquito'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
-import { endOfTurn, getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
+import { canUndo, endOfTurn, getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
 import { Action, Game, Undo } from '@gamepark/rules-api'
 import LocalGameView from './LocalGameView'
 import { canSelect } from './util/GameUtils'
@@ -17,17 +17,7 @@ export default class MosquitoShowView implements Game<LocalGameView, Move>, Undo
   }
   
   canUndo(action: Action<Move, PlayerColor>, consecutiveActions: Action<Move, PlayerColor>[]): boolean {
-    if(consecutiveActions.length){
-      return false
-    }
-    switch (action.move.type) {
-      case MoveType.Eat:
-        if(action.move.revealToken){
-          return false
-        }
-        break
-    }
-    return true
+    return canUndo(action, consecutiveActions)
   }
   
   play(move: MoveView): void {
