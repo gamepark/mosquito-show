@@ -1,3 +1,5 @@
+export * from './ChangeActivePlayer';
+export { changeActivePlayer } from './ChangeActivePlayer';
 export * from './ChooseMosquitoEffect';
 export * from './Eat';
 export * from './Move';

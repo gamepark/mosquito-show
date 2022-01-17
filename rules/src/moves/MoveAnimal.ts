@@ -2,6 +2,7 @@ import Animal from '../animals/Animal'
 import Coordinates from '../fields/Coordinates'
 import GameState from '../GameState'
 import GameView from '../GameView'
+import { getPondsBetween } from '../utils/BoardUtils'
 import { getActivePlayerState } from '../utils/GameUtils'
 import { MoveType } from './MoveType'
 
@@ -27,26 +28,4 @@ export const moveAnimal = (game: GameState | GameView, move: MoveAnimal): void =
     }
   }
   delete getActivePlayerState(game)?.animalForcedToMove
-}
-
-function getPondsBetween(origin: Coordinates, destination: Coordinates) {
-  const result: Coordinates[] = []
-  if (origin.x < destination.x && origin.y < destination.y) {
-    for (let x = origin.x, y = origin.y; x < destination.x; x++, y++) {
-      result.push({x, y})
-    }
-  } else if (origin.x < destination.x && origin.y > destination.y) {
-    for (let x = origin.x, y = origin.y - 1; x < destination.x; x++, y--) {
-      result.push({x, y})
-    }
-  } else if (origin.x > destination.x && origin.y < destination.y) {
-    for (let x = origin.x - 1, y = origin.y; x >= destination.x; x--, y++) {
-      result.push({x, y})
-    }
-  } else if (origin.x > destination.x && origin.y > destination.y) {
-    for (let x = origin.x - 1, y = origin.y - 1; x >= destination.x; x--, y--) {
-      result.push({x, y})
-    }
-  }
-  return result
 }

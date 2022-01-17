@@ -1,4 +1,5 @@
 import shuffle from 'lodash.shuffle'
+import Coordinates from '../fields/Coordinates'
 import GameState from '../GameState'
 import GameView from '../GameView'
 import { Mosquito, MosquitoOnBoard, Waterlily } from '../material/MosquitoEffect'
@@ -96,4 +97,26 @@ export function mosquitoToReveal(game: GameState | GameView) {
 
 export function tokenForcedToReveal(game: GameState, x: number, y: number) {
   return !game.mosquitos[x][y][game.mosquitos[x][y].length - 1].revealed
+}
+
+export function getPondsBetween(origin: Coordinates, destination: Coordinates) {
+  const result: Coordinates[] = []
+  if (origin.x < destination.x && origin.y < destination.y) {
+    for (let x = origin.x, y = origin.y; x < destination.x; x++, y++) {
+      result.push({x, y})
+    }
+  } else if (origin.x < destination.x && origin.y > destination.y) {
+    for (let x = origin.x, y = origin.y - 1; x < destination.x; x++, y--) {
+      result.push({x, y})
+    }
+  } else if (origin.x > destination.x && origin.y < destination.y) {
+    for (let x = origin.x - 1, y = origin.y; x >= destination.x; x--, y++) {
+      result.push({x, y})
+    }
+  } else if (origin.x > destination.x && origin.y > destination.y) {
+    for (let x = origin.x - 1, y = origin.y - 1; x >= destination.x; x--, y--) {
+      result.push({x, y})
+    }
+  }
+  return result
 }
