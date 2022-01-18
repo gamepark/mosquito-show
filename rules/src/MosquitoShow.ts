@@ -5,7 +5,7 @@ import GameState from './GameState'
 import GameView from './GameView'
 import { Mosquito } from './material/MosquitoEffect'
 import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
-import { chooseMosquitoEffect, chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playBlueMosquitoEffect, playBlueMosquitoEffectMove, playGreyMosquitoEffect, playGreyMosquitoEffectMove, playRedMosquitoEffect, playRedMosquitoEffectMove, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove, skipTurn, skipTurnMove } from './moves'
+import { changeActivePlayer, chooseMosquitoEffect, chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playBlueMosquitoEffect, playBlueMosquitoEffectMove, playGreyMosquitoEffect, playGreyMosquitoEffectMove, playRedMosquitoEffect, playRedMosquitoEffectMove, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove, skipTurn, skipTurnMove } from './moves'
 import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
@@ -125,6 +125,9 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         break
       case MoveType.SkipTurn:
         skipTurn(this.state, move)
+        break
+      case MoveType.ChangeActivePlayer:
+        changeActivePlayer(this.state, move)
         break
     }
     endOfTurn(this.state)
