@@ -14,5 +14,5 @@ export const changeActivePlayerMove = (): ChangeActivePlayer => ({
 
 export const changeActivePlayer = (game: GameState | GameView, move: ChangeActivePlayer): void => {
   game.activePlayer = getActivePlayerState(game)!.color === PlayerColor.Blue ? PlayerColor.Orange : PlayerColor.Blue
-  game.changePlayer = false
+  game.turnOver = false
 }

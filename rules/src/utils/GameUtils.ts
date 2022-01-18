@@ -26,7 +26,7 @@ export function endOfTurn(game: GameState | GameView) {
     delete game.activePlayer
   } else if (!getActivePlayerState(game)!.chameleonMustMove && !getActivePlayerState(game)!.pendingToucanEat.length && !getActivePlayerState(game)!.eatenMosquitos.length && !mosquitoToReveal(game)) {
     if (!game.players.some(player => player.skippedTurn)) {
-      game.changePlayer = true
+      game.turnOver = true
     }
     if (!canMoveAnimal(game, Toucan) && !canMoveAnimal(game, Chameleon)) {
       delete game.activePlayer
@@ -35,7 +35,7 @@ export function endOfTurn(game: GameState | GameView) {
         if (getActivePlayerState(game)?.skippedTurn) {
           delete getActivePlayerState(game)!.animalForcedToMove
           delete getActivePlayerState(game)!.skippedTurn
-          game.changePlayer = true
+          game.turnOver = true
         }
       }
     }
@@ -52,6 +52,12 @@ export function canUndo(action: Action<Move, PlayerColor>, consecutiveActions: A
         return false
       }
       break
+  }
+  if(action.consequences.find(consequence => consequence.type === MoveType.Eat && consequence.revealToken)){
+    return false
+  }
+  if(action.consequences.find(consequence => consequence.type === MoveType.ChangeActivePlayer)){
+    return false
   }
   return true
 }

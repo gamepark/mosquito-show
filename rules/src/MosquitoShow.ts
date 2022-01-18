@@ -1,4 +1,4 @@
-import { Action, IncompleteInformation, SequentialGame, Undo } from '@gamepark/rules-api'
+import { Action, Competitive, IncompleteInformation, SequentialGame, Undo } from '@gamepark/rules-api'
 import Animal from './animals/Animal'
 import Coordinates from './fields/Coordinates'
 import GameState from './GameState'
@@ -9,15 +9,15 @@ import { changeActivePlayer, changeActivePlayerMove, chooseMosquitoEffect, choos
 import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
-import { canMoveAnimal, getPondsWithMosquitoAroundChameleon, getValidDestinations } from './utils/AnimalUtils'
+import { canMoveAnimal, canMoveAnimalOfPlayer, getPondsWithMosquitoAroundChameleon, getValidDestinations } from './utils/AnimalUtils'
 import { createMosquitos, mosquitoToReveal, tokenForcedToReveal } from './utils/BoardUtils'
-import { canUndo, endOfTurn, isPlacementPhase } from './utils/GameUtils'
+import { canUndo, endOfTurn, getPlayerState, isPlacementPhase } from './utils/GameUtils'
 
 const { Orange, Blue } = PlayerColor
 const { Toucan, Chameleon } = Animal
 
 export default class MosquitoShow extends SequentialGame<GameState, Move, PlayerColor>
-  implements IncompleteInformation<GameState, GameView, Move, MoveView, PlayerColor>, Undo<GameState, Move, PlayerColor> {
+  implements IncompleteInformation<GameState, GameView, Move, MoveView, PlayerColor>, Undo<GameState, Move, PlayerColor>, Competitive<GameState, Move, PlayerColor> {
 
   constructor(state: GameState)
   constructor(options: MosquitoShowOptions)
@@ -27,11 +27,28 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         players: [Blue, Orange].map(color => ({ color, goldenMosquitos: 0, eatenMosquitos: [], pendingToucanEat: [], hasPlayerToMoveAnimal: undefined })),
         activePlayer: Math.random() < 0.5 ? Orange : Blue,
         mosquitos: createMosquitos(),
-        changePlayer: false
+        turnOver: false
       })
     } else {
       super(arg)
     }
+  }
+
+  rankPlayers(playerA: PlayerColor, playerB: PlayerColor): number {
+    console.log('rank')
+    for (const player of this.state.players) {
+      if (player.goldenMosquitos >= 9) {
+        return player.color === playerA ? -1 : 1
+      } else if (!canMoveAnimalOfPlayer(this.state, Toucan, player) && !canMoveAnimalOfPlayer(this.state, Chameleon, player)) {
+        return player.color === playerA ? -1 : 1
+      }
+    }
+    return 0
+  }
+
+  getScore(playerId: PlayerColor): number {
+    console.log('score')
+    return getPlayerState(this.state, playerId)!.goldenMosquitos
   }
 
   canUndo(action: Action<Move, PlayerColor>, consecutiveActions: Action<Move, PlayerColor>[]): boolean {
@@ -91,7 +108,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       if (activePlayer.selectedMosquito == Mosquito.Red) {
         [Chameleon, Toucan].forEach(animal => moves.push(playRedMosquitoEffectMove(animal)))
       }
-    } else if (this.state.changePlayer) {
+    } else if (this.state.turnOver) {
       moves.push(changeActivePlayerMove())
     } else {
       getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(tokenForcedToReveal(this.state, pond.x, pond.y), pond.x, pond.y)))
@@ -142,7 +159,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     if (activePlayer.pendingToucanEat.length) {
       const { y, x } = activePlayer.pendingToucanEat[0]
       return eatMove(tokenForcedToReveal(this.state, x, y), x, y)
-    } else if (this.state.changePlayer) {
+    } else if (this.state.turnOver) {
       return changeActivePlayerMove()
     } else if (!activePlayer.eatenMosquitos.length && !activePlayer.chameleonMustMove) {
       const mosquito = mosquitoToReveal(this.state)
