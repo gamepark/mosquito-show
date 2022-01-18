@@ -5,7 +5,7 @@ import GameState from './GameState'
 import GameView from './GameView'
 import { Mosquito } from './material/MosquitoEffect'
 import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
-import { changeActivePlayer, chooseMosquitoEffect, chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playBlueMosquitoEffect, playBlueMosquitoEffectMove, playGreyMosquitoEffect, playGreyMosquitoEffectMove, playRedMosquitoEffect, playRedMosquitoEffectMove, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove, skipTurn, skipTurnMove } from './moves'
+import { changeActivePlayer, changeActivePlayerMove, chooseMosquitoEffect, chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playBlueMosquitoEffect, playBlueMosquitoEffectMove, playGreyMosquitoEffect, playGreyMosquitoEffectMove, playRedMosquitoEffect, playRedMosquitoEffectMove, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove, skipTurn, skipTurnMove } from './moves'
 import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
@@ -26,21 +26,22 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       super({
         players: [Blue, Orange].map(color => ({ color, goldenMosquitos: 0, eatenMosquitos: [], pendingToucanEat: [], hasPlayerToMoveAnimal: undefined })),
         activePlayer: Math.random() < 0.5 ? Orange : Blue,
-        mosquitos: createMosquitos()
+        mosquitos: createMosquitos(),
+        changePlayer: false
       })
     } else {
       super(arg)
     }
   }
-  
+
   canUndo(action: Action<Move, PlayerColor>, consecutiveActions: Action<Move, PlayerColor>[]): boolean {
     return canUndo(action, consecutiveActions)
   }
-  
+
   getActivePlayer(): PlayerColor | undefined {
     return this.state.activePlayer
   }
-  
+
   getLegalMoves(): Move[] {
     const moves: Move[] = []
     const activePlayer = this.state.players.find(player => player.color === this.state.activePlayer)!
@@ -90,6 +91,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       if (activePlayer.selectedMosquito == Mosquito.Red) {
         [Chameleon, Toucan].forEach(animal => moves.push(playRedMosquitoEffectMove(animal)))
       }
+    } else if (this.state.changePlayer) {
+      moves.push(changeActivePlayerMove())
     } else {
       getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(tokenForcedToReveal(this.state, pond.x, pond.y), pond.x, pond.y)))
       getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))
@@ -128,7 +131,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         break
       case MoveType.ChangeActivePlayer:
         changeActivePlayer(this.state, move)
-        break
+        return
     }
     endOfTurn(this.state)
   }
@@ -139,6 +142,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     if (activePlayer.pendingToucanEat.length) {
       const { y, x } = activePlayer.pendingToucanEat[0]
       return eatMove(tokenForcedToReveal(this.state, x, y), x, y)
+    } else if (this.state.changePlayer) {
+      return changeActivePlayerMove()
     } else if (!activePlayer.eatenMosquitos.length && !activePlayer.chameleonMustMove) {
       const mosquito = mosquitoToReveal(this.state)
       if (mosquito) {

@@ -7,7 +7,6 @@ import PlayerColor from "../PlayerColor"
 import { canMoveAnimal } from "./AnimalUtils"
 import { mosquitoToReveal } from "./BoardUtils"
 
-const { Orange, Blue } = PlayerColor
 const { Toucan, Chameleon } = Animal
 
 export function getActivePlayerState(state: GameState | GameView) {
@@ -27,7 +26,7 @@ export function endOfTurn(game: GameState | GameView) {
     delete game.activePlayer
   } else if (!getActivePlayerState(game)!.chameleonMustMove && !getActivePlayerState(game)!.pendingToucanEat.length && !getActivePlayerState(game)!.eatenMosquitos.length && !mosquitoToReveal(game)) {
     if (!game.players.some(player => player.skippedTurn)) {
-      game.activePlayer = getActivePlayerState(game)!.color === Blue ? Orange : Blue
+      game.changePlayer = true
     }
     if (!canMoveAnimal(game, Toucan) && !canMoveAnimal(game, Chameleon)) {
       delete game.activePlayer
@@ -36,7 +35,7 @@ export function endOfTurn(game: GameState | GameView) {
         if (getActivePlayerState(game)?.skippedTurn) {
           delete getActivePlayerState(game)!.animalForcedToMove
           delete getActivePlayerState(game)!.skippedTurn
-          game.activePlayer = getActivePlayerState(game)!.color === Blue ? Orange : Blue
+          game.changePlayer = true
         }
       }
     }

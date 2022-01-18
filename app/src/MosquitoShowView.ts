@@ -69,7 +69,7 @@ export default class MosquitoShowView implements Game<LocalGameView, Move>, Undo
         break
       case MoveType.ChangeActivePlayer:
         changeActivePlayer(this.state, move)
-        break
+        return
     }
     endOfTurn(this.state)
   }
