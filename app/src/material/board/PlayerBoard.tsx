@@ -44,18 +44,23 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
       <MosquitoToken key={index} mosquito={eatenMosquito} onClick={onClick(eatenMosquito)} css={eatenMosquitoPosition(index, playerstate.eatenMosquitos.length)} />
     )
     }
-    {playerstate.color == playerId && playerstate.animalForcedToMove && !canMoveAnimal(game, playerstate.animalForcedToMove) ?
-      <Button children={t('skip.turn.button')} color={playerstate.color === PlayerColor.Blue ? playerColorBlue : playerColorOrange} onClick={() => play(skipTurnMove())} css={buttonPosition} /> : undefined
-    }
+
+    <span css={buttonFont}>
+      {playerstate.color == playerId && playerstate.animalForcedToMove && !canMoveAnimal(game, playerstate.animalForcedToMove) ?
+        <Button children={t('skip.turn.button')} color={playerstate.color === PlayerColor.Blue ? playerColorBlue : playerColorOrange} onClick={() => play(skipTurnMove())} css={buttonPosition} /> : undefined
+      }
+    </span>
   </div>
 }
-
+const buttonFont = () => css`
+  font-size: medium;
+`
 const buttonPosition = () => css`
   position: absolute;
-  top: 12.5em;
-  height: 2em;
+  top: 80%;
+  height: 20%;
   width: 100%;
-  font-size: 3em;
+
 `
 
 const goldenMosquitoFont = () => css`
