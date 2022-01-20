@@ -21,21 +21,31 @@ export function isPlacementPhase(game: GameState | GameView) {
   return game.players.some(player => !player.toucan || !player.chameleon)
 }
 
-export function endOfTurn(game: GameState | GameView) {
+export function gameEndGolden(game: GameState | GameView) {
   if (getActivePlayerState(game)!.goldenMosquitos >= 9) {
     delete game.activePlayer
-  } else if (!getActivePlayerState(game)!.chameleonMustMove && !getActivePlayerState(game)!.pendingToucanEat.length && !getActivePlayerState(game)!.eatenMosquitos.length && !mosquitoToReveal(game)) {
-    if (!game.players.some(player => player.skippedTurn)) {
-      game.turnOver = true
-    }
-    if (!canMoveAnimal(game, Toucan) && !canMoveAnimal(game, Chameleon)) {
-      delete game.activePlayer
-    } else if (getActivePlayerState(game)?.animalForcedToMove) {
-      if (!canMoveAnimal(game, getActivePlayerState(game)!.animalForcedToMove!)) {
-        if (getActivePlayerState(game)?.skippedTurn) {
-          delete getActivePlayerState(game)!.animalForcedToMove
-          delete getActivePlayerState(game)!.skippedTurn
-          game.turnOver = true
+  }
+}
+
+export function gameEndBlock(game: GameState | GameView) {
+  if (!canMoveAnimal(game, Toucan) && !canMoveAnimal(game, Chameleon)) {
+    delete game.activePlayer
+  }
+}
+
+export function endOfTurn(game: GameState | GameView) {
+  if (game.activePlayer) {
+    if (!getActivePlayerState(game)!.chameleonMustMove && !getActivePlayerState(game)!.pendingToucanEat.length && !getActivePlayerState(game)!.eatenMosquitos.length && !mosquitoToReveal(game)) {
+      if (!game.players.some(player => player.skippedTurn)) {
+        game.turnOver = true
+      }
+      if (getActivePlayerState(game)?.animalForcedToMove) {
+        if (!canMoveAnimal(game, getActivePlayerState(game)!.animalForcedToMove!)) {
+          if (getActivePlayerState(game)?.skippedTurn) {
+            delete getActivePlayerState(game)!.animalForcedToMove
+            delete getActivePlayerState(game)!.skippedTurn
+            game.turnOver = true
+          }
         }
       }
     }
@@ -43,20 +53,20 @@ export function endOfTurn(game: GameState | GameView) {
 }
 
 export function canUndo(action: Action<Move, PlayerColor>, consecutiveActions: Action<Move, PlayerColor>[]): boolean {
-  if(consecutiveActions.length){
+  if (consecutiveActions.length) {
     return false
   }
   switch (action.move.type) {
     case MoveType.Eat:
-      if(action.move.revealToken){
+      if (action.move.revealToken) {
         return false
       }
       break
   }
-  if(action.consequences.find(consequence => consequence.type === MoveType.Eat && consequence.revealToken)){
+  if (action.consequences.find(consequence => consequence.type === MoveType.Eat && consequence.revealToken)) {
     return false
   }
-  if(action.consequences.find(consequence => consequence.type === MoveType.ChangeActivePlayer)){
+  if (action.consequences.find(consequence => consequence.type === MoveType.ChangeActivePlayer)) {
     return false
   }
   return true

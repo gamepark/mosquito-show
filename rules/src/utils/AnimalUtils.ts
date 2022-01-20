@@ -85,6 +85,9 @@ export function canMoveAnimal(game: GameState | GameView, animal: Animal) {
 }
 
 export function canMoveAnimalOfPlayer(game: GameState | GameView, animal: Animal, player: PlayerState) {
+  if(!player){
+    return true
+  }
   const location = animal === Chameleon ? player.chameleon : player.toucan
   if (!location) {
     return true

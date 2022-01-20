@@ -11,7 +11,7 @@ import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
 import { canMoveAnimal, canMoveAnimalOfPlayer, getPondsWithMosquitoAroundChameleon, getValidDestinations } from './utils/AnimalUtils'
 import { createMosquitos, mosquitoToReveal, tokenForcedToReveal } from './utils/BoardUtils'
-import { canUndo, endOfTurn, getPlayerState, isPlacementPhase } from './utils/GameUtils'
+import { canUndo, endOfTurn, gameEndBlock, gameEndGolden, getPlayerState, isPlacementPhase } from './utils/GameUtils'
 
 const { Orange, Blue } = PlayerColor
 const { Toucan, Chameleon } = Animal
@@ -32,6 +32,10 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     } else {
       super(arg)
     }
+  }
+
+  isOver(): boolean {
+      return this.state.activePlayer === undefined
   }
 
   rankPlayers(playerA: PlayerColor, playerB: PlayerColor): number {
@@ -148,11 +152,10 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         break
       case MoveType.ChangeActivePlayer:
         changeActivePlayer(this.state, move)
-        if (!canMoveAnimal(this.state, Toucan) && !canMoveAnimal(this.state, Chameleon)) {
-          delete this.state.activePlayer
-        }
+        gameEndBlock(this.state)
         return
     }
+    gameEndGolden(this.state)
     endOfTurn(this.state)
   }
 

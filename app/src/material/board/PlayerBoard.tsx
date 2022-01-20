@@ -5,7 +5,7 @@ import { chooseMosquitoEffectMove, skipTurnMove } from '@gamepark/mosquito-show/
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import { canMoveAnimal } from '@gamepark/mosquito-show/utils/AnimalUtils'
 import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
-import { usePlay } from '@gamepark/react-client'
+import { usePlay, usePlayerId } from '@gamepark/react-client'
 import { HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
 import LocalGameView from 'src/LocalGameView'
@@ -20,6 +20,7 @@ type PlayerBoardProps = {
 
 export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoardProps) {
   const play = usePlay()
+  const playerId = usePlayerId()
   const { t } = useTranslation()
   const playerstate = game.players[playerIndex]
 
@@ -43,7 +44,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
       <MosquitoToken key={index} mosquito={eatenMosquito} onClick={onClick(eatenMosquito)} css={eatenMosquitoPosition(index, playerstate.eatenMosquitos.length)} />
     )
     }
-    { playerstate.animalForcedToMove && !canMoveAnimal(game, playerstate.animalForcedToMove) ?
+    {playerstate.color == playerId && playerstate.animalForcedToMove && !canMoveAnimal(game, playerstate.animalForcedToMove) ?
       <Button children={t('skip.turn.button')} color={playerstate.color === PlayerColor.Blue ? playerColorBlue : playerColorOrange} onClick={() => play(skipTurnMove())} css={buttonPosition} /> : undefined
     }
   </div>
