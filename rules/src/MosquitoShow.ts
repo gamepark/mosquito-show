@@ -148,6 +148,9 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         break
       case MoveType.ChangeActivePlayer:
         changeActivePlayer(this.state, move)
+        if (!canMoveAnimal(this.state, Toucan) && !canMoveAnimal(this.state, Chameleon)) {
+          delete this.state.activePlayer
+        }
         return
     }
     endOfTurn(this.state)

@@ -1,13 +1,17 @@
+import Animal from '@gamepark/mosquito-show/animals/Animal'
 import GameView from '@gamepark/mosquito-show/GameView'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
 import { changeActivePlayer, chooseMosquitoEffect, eatInView, Move, moveAnimal, MoveType, playBlueMosquitoEffect, playGreyMosquitoEffectInView, playMosquitoEffectInView, playRedMosquitoEffect, skipTurn } from '@gamepark/mosquito-show/moves'
 import { MoveView } from '@gamepark/mosquito-show/moves/MoveView'
 import { revealMosquitoInView } from '@gamepark/mosquito-show/moves/RevealMosquito'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
+import { canMoveAnimal } from '@gamepark/mosquito-show/utils/AnimalUtils'
 import { canUndo, endOfTurn, getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
 import { Action, Game, Undo } from '@gamepark/rules-api'
 import LocalGameView from './LocalGameView'
 import { canSelect } from './util/GameUtils'
+
+const { Toucan, Chameleon } = Animal
 
 export default class MosquitoShowView implements Game<LocalGameView, Move>, Undo<LocalGameView, Move, PlayerColor> {
   state: LocalGameView
@@ -69,6 +73,9 @@ export default class MosquitoShowView implements Game<LocalGameView, Move>, Undo
         break
       case MoveType.ChangeActivePlayer:
         changeActivePlayer(this.state, move)
+        if (!canMoveAnimal(this.state, Toucan) && !canMoveAnimal(this.state, Chameleon)) {
+          delete this.state.activePlayer
+        }
         return
     }
     endOfTurn(this.state)
