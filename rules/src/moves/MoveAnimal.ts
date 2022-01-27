@@ -5,6 +5,7 @@ import GameView from '../GameView'
 import { getPondsBetween } from '../utils/BoardUtils'
 import { getActivePlayerState } from '../utils/GameUtils'
 import { MoveType } from './MoveType'
+import { MoveView } from './MoveView'
 
 export type MoveAnimal = {
   type: typeof MoveType.MoveAnimal
@@ -28,4 +29,8 @@ export const moveAnimal = (game: GameState | GameView, move: MoveAnimal): void =
     }
   }
   delete getActivePlayerState(game)?.animalForcedToMove
+}
+
+export function isMoveAnimalMove(move: MoveView): move is MoveAnimal{
+  return move.type === MoveType.MoveAnimal
 }

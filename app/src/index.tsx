@@ -7,6 +7,7 @@ import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import Images from './material/Images'
+import mosquitoShowAnimations from './MosquitoShowAnimations'
 import MosquitoShowView from './MosquitoShowView'
 import translations from './translations.json'
 
@@ -62,7 +63,7 @@ const style = css`
 
 ReactDOM.render(
   <StrictMode>
-    <GameProvider game="MosquitoShow" Rules={MosquitoShow} RulesView={MosquitoShowView} optionsSpec={MosquitoShowOptionsSpec}>
+    <GameProvider game="MosquitoShow" Rules={MosquitoShow} RulesView={MosquitoShowView} optionsSpec={MosquitoShowOptionsSpec} animations={mosquitoShowAnimations}>
       <App/>
     </GameProvider>
     <Global styles={[normalize, style]}/>

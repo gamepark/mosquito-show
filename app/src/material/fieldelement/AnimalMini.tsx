@@ -3,12 +3,12 @@ import { css, keyframes } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { playRedMosquitoEffectMove, selectAnimalMove } from '@gamepark/mosquito-show/moves'
+import { isMoveAnimalMove, MoveAnimal, playRedMosquitoEffectMove, selectAnimalMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
 import { canMoveAnimal } from '@gamepark/mosquito-show/utils/AnimalUtils'
 import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
-import { usePlay, usePlayerId } from '@gamepark/react-client'
+import { Animation, useAnimation, usePlay, usePlayerId } from '@gamepark/react-client'
 import { Draggable } from '@gamepark/react-components'
 import LocalGameView from '../../LocalGameView'
 import { animalHeight, animalWidth, boardSize, jungleSpaceDelta } from '../../styles'
@@ -29,6 +29,7 @@ export type AnimalDragObject = { animal: Animal }
 
 export default function AnimalMini({game, owner, animal}: AnimalProp) {
   const playerId = usePlayerId<PlayerColor>()
+  const animation = useAnimation<MoveAnimal>(animation => isMoveAnimalMove(animation.move) && animation.move.animal === animal && game.activePlayer === owner.color)
   const play = usePlay()
   const selected = playerId === owner.color && game.selectedAnimal === animal
   const canMove = (playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal) && (getActivePlayerState(game)?.animalForcedToMove === undefined || getActivePlayerState(game)?.animalForcedToMove === animal) && getActivePlayerState(game)?.selectedMosquito !== Mosquito.Red)
@@ -47,10 +48,14 @@ export default function AnimalMini({game, owner, animal}: AnimalProp) {
   }
 
   return <Draggable type={ANIMAL} item={{animal}} canDrag={canSelectAnimal && canMove} drop={play}
-                    css={[style(owner.color, animal), selected ? selectedAnimal : (canSelectAnimal && (canMove || chooseEnemyAnimal)) && filterAnimation]}
-                    preTransform={placeAnimal(owner, animal)}
+                    css={[style(owner.color, animal), selected ? selectedAnimal : (canSelectAnimal && (canMove || chooseEnemyAnimal)) && filterAnimation, animation && moveAnimation(animation.duration)]}
+                    preTransform={placeAnimal(owner, animal, animation)}
                     onClick={onClick}/>
 }
+
+const moveAnimation = (duration: number) => css`
+  transition: transform ${duration}s ease-in-out;
+`
 
 const style = (player: PlayerColor, animal: Animal) => css`
   position: absolute;
@@ -70,8 +75,8 @@ function animalImage(player: PlayerColor, animal: Animal) {
   }
 }
 
-function placeAnimal(player: PlayerState, animal: Animal) {
-  const location = animal === Animal.Chameleon ? player.chameleon : player.toucan
+function placeAnimal(player: PlayerState, animal: Animal, animation?: Animation<MoveAnimal>) {
+  const location = animation ? animation.move : animal === Animal.Chameleon ? player.chameleon : player.toucan
   if (location) {
     return animalPosition(location)
   } else {
