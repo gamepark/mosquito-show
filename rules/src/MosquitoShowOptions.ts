@@ -26,7 +26,7 @@ export function isGameOptions(arg: GameState | MosquitoShowOptions): arg is Mosq
 export const MosquitoShowOptionsSpec: OptionsSpec<MosquitoShowOptions> = {
   players: {
     id: {
-      label: t => t('Colour'),
+      label: t => t('Player colors'),
       values: [PlayerColor.Blue, PlayerColor.Orange],
       valueSpec: color => ({label: t => getPlayerName(color, t)})
     }
