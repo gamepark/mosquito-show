@@ -13,7 +13,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prepublishOnly": "tsc"
   },
   "dependencies": {
     "lodash.shuffle": "^4.2.0"
