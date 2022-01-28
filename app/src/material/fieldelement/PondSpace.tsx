@@ -24,6 +24,8 @@ export default function PondSpace({ game, x, y }: Props) {
   const isPondSpaceEmpty = getActivePlayerState(game)?.selectedMosquito == Mosquito.Grey && mosquitos.length == 0
 
   const onMosquitoTokenClick = (mosquitoOnTop: boolean, mosquitoOnBoard: Partial<MosquitoOnBoard>) => {
+    const player = game.players.find(p => p.color === game.activePlayer)
+    if (!player) return undefined
     if (getActivePlayerState(game)?.selectedMosquito == Mosquito.White) {
       return () => play(playWhiteMosquitoEffectMove(x, y))
     }
