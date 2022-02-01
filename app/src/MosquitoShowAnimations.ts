@@ -12,6 +12,8 @@ const mosquitoShowAnimations: Animations<LocalGameView, MoveView, PlayerColor> =
             return 0.5
         } else if(move.type === MoveType.PlayGreyMosquitoEffect){
             return 0.5
+        } else if(move.type === MoveType.PlayWhiteMosquitoEffect){
+            return 1.5
         }
         return 0
     }

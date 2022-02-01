@@ -3,14 +3,17 @@ import { css, keyframes } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
 import { Mosquito, MosquitoOnBoard } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { eatMove, isPlayGreyMosquitoEffectMove, PlayGreyMosquitoEffect, playGreyMosquitoEffectMove, playWhiteMosquitoEffectMove, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
+import { eatMove, isPlayGreyMosquitoEffectMove, isPlayWhiteMosquitoEffectMove, PlayGreyMosquitoEffect, playGreyMosquitoEffectMove, PlayWhiteMosquitoEffect, playWhiteMosquitoEffectMove, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
+import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import { chameleonCanEat } from '@gamepark/mosquito-show/utils/AnimalUtils'
 import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
 import { useAnimation, usePlay, usePlayerId } from '@gamepark/react-client'
 import { useMemo } from 'react'
 import LocalGameView from '../../LocalGameView'
-import { jungleSpaceDelta, mosquitoTokenSize } from '../../styles'
+import { boardSize, jungleSpaceDelta, mosquitoTokenSize, playerboardSize } from '../../styles'
 import MosquitoToken from './MosquitoToken'
+
+const { Orange, Blue } = PlayerColor
 
 type Props = {
   game: LocalGameView
@@ -25,6 +28,9 @@ export default function PondSpace({ game, x, y }: Props) {
   const animationGrey = useAnimation<PlayGreyMosquitoEffect>(animation => isPlayGreyMosquitoEffectMove(animation.move)
     && animation.move.origin.x === x
     && animation.move.origin.y === y)
+  const animationWhite = useAnimation<PlayWhiteMosquitoEffect>(animation => isPlayWhiteMosquitoEffectMove(animation.move)
+    && animation.move.x === x
+    && animation.move.y === y)
 
   const onMosquitoTokenClick = (mosquitoOnTop: boolean, mosquitoOnBoard: Partial<MosquitoOnBoard>) => {
     const player = game.players.find(p => p.color === game.activePlayer)
@@ -61,9 +67,11 @@ export default function PondSpace({ game, x, y }: Props) {
       isPondSpaceEmpty && emptyPondSpace,
       isPondSpaceEmpty && game.selectedPondSpace && glow]}>
       {mosquitos.map((mosquitoOnBoard, index) =>
-        <MosquitoToken key={index} mosquito={mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily} 
-          css={[tokenPosition(index), animationGrey && index === mosquitos.length-1 
-            && greyAnimationTranslation(animationGrey.duration, animationGrey.move.origin, animationGrey.move.destination, mosquitoOnBoard.mosquito === undefined, game.mosquitos[animationGrey.move.destination.x][animationGrey.move.destination.y].length - game.mosquitos[animationGrey.move.origin.x][animationGrey.move.origin.y].length)]}
+        <MosquitoToken key={index} mosquito={mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily}
+          css={[tokenPosition(index), animationGrey && index === mosquitos.length - 1
+            && greyAnimationTranslation(animationGrey.duration, animationGrey.move.origin, animationGrey.move.destination, mosquitoOnBoard.mosquito === undefined, game.mosquitos[animationGrey.move.destination.x][animationGrey.move.destination.y].length - game.mosquitos[animationGrey.move.origin.x][animationGrey.move.origin.y].length),
+          animationWhite && index === mosquitos.length - 1
+          && whiteAnimationTranslation(animationWhite.duration, x, y, getActivePlayerState(game)!.color, index)]}
           onClick={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard)}
         />
       )}
@@ -71,10 +79,30 @@ export default function PondSpace({ game, x, y }: Props) {
   )
 }
 
-const greyAnimationTranslation = (duration:number, origin:Coordinates, destination:Coordinates, hidden: boolean, indexDelta: number) => css`
+const whiteAnimationTranslation = (duration: number, x: number, y: number, player: PlayerColor, index: number) => css`
+  z-index:10;
+  animation: ${whiteAnimationKeyframes(x, y, player, index)} ${duration}s ease-in-out;
+`
+
+const whiteAnimationKeyframes = (x: number, y: number, player: PlayerColor, index: number) => keyframes`
+from{
+  left: ${0 + (index * 0.4)}em;
+  top: ${0 - (index * 0.4)}em;
+}
+75%{
+  opacity: 1;
+}
+to{
+  left: ${(player === Blue ? ((playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)) : ((((100 * 16 / 9 - boardSize) / 2 + boardSize) - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)))}em;
+  top: ${50 - (y * jungleSpaceDelta + 16.5)}em;
+  opacity: 0;
+}
+`
+
+const greyAnimationTranslation = (duration: number, origin: Coordinates, destination: Coordinates, hidden: boolean, indexDelta: number) => css`
   z-index:10;
   transition: transform ${duration}s ease-in-out;
-  transform: translate(${(destination.x-origin.x) * jungleSpaceDelta + (indexDelta * 0.4)}em, ${(destination.y-origin.y) * jungleSpaceDelta - (indexDelta * 0.4)}em) rotateY(${hidden?180:0}deg);
+  transform: translate(${(destination.x - origin.x) * jungleSpaceDelta + (indexDelta * 0.4)}em, ${(destination.y - origin.y) * jungleSpaceDelta - (indexDelta * 0.4)}em) rotateY(${hidden ? 180 : 0}deg);
 `
 
 const style = (x: number, y: number) => css`

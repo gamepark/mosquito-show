@@ -5,6 +5,7 @@ import { Mosquito } from '../material/MosquitoEffect'
 import { removeMosquitoFromPlayer } from '../utils/BoardUtils'
 import { getActivePlayerState } from '../utils/GameUtils'
 import { MoveType } from './MoveType'
+import { MoveView } from './MoveView'
 
 export type PlayWhiteMosquitoEffect = {
   type: typeof MoveType.PlayWhiteMosquitoEffect
@@ -28,4 +29,8 @@ export function playMosquitoEffectInView(game: GameView, move: PlayWhiteMosquito
   game.mosquitos[move.x][move.y].pop()!.mosquito ?? move.mosquito!
   removeMosquitoFromPlayer(game, Mosquito.White)
   delete getActivePlayerState(game)?.selectedMosquito
+}
+
+export function isPlayWhiteMosquitoEffectMove(move: MoveView): move is PlayWhiteMosquitoEffect{
+  return move.type === MoveType.PlayWhiteMosquitoEffect
 }
