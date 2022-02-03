@@ -80,21 +80,18 @@ export default function PondSpace({ game, x, y }: Props) {
 }
 
 const whiteAnimationTranslation = (duration: number, x: number, y: number, player: PlayerColor, index: number) => css`
-  z-index:10;
   animation: ${whiteAnimationKeyframes(x, y, player, index)} ${duration}s ease-in-out;
 `
 
 const whiteAnimationKeyframes = (x: number, y: number, player: PlayerColor, index: number) => keyframes`
 from{
-  left: ${0 + (index * 0.4)}em;
-  top: ${0 - (index * 0.4)}em;
+  transform: translate(${0 + (index * 0.4)}em, ${0 - (index * 0.4)}em) rotateY(180deg);
 }
 75%{
   opacity: 1;
 }
 to{
-  left: ${(player === Blue ? ((playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)) : ((((100 * 16 / 9 - boardSize) / 2 + boardSize) - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)))}em;
-  top: ${50 - (y * jungleSpaceDelta + 16.5)}em;
+  transform: translate(${(player === Blue ? ((1 - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)) : (((1 + (100 * 16 / 9 - boardSize) / 2 + boardSize) - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)))}em, ${50 - (y * jungleSpaceDelta + 16.5)}em)  rotateY(180deg);
   opacity: 0;
 }
 `

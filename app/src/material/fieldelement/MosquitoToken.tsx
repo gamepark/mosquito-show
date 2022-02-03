@@ -59,7 +59,7 @@ const frontFace = (mosquito: Mosquito) => css`
 `
 
 const backFace = (waterlily: Waterlily) => css`
-  &:before {
+  &:after {
     content: '';
     position: absolute;
     width: 100%;
