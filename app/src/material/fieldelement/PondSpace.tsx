@@ -71,7 +71,7 @@ export default function PondSpace({ game, x, y }: Props) {
           css={[tokenPosition(index), animationGrey && index === mosquitos.length - 1
             && greyAnimationTranslation(animationGrey.duration, animationGrey.move.origin, animationGrey.move.destination, mosquitoOnBoard.mosquito === undefined, game.mosquitos[animationGrey.move.destination.x][animationGrey.move.destination.y].length - game.mosquitos[animationGrey.move.origin.x][animationGrey.move.origin.y].length),
           animationWhite && index === mosquitos.length - 1
-          && whiteAnimationTranslation(animationWhite.duration, x, y, getActivePlayerState(game)!.color, index)]}
+          && whiteAnimationTranslation(animationWhite.duration, x, y, getActivePlayerState(game)!.color, index, mosquitoOnBoard.mosquito === undefined)]}
           onClick={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard)}
         />
       )}
@@ -79,19 +79,27 @@ export default function PondSpace({ game, x, y }: Props) {
   )
 }
 
-const whiteAnimationTranslation = (duration: number, x: number, y: number, player: PlayerColor, index: number) => css`
-  animation: ${whiteAnimationKeyframes(x, y, player, index)} ${duration}s ease-in-out;
+const whiteAnimationTranslation = (duration: number, x: number, y: number, player: PlayerColor, index: number, hidden: boolean) => css`
+  animation: ${whiteAnimationKeyframes(x, y, player, index, hidden)} ${duration}s ease-in-out;
+  &:before, &:after {
+    animation: ${fadeOut75Keyframes} ${duration}s ease-in-out;
+  }
 `
 
-const whiteAnimationKeyframes = (x: number, y: number, player: PlayerColor, index: number) => keyframes`
+const whiteAnimationKeyframes = (x: number, y: number, player: PlayerColor, index: number, hidden: boolean) => keyframes`
 from{
-  transform: translate(${0 + (index * 0.4)}em, ${0 - (index * 0.4)}em) rotateY(180deg);
+  transform: translate(${0 + (index * 0.4)}em, ${0 - (index * 0.4)}em) rotateY(${hidden ? 180 : 0}deg);
 }
-75%{
+to{
+  transform: translate(${(player === Blue ? ((1 - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)) : (((1 + (100 * 16 / 9 - boardSize) / 2 + boardSize) - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)))}em, ${50 - (y * jungleSpaceDelta + 16.5)}em)  rotateY(${hidden ? 180 : 0}deg);
+
+}
+`
+const fadeOut75Keyframes = keyframes`
+from, 75% {
   opacity: 1;
 }
 to{
-  transform: translate(${(player === Blue ? ((1 - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)) : (((1 + (100 * 16 / 9 - boardSize) / 2 + boardSize) - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)))}em, ${50 - (y * jungleSpaceDelta + 16.5)}em)  rotateY(180deg);
   opacity: 0;
 }
 `
