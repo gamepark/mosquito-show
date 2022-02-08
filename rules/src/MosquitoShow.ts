@@ -35,7 +35,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
   }
 
   isOver(): boolean {
-      return this.state.activePlayer === undefined
+    return this.state.activePlayer === undefined
   }
 
   rankPlayers(playerA: PlayerColor, playerB: PlayerColor): number {

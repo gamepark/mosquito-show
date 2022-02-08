@@ -19,11 +19,11 @@ export const moveAnimalMove = (animal: Animal, coordinates: Coordinates): MoveAn
 export const moveAnimal = (game: GameState | GameView, move: MoveAnimal): void => {
   const player = game.players.find(p => p.color === game.activePlayer)!
   if (move.animal === Animal.Chameleon) {
-    player.chameleon = {x: move.x, y: move.y}
+    player.chameleon = { x: move.x, y: move.y }
     delete player.chameleonMustMove
   } else {
     const origin = player.toucan
-    player.toucan = {x: move.x, y: move.y}
+    player.toucan = { x: move.x, y: move.y }
     if (origin) {
       player.pendingToucanEat.push(...getPondsBetween(origin, player.toucan))
     }
@@ -31,6 +31,6 @@ export const moveAnimal = (game: GameState | GameView, move: MoveAnimal): void =
   delete getActivePlayerState(game)?.animalForcedToMove
 }
 
-export function isMoveAnimalMove(move: MoveView): move is MoveAnimal{
+export function isMoveAnimalMove(move: MoveView): move is MoveAnimal {
   return move.type === MoveType.MoveAnimal
 }

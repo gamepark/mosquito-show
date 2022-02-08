@@ -5,14 +5,16 @@ import { Animations } from "@gamepark/react-client";
 import LocalGameView from "./LocalGameView";
 
 const mosquitoShowAnimations: Animations<LocalGameView, MoveView, PlayerColor> = {
-    getAnimationDuration(move: MoveView){
-        if(move.type === MoveType.MoveAnimal){
+    getAnimationDuration(move: MoveView) {
+        if (move.type === MoveType.MoveAnimal) {
             return 0.5
-        } else if(move.type === MoveType.PlayBlueMosquitoEffect){
+        } else if (move.type === MoveType.PlayBlueMosquitoEffect) {
             return 0.5
-        } else if(move.type === MoveType.PlayGreyMosquitoEffect){
+        } else if (move.type === MoveType.PlayGreyMosquitoEffect) {
             return 0.5
-        } else if(move.type === MoveType.PlayWhiteMosquitoEffect){
+        } else if (move.type === MoveType.PlayWhiteMosquitoEffect) {
+            return 1.5
+        } else if (move.type === MoveType.Eat) {
             return 1.5
         }
         return 0

@@ -4,6 +4,7 @@ import GameView from '../GameView'
 import { Mosquito } from '../material/MosquitoEffect'
 import { getActivePlayerState } from '../utils/GameUtils'
 import { MoveType } from './MoveType'
+import { MoveView } from './MoveView'
 
 export type Eat = {
   type: typeof MoveType.Eat
@@ -14,7 +15,7 @@ export type EatView = Eat & {
   mosquito?: Mosquito
 }
 
-export const eatMove = (revealToken: boolean, x: number, y: number): Eat => ({type: MoveType.Eat, revealToken: revealToken, x, y})
+export const eatMove = (revealToken: boolean, x: number, y: number): Eat => ({ type: MoveType.Eat, revealToken: revealToken, x, y })
 
 export function eat(game: GameState, move: Eat) {
   const mosquito = game.mosquitos[move.x][move.y].pop()!.mosquito
@@ -38,4 +39,8 @@ export function takeMosquito(game: GameState | GameView, mosquito: Mosquito) {
   } else {
     player.chameleonMustMove = true
   }
+}
+
+export function isEatViewMove(move: MoveView): move is EatView {
+  return move.type === MoveType.Eat
 }

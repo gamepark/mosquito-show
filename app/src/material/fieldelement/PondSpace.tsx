@@ -3,14 +3,15 @@ import { css, keyframes } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
 import { Mosquito, MosquitoOnBoard } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { eatMove, isPlayGreyMosquitoEffectMove, isPlayWhiteMosquitoEffectMove, PlayGreyMosquitoEffect, playGreyMosquitoEffectMove, PlayWhiteMosquitoEffect, playWhiteMosquitoEffectMove, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
+import { eatMove, EatView, isEatViewMove, isPlayGreyMosquitoEffectMove, isPlayWhiteMosquitoEffectMove, PlayGreyMosquitoEffect, playGreyMosquitoEffectMove, PlayWhiteMosquitoEffect, playWhiteMosquitoEffectMove, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
+import PlayerState from '@gamepark/mosquito-show/PlayerState'
 import { chameleonCanEat } from '@gamepark/mosquito-show/utils/AnimalUtils'
 import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
 import { useAnimation, usePlay, usePlayerId } from '@gamepark/react-client'
 import { useMemo } from 'react'
 import LocalGameView from '../../LocalGameView'
-import { boardSize, jungleSpaceDelta, mosquitoTokenSize, playerboardSize } from '../../styles'
+import { boardSize, goldenMosquitoPositionLeft, goldenMosquitoPositionTop, jungleSpaceDelta, mosquitoTokenSize, playerBoardDelta, playerboardSize } from '../../styles'
 import MosquitoToken from './MosquitoToken'
 
 const { Orange, Blue } = PlayerColor
@@ -31,6 +32,10 @@ export default function PondSpace({ game, x, y }: Props) {
   const animationWhite = useAnimation<PlayWhiteMosquitoEffect>(animation => isPlayWhiteMosquitoEffectMove(animation.move)
     && animation.move.x === x
     && animation.move.y === y)
+  const animationEat = useAnimation<EatView>(animation => isEatViewMove(animation.move)
+    && animation.move.x === x
+    && animation.move.y === y)
+
 
   const onMosquitoTokenClick = (mosquitoOnTop: boolean, mosquitoOnBoard: Partial<MosquitoOnBoard>) => {
     const player = game.players.find(p => p.color === game.activePlayer)
@@ -67,17 +72,40 @@ export default function PondSpace({ game, x, y }: Props) {
       isPondSpaceEmpty && emptyPondSpace,
       isPondSpaceEmpty && game.selectedPondSpace && glow]}>
       {mosquitos.map((mosquitoOnBoard, index) =>
-        <MosquitoToken key={index} mosquito={mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily}
+        <MosquitoToken key={index} mosquito={animationEat && index === mosquitos.length - 1 && mosquitoOnBoard.mosquito === undefined ? animationEat.move.mosquito : mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily}
           css={[tokenPosition(index), animationGrey && index === mosquitos.length - 1
             && greyAnimationTranslation(animationGrey.duration, animationGrey.move.origin, animationGrey.move.destination, mosquitoOnBoard.mosquito === undefined, game.mosquitos[animationGrey.move.destination.x][animationGrey.move.destination.y].length - game.mosquitos[animationGrey.move.origin.x][animationGrey.move.origin.y].length),
           animationWhite && index === mosquitos.length - 1
-          && whiteAnimationTranslation(animationWhite.duration, x, y, getActivePlayerState(game)!.color, index, mosquitoOnBoard.mosquito === undefined)]}
+          && whiteAnimationTranslation(animationWhite.duration, x, y, getActivePlayerState(game)!.color, index, mosquitoOnBoard.mosquito === undefined),
+          animationEat && index === mosquitos.length - 1 && (game.mosquitos[animationEat.move.x][animationEat.move.y][index].mosquito == Mosquito.Golden || animationEat.move.mosquito === Mosquito.Golden)
+          && eatGoldenAnimationTranslation(animationEat.duration, x, y, getActivePlayerState(game)!, index, mosquitoOnBoard.mosquito === undefined)]}
           onClick={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard)}
         />
       )}
     </div>
   )
 }
+
+// Other
+// Other Hidden
+
+const eatGoldenAnimationTranslation = (duration: number, x: number, y: number, playerState: PlayerState, index: number, hidden: boolean) => css`
+  z-index: 10;
+  animation: ${eatGoldenAnimationKeyframes(x, y, playerState, index, hidden)} ${duration}s ease-in-out;
+  }
+`
+
+const eatGoldenAnimationKeyframes = (x: number, y: number, playerState: PlayerState, index: number, hidden: boolean) => keyframes`
+from{
+  transform: rotateY(${hidden ? 180 : 0}deg);
+}
+50%{
+  transform: translate(${0 + (index * 0.4)}em, ${0 - (index * 0.4)}em) rotateY(${hidden ? 0 : 0}deg);
+}
+to{
+  transform: translate(${(playerState.color === PlayerColor.Blue ? 1 + (1 + ((playerState.goldenMosquitos + 1) * goldenMosquitoPositionLeft)) : 1 + (1 + playerBoardDelta + ((playerState.goldenMosquitos + 1) * goldenMosquitoPositionLeft))) - (x * jungleSpaceDelta + 17) - playerboardSize - mosquitoTokenSize / 2}em, ${goldenMosquitoPositionTop - (y * jungleSpaceDelta + 16.5) + (index * 0.4)}em) rotateY(${hidden ? 0 : 0}deg);
+}
+`
 
 const whiteAnimationTranslation = (duration: number, x: number, y: number, player: PlayerColor, index: number, hidden: boolean) => css`
   animation: ${whiteAnimationKeyframes(x, y, player, index, hidden)} ${duration}s ease-in-out;
@@ -88,19 +116,28 @@ const whiteAnimationTranslation = (duration: number, x: number, y: number, playe
 
 const whiteAnimationKeyframes = (x: number, y: number, player: PlayerColor, index: number, hidden: boolean) => keyframes`
 from{
-  transform: translate(${0 + (index * 0.4)}em, ${0 - (index * 0.4)}em) rotateY(${hidden ? 180 : 0}deg);
+  transform: translate(${0 + (index * 0.4)}em, ${0 - (index * 0.4)}em);
 }
 to{
-  transform: translate(${(player === Blue ? ((1 - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)) : (((1 + (100 * 16 / 9 - boardSize) / 2 + boardSize) - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)))}em, ${50 - (y * jungleSpaceDelta + 16.5)}em)  rotateY(${hidden ? 180 : 0}deg);
-
+  transform: translate(${(player === Blue ? ((1 - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)) : (((1 + (100 * 16 / 9 - boardSize) / 2 + boardSize) - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)))}em, ${50 - (y * jungleSpaceDelta + 16.5)}em);
 }
 `
+
 const fadeOut75Keyframes = keyframes`
 from, 75% {
   opacity: 1;
 }
 to{
   opacity: 0;
+}
+`
+
+const flip25Keyframes = (hidden: boolean) => keyframes`
+from{
+  transform: rotateY(${hidden ? 180 : 0}deg);
+}
+50%, to{
+  transform: none;
 }
 `
 

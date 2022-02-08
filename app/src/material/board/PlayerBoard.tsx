@@ -9,7 +9,7 @@ import { usePlay, usePlayerId } from '@gamepark/react-client'
 import { HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
 import LocalGameView from 'src/LocalGameView'
-import { boardSize, headerHeight, margin, mosquitoTokenSize, playerboardSize, playerColorBlue, playerColorOrange } from '../../styles'
+import { goldenMosquitoPositionLeft, goldenMosquitoPositionTop, headerHeight, margin, mosquitoTokenSize, playerBoardDelta, playerboardSize, playerColorBlue, playerColorOrange } from '../../styles'
 import MosquitoToken from '../fieldelement/MosquitoToken'
 import Button from '../util/Button'
 
@@ -73,8 +73,8 @@ const goldenMosquitoFont = () => css`
 
 const goldenMosquitoPosition = (index: number) => css`
   position: absolute;
-  top: 10em;
-  left: ${1 + (index * ((playerboardSize - mosquitoTokenSize - 2) / 9))}em;
+  top: ${goldenMosquitoPositionTop}em;
+  left: ${1 + (index * goldenMosquitoPositionLeft)}em;
 `
 
 const eatenMosquitoPosition = (index: number, length: number) => css`
@@ -86,7 +86,7 @@ const eatenMosquitoPosition = (index: number, length: number) => css`
 const outbox = (player: PlayerColor, activePlayer?: PlayerColor) => css`
   position: absolute;
   top: ${headerHeight + margin}em;
-  transform: translate(${(player === PlayerColor.Blue ? 1 : 1 + (100 * 16 / 9 - boardSize) / 2 + boardSize)}em);
+  left: ${(player === PlayerColor.Blue ? 1 : 1 + playerBoardDelta)}em;
   height: 45em;
   width: ${playerboardSize}em;
   border-style: ${player === activePlayer ? 'dashed' : 'solid'};
