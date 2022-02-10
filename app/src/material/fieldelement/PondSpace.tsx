@@ -11,7 +11,7 @@ import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
 import { useAnimation, usePlay, usePlayerId } from '@gamepark/react-client'
 import { useMemo } from 'react'
 import LocalGameView from '../../LocalGameView'
-import { boardSize, goldenMosquitoPositionLeft, goldenMosquitoPositionTop, jungleSpaceDelta, mosquitoTokenSize, playerBoardDelta, playerboardSize } from '../../styles'
+import { boardSize, eatenMosquitoPostionTop, goldenMosquitoPositionLeft, goldenMosquitoPositionTop, jungleSpaceDelta, mosquitoTokenSize, playerBoardDelta, playerboardSize, playerboardTokenBoarderMargin, playerboardTokenDelta } from '../../styles'
 import MosquitoToken from './MosquitoToken'
 
 const { Orange, Blue } = PlayerColor
@@ -77,8 +77,10 @@ export default function PondSpace({ game, x, y }: Props) {
             && greyAnimationTranslation(animationGrey.duration, animationGrey.move.origin, animationGrey.move.destination, mosquitoOnBoard.mosquito === undefined, game.mosquitos[animationGrey.move.destination.x][animationGrey.move.destination.y].length - game.mosquitos[animationGrey.move.origin.x][animationGrey.move.origin.y].length),
           animationWhite && index === mosquitos.length - 1
           && whiteAnimationTranslation(animationWhite.duration, x, y, getActivePlayerState(game)!.color, index, mosquitoOnBoard.mosquito === undefined),
-          animationEat && index === mosquitos.length - 1 && (game.mosquitos[animationEat.move.x][animationEat.move.y][index].mosquito == Mosquito.Golden || animationEat.move.mosquito === Mosquito.Golden)
-          && eatGoldenAnimationTranslation(animationEat.duration, x, y, getActivePlayerState(game)!, index, mosquitoOnBoard.mosquito === undefined)]}
+          animationEat && index === mosquitos.length - 1 && (game.mosquitos[animationEat.move.x][animationEat.move.y][index].mosquito === Mosquito.Golden || animationEat.move.mosquito === Mosquito.Golden)
+          && eatGoldenAnimationTranslation(animationEat.duration, x, y, getActivePlayerState(game)!, index, mosquitoOnBoard.mosquito === undefined),
+          animationEat && index === mosquitos.length - 1 && (game.mosquitos[animationEat.move.x][animationEat.move.y][index].mosquito !== Mosquito.Golden || animationEat.move.mosquito !== Mosquito.Golden)
+          && eatNonGoldenAnimationTranslation(animationEat.duration, x, y, getActivePlayerState(game)!, index, mosquitoOnBoard.mosquito === undefined, getActivePlayerState(game)!.eatenMosquitos.length)]}
           onClick={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard)}
         />
       )}
@@ -86,8 +88,23 @@ export default function PondSpace({ game, x, y }: Props) {
   )
 }
 
-// Other
-// Other Hidden
+const eatNonGoldenAnimationTranslation = (duration: number, x: number, y: number, playerState: PlayerState, index: number, hidden: boolean, currentPosition: number) => css`
+  z-index: 10;
+  animation: ${eatNonGoldenAnimationKeyframes(x, y, playerState, index, hidden, currentPosition)} ${duration}s ease-in-out;
+  }
+`
+
+const eatNonGoldenAnimationKeyframes = (x: number, y: number, playerState: PlayerState, index: number, hidden: boolean, currentPosition: number) => keyframes`
+from{
+  transform: rotateY(${hidden ? 180 : 0}deg);
+}
+50%{
+  transform: translate(${0 + (index * 0.4)}em, ${0 - (index * 0.4)}em) rotateY(${hidden ? 0 : 0}deg);
+}
+to{
+  transform: translate(${(playerState.color === PlayerColor.Blue ? (1 + (playerboardTokenBoarderMargin + currentPosition * mosquitoTokenSize + currentPosition * playerboardTokenDelta)) : (playerBoardDelta + (1 + (playerboardTokenBoarderMargin + currentPosition * mosquitoTokenSize + currentPosition * playerboardTokenDelta)))) - (x * jungleSpaceDelta + 17) - playerboardSize - 1}em, ${eatenMosquitoPostionTop - (y * jungleSpaceDelta + 16.5) + (index * 0.4)}em) rotateY(${hidden ? 0 : 0}deg);
+}
+`
 
 const eatGoldenAnimationTranslation = (duration: number, x: number, y: number, playerState: PlayerState, index: number, hidden: boolean) => css`
   z-index: 10;
@@ -103,7 +120,7 @@ from{
   transform: translate(${0 + (index * 0.4)}em, ${0 - (index * 0.4)}em) rotateY(${hidden ? 0 : 0}deg);
 }
 to{
-  transform: translate(${(playerState.color === PlayerColor.Blue ? 1 + (1 + ((playerState.goldenMosquitos + 1) * goldenMosquitoPositionLeft)) : 1 + (1 + playerBoardDelta + ((playerState.goldenMosquitos + 1) * goldenMosquitoPositionLeft))) - (x * jungleSpaceDelta + 17) - playerboardSize - mosquitoTokenSize / 2}em, ${goldenMosquitoPositionTop - (y * jungleSpaceDelta + 16.5) + (index * 0.4)}em) rotateY(${hidden ? 0 : 0}deg);
+  transform: translate(${(playerState.color === PlayerColor.Blue ? 1 + (1 + ((playerState.goldenMosquitos + 1) * goldenMosquitoPositionLeft)) : 1 + (playerBoardDelta + 1 + ((playerState.goldenMosquitos + 1) * goldenMosquitoPositionLeft))) - (x * jungleSpaceDelta + 17) - playerboardSize - mosquitoTokenSize / 2}em, ${goldenMosquitoPositionTop - (y * jungleSpaceDelta + 16.5) + (index * 0.4)}em) rotateY(${hidden ? 0 : 0}deg);
 }
 `
 

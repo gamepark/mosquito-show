@@ -9,7 +9,7 @@ import { usePlay, usePlayerId } from '@gamepark/react-client'
 import { HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
 import LocalGameView from 'src/LocalGameView'
-import { goldenMosquitoPositionLeft, goldenMosquitoPositionTop, headerHeight, margin, mosquitoTokenSize, playerBoardDelta, playerboardSize, playerColorBlue, playerColorOrange } from '../../styles'
+import { eatenMosquitoPostionTop, goldenMosquitoPositionLeft, goldenMosquitoPositionTop, headerHeight, margin, mosquitoTokenSize, playerBoardDelta, playerboardSize, playerboardTokenBoarderMargin, playerboardTokenDelta, playerColorBlue, playerColorOrange } from '../../styles'
 import MosquitoToken from '../fieldelement/MosquitoToken'
 import Button from '../util/Button'
 
@@ -41,7 +41,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
       )
     }
     {playerstate.eatenMosquitos.map((eatenMosquito, index) =>
-      <MosquitoToken key={index} mosquito={eatenMosquito} onClick={onClick(eatenMosquito)} css={eatenMosquitoPosition(index, playerstate.eatenMosquitos.length)} />
+      <MosquitoToken key={index} mosquito={eatenMosquito} onClick={onClick(eatenMosquito)} css={eatenMosquitoPosition(index)} />
     )
     }
 
@@ -77,11 +77,12 @@ const goldenMosquitoPosition = (index: number) => css`
   left: ${1 + (index * goldenMosquitoPositionLeft)}em;
 `
 
-const eatenMosquitoPosition = (index: number, length: number) => css`
+const eatenMosquitoPosition = (index: number) => css`
   position: absolute;
-  top: 25em;
-  left: ${(playerboardSize - (length * mosquitoTokenSize)) / (length + 1) * (index + 1) + (index * mosquitoTokenSize)}em;
+  top: ${eatenMosquitoPostionTop}em;
+  left: ${playerboardTokenBoarderMargin + index * mosquitoTokenSize + index * playerboardTokenDelta}em;
 `
+//left: ${(playerboardSize - (length * mosquitoTokenSize)) / (length + 1) * (index + 1) + (index * mosquitoTokenSize)}em;
 
 const outbox = (player: PlayerColor, activePlayer?: PlayerColor) => css`
   position: absolute;
