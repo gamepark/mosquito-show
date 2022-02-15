@@ -1,8 +1,9 @@
 import Coordinates from '../fields/Coordinates'
 import GameState from '../GameState'
 import GameView from '../GameView'
-import {Mosquito} from '../material/MosquitoEffect'
-import {MoveType} from './MoveType'
+import { Mosquito } from '../material/MosquitoEffect'
+import { MoveType } from './MoveType'
+import { MoveView } from './MoveView'
 
 export type RevealMosquito = {
   type: typeof MoveType.RevealMosquito
@@ -12,7 +13,7 @@ export type RevealMosquitoView = RevealMosquito & {
   mosquito: Mosquito
 }
 
-export const revealMosquitoMove = (x: number, y: number): RevealMosquito => ({type: MoveType.RevealMosquito, x, y})
+export const revealMosquitoMove = (x: number, y: number): RevealMosquito => ({ type: MoveType.RevealMosquito, x, y })
 
 export function revealMosquito(game: GameState, move: RevealMosquito) {
   const pile = game.mosquitos[move.x][move.y]
@@ -23,4 +24,8 @@ export function revealMosquitoInView(game: GameView, move: RevealMosquitoView) {
   const pile = game.mosquitos[move.x][move.y]
   pile[pile.length - 1].mosquito = move.mosquito
   delete pile[pile.length - 1].waterlily
+}
+
+export function isRevealMosquitoViewMove(move: MoveView): move is RevealMosquitoView {
+  return move.type === MoveType.RevealMosquito
 }

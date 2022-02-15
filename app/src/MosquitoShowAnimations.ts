@@ -16,6 +16,8 @@ const mosquitoShowAnimations: Animations<LocalGameView, MoveView, PlayerColor> =
             return 1.5
         } else if (move.type === MoveType.Eat) {
             return 1.5
+        } else if (move.type === MoveType.RevealMosquito) {
+            return 10.5
         }
         return 0
     }

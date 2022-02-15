@@ -14,12 +14,12 @@ type Props = {
 export const MOSQUITO_TOKEN = 'MOSQUITO_TOKEN'
 export type mosquitoTokenDragObject = { token: Animal }
 
-export default function MosquitoToken({mosquito, waterlily, ...props}: Props) {
+export default function MosquitoToken({ mosquito, waterlily, ...props }: Props) {
   return <div css={[style,
     mosquito ? frontFace(mosquito) : flip,
     waterlily && backFace(waterlily),
     props.onClick && glow
-  ]} {...props}/>
+  ]} {...props} />
 }
 
 const style = css`

@@ -3,7 +3,7 @@ import { css, keyframes } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
 import { Mosquito, MosquitoOnBoard } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { eatMove, EatView, isEatViewMove, isPlayGreyMosquitoEffectMove, isPlayWhiteMosquitoEffectMove, PlayGreyMosquitoEffect, playGreyMosquitoEffectMove, PlayWhiteMosquitoEffect, playWhiteMosquitoEffectMove, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
+import { eatMove, EatView, isEatViewMove, isPlayGreyMosquitoEffectMove, isPlayWhiteMosquitoEffectMove, isRevealMosquitoViewMove, PlayGreyMosquitoEffect, playGreyMosquitoEffectMove, PlayWhiteMosquitoEffect, playWhiteMosquitoEffectMove, RevealMosquitoView, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
 import { chameleonCanEat } from '@gamepark/mosquito-show/utils/AnimalUtils'
@@ -33,6 +33,9 @@ export default function PondSpace({ game, x, y }: Props) {
     && animation.move.x === x
     && animation.move.y === y)
   const animationEat = useAnimation<EatView>(animation => isEatViewMove(animation.move)
+    && animation.move.x === x
+    && animation.move.y === y)
+  const animationReveal = useAnimation<RevealMosquitoView>(animation => isRevealMosquitoViewMove(animation.move)
     && animation.move.x === x
     && animation.move.y === y)
 
@@ -72,7 +75,7 @@ export default function PondSpace({ game, x, y }: Props) {
       isPondSpaceEmpty && emptyPondSpace,
       isPondSpaceEmpty && game.selectedPondSpace && glow]}>
       {mosquitos.map((mosquitoOnBoard, index) =>
-        <MosquitoToken key={index} mosquito={animationEat && index === mosquitos.length - 1 && mosquitoOnBoard.mosquito === undefined ? animationEat.move.mosquito : mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily}
+        <MosquitoToken key={index} mosquito={(animationEat && index === mosquitos.length - 1 && mosquitoOnBoard.mosquito === undefined) ? animationEat.move.mosquito : (animationReveal && index === mosquitos.length - 1 && mosquitoOnBoard.mosquito === undefined) ? animationReveal.move.mosquito : mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily}
           css={[tokenPosition(index), animationGrey && index === mosquitos.length - 1
             && greyAnimationTranslation(animationGrey.duration, animationGrey.move.origin, animationGrey.move.destination, mosquitoOnBoard.mosquito === undefined, game.mosquitos[animationGrey.move.destination.x][animationGrey.move.destination.y].length - game.mosquitos[animationGrey.move.origin.x][animationGrey.move.origin.y].length),
           animationWhite && index === mosquitos.length - 1
@@ -80,13 +83,35 @@ export default function PondSpace({ game, x, y }: Props) {
           animationEat && index === mosquitos.length - 1 && (game.mosquitos[animationEat.move.x][animationEat.move.y][index].mosquito === Mosquito.Golden || animationEat.move.mosquito === Mosquito.Golden)
           && eatGoldenAnimationTranslation(animationEat.duration, x, y, getActivePlayerState(game)!, index, mosquitoOnBoard.mosquito === undefined),
           animationEat && index === mosquitos.length - 1 && (game.mosquitos[animationEat.move.x][animationEat.move.y][index].mosquito !== Mosquito.Golden || animationEat.move.mosquito !== Mosquito.Golden)
-          && eatNonGoldenAnimationTranslation(animationEat.duration, x, y, getActivePlayerState(game)!, index, mosquitoOnBoard.mosquito === undefined, getActivePlayerState(game)!.eatenMosquitos.length)]}
+          && eatNonGoldenAnimationTranslation(animationEat.duration, x, y, getActivePlayerState(game)!, index, mosquitoOnBoard.mosquito === undefined, getActivePlayerState(game)!.eatenMosquitos.length),
+          animationReveal && index === mosquitos.length - 1
+          && revealMosquitoAnimationTranslation(animationReveal.duration)]}
           onClick={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard)}
         />
       )}
     </div>
   )
 }
+
+const revealMosquitoAnimationTranslation = (duration: number) => css`
+  z-index:10;
+  &:before, &:after {
+    animation: ${revealMosquitoAnimationKeyframes} ${duration}s ease-in-out;
+  }
+  `
+// animation: ${revealMosquitoAnimationKeyframes} ${duration}s ease-in-out;
+
+const revealMosquitoAnimationKeyframes = keyframes`
+from{
+  transform: rotateY(0}deg);
+}
+50%{
+  transform: rotateY(90deg);
+}
+to{
+  transform: rotateY(180}deg);
+}
+`
 
 const eatNonGoldenAnimationTranslation = (duration: number, x: number, y: number, playerState: PlayerState, index: number, hidden: boolean, currentPosition: number) => css`
   z-index: 10;
