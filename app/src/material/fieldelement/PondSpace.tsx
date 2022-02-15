@@ -95,22 +95,8 @@ export default function PondSpace({ game, x, y }: Props) {
 
 const revealMosquitoAnimationTranslation = (duration: number) => css`
   z-index:10;
-  &:before, &:after {
-    animation: ${revealMosquitoAnimationKeyframes} ${duration}s ease-in-out;
-  }
-  `
-// animation: ${revealMosquitoAnimationKeyframes} ${duration}s ease-in-out;
-
-const revealMosquitoAnimationKeyframes = keyframes`
-from{
-  transform: rotateY(0}deg);
-}
-50%{
-  transform: rotateY(90deg);
-}
-to{
-  transform: rotateY(180}deg);
-}
+  transition: transform ${duration}s ease-in-out;
+  transform: transform: rotateY(180}deg);
 `
 
 const eatNonGoldenAnimationTranslation = (duration: number, x: number, y: number, playerState: PlayerState, index: number, hidden: boolean, currentPosition: number) => css`
@@ -171,15 +157,6 @@ from, 75% {
 }
 to{
   opacity: 0;
-}
-`
-
-const flip25Keyframes = (hidden: boolean) => keyframes`
-from{
-  transform: rotateY(${hidden ? 180 : 0}deg);
-}
-50%, to{
-  transform: none;
 }
 `
 
