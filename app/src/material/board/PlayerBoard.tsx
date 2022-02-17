@@ -6,7 +6,7 @@ import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import { canMoveAnimal } from '@gamepark/mosquito-show/utils/AnimalUtils'
 import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
 import { usePlay, usePlayerId } from '@gamepark/react-client'
-import { HTMLAttributes } from 'react'
+import { HTMLAttributes, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import LocalGameView from 'src/LocalGameView'
 import { eatenMosquitoPostionTop, goldenMosquitoPositionLeft, goldenMosquitoPositionTop, headerHeight, margin, mosquitoTokenSize, playerBoardDelta, playerboardSize, playerboardTokenBoarderMargin, playerboardTokenDelta, playerColorBlue, playerColorOrange } from '../../styles'
@@ -23,9 +23,11 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
   const playerId = usePlayerId()
   const { t } = useTranslation()
   const playerstate = game.players[playerIndex]
+  const [eatenMosquitoClicked, setEatenMosquiteClicked] = useState<number | undefined>()
 
-  const onClick = (eatenMosquito: Mosquito) => {
+  const onClick = (eatenMosquito: Mosquito, index: number) => {
     if (getActivePlayerState(game) !== undefined && !getActivePlayerState(game)!.selectedMosquito && !getActivePlayerState(game)!.chameleonMustMove) {
+      setEatenMosquiteClicked(index)
       return () => play(chooseMosquitoEffectMove(eatenMosquito))
     }
     return undefined
@@ -41,7 +43,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
       )
     }
     {playerstate.eatenMosquitos.map((eatenMosquito, index) =>
-      <MosquitoToken key={index} mosquito={eatenMosquito} onClick={onClick(eatenMosquito)} css={eatenMosquitoPosition(index)} />
+      <MosquitoToken key={index} mosquito={eatenMosquito} onClick={onClick(eatenMosquito, index)} css={eatenMosquitoPosition(index)} />
     )
     }
 
