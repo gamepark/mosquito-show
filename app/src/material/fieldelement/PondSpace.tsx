@@ -14,7 +14,7 @@ import LocalGameView from '../../LocalGameView'
 import { boardSize, eatenMosquitoPostionTop, goldenMosquitoPositionLeft, goldenMosquitoPositionTop, jungleSpaceDelta, mosquitoTokenSize, playerBoardDelta, playerboardSize, playerboardTokenBoarderMargin, playerboardTokenDelta } from '../../styles'
 import MosquitoToken from './MosquitoToken'
 
-const { Orange, Blue } = PlayerColor
+const { Blue } = PlayerColor
 
 type Props = {
   game: LocalGameView
