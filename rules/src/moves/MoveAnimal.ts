@@ -33,6 +33,7 @@ export const moveAnimal = (game: GameState | GameView, move: MoveAnimal): void =
   if (player.selectedMosquitoIndex === undefined) {
     delete getActivePlayerState(game)?.animalForcedToMove
   } else {
+    game.handleMosquitoEffectOver = true
     removeMosquitoFromPlayer(game, player.selectedMosquitoIndex)
     delete getActivePlayerState(game)?.selectedMosquitoIndex
   }

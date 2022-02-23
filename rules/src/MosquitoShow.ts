@@ -28,7 +28,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         players: [Blue, Orange].map(color => ({ color, goldenMosquitos: 0, eatenMosquitos: [], pendingToucanEat: [], hasPlayerToMoveAnimal: undefined })),
         activePlayer: Math.random() < 0.5 ? Orange : Blue,
         mosquitos: createMosquitos(),
-        turnOver: false
+        turnOver: false,
+        handleMosquitoEffectOver: false
       })
     } else {
       super(arg)
@@ -114,6 +115,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       }
     } else if (this.state.turnOver) {
       moves.push(changeActivePlayerMove())
+    } else if (this.state.handleMosquitoEffectOver) {
+      //moves.push(discardTokenFromPlayerboardMove(activePlayer.selectedMosquitoIndex))
     } else {
       getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(tokenForcedToReveal(this.state, pond.x, pond.y), pond.x, pond.y)))
       getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))
@@ -162,6 +165,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     if (activePlayer.pendingToucanEat.length) {
       const { y, x } = activePlayer.pendingToucanEat[0]
       return eatMove(tokenForcedToReveal(this.state, x, y), x, y)
+    } else if (this.state.handleMosquitoEffectOver) {
+      //return DiscardTokenFromPlayerboard
     } else if (this.state.turnOver) {
       return changeActivePlayerMove()
     } else if (!activePlayer.eatenMosquitos.length && !activePlayer.chameleonMustMove) {

@@ -10,6 +10,7 @@ type GameState = {
   activePlayer?: PlayerColor
   mosquitos: MosquitoOnBoard[][][]
   turnOver: boolean
+  handleMosquitoEffectOver: boolean
 }
 
 export default GameState
