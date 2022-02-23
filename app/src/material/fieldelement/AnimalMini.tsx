@@ -3,7 +3,7 @@ import { css, keyframes } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { isMoveAnimalMove, isPlayBlueMosquitoEffectMove, MoveAnimal, PlayBlueMosquitoEffect, playRedMosquitoEffectMove, selectAnimalMove } from '@gamepark/mosquito-show/moves'
+import { isMoveAnimalMove, MoveAnimal, playRedMosquitoEffectMove, selectAnimalMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
 import { canMoveAnimal } from '@gamepark/mosquito-show/utils/AnimalUtils'
@@ -30,9 +30,7 @@ export type AnimalDragObject = { animal: Animal }
 
 export default function AnimalMini({ game, owner, animal }: AnimalProp) {
   const playerId = usePlayerId<PlayerColor>()
-  const animationMove = useAnimation<MoveAnimal>(animation => isMoveAnimalMove(animation.move) && animation.move.animal === animal && game.activePlayer === owner.color)
-  const animationBlue = useAnimation<PlayBlueMosquitoEffect>(animation => isPlayBlueMosquitoEffectMove(animation.move) && animation.move.animal === animal && game.activePlayer === owner.color)
-  const animation = animationMove ? animationMove : animationBlue
+  const animation = useAnimation<MoveAnimal>(animation => isMoveAnimalMove(animation.move) && animation.move.animal === animal && game.activePlayer === owner.color)
   const play = usePlay()
   const selected = playerId === owner.color && game.selectedAnimal === animal
   const canMove = (playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal) && (getActivePlayerState(game)?.animalForcedToMove === undefined || getActivePlayerState(game)?.animalForcedToMove === animal) && getSelectedMosquito(game) !== Mosquito.Red)

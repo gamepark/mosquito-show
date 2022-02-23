@@ -5,7 +5,7 @@ import GameView from '../GameView'
 import { Mosquito, MosquitoOnBoard, Waterlily } from '../material/MosquitoEffect'
 
 const { Golden, Grey, Blue, Red, White } = Mosquito
-const { WaterLily, Flower} = Waterlily
+const { WaterLily, Flower } = Waterlily
 
 export const createMosquitos = (): MosquitoOnBoard[][][] => {
 
@@ -73,9 +73,8 @@ export const createMosquitos = (): MosquitoOnBoard[][][] => {
   return result
 }
 
-export function removeMosquitoFromPlayer(game: GameState | GameView, mosquito: Mosquito) {
+export function removeMosquitoFromPlayer(game: GameState | GameView, mosquitoIndex: number) {
   const player = game.players.find(p => p.color === game.activePlayer)!
-  const mosquitoIndex = player.eatenMosquitos.findIndex(m => m == mosquito)
   if (mosquitoIndex > -1) {
     player.eatenMosquitos.splice(mosquitoIndex, 1)
   }
@@ -103,19 +102,19 @@ export function getPondsBetween(origin: Coordinates, destination: Coordinates) {
   const result: Coordinates[] = []
   if (origin.x < destination.x && origin.y < destination.y) {
     for (let x = origin.x, y = origin.y; x < destination.x; x++, y++) {
-      result.push({x, y})
+      result.push({ x, y })
     }
   } else if (origin.x < destination.x && origin.y > destination.y) {
     for (let x = origin.x, y = origin.y - 1; x < destination.x; x++, y--) {
-      result.push({x, y})
+      result.push({ x, y })
     }
   } else if (origin.x > destination.x && origin.y < destination.y) {
     for (let x = origin.x - 1, y = origin.y; x >= destination.x; x--, y++) {
-      result.push({x, y})
+      result.push({ x, y })
     }
   } else if (origin.x > destination.x && origin.y > destination.y) {
     for (let x = origin.x - 1, y = origin.y - 1; x >= destination.x; x--, y--) {
-      result.push({x, y})
+      result.push({ x, y })
     }
   }
   return result

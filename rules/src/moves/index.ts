@@ -6,8 +6,6 @@ export * from './Move';
 export * from './MoveAnimal';
 export { moveAnimal } from './MoveAnimal';
 export * from './MoveType';
-export * from './PlayBlueMosquitoEffect';
-export { playBlueMosquitoEffectMove } from './PlayBlueMosquitoEffect';
 export * from './PlayGreyMosquitoEffect';
 export { playGreyMosquitoEffectMove } from './PlayGreyMosquitoEffect';
 export * from './PlayRedMosquitoEffect';
