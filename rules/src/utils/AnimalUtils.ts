@@ -5,6 +5,7 @@ import GameView from "../GameView"
 import { Mosquito } from "../material/MosquitoEffect"
 import PlayerState from "../PlayerState"
 import { getActivePlayerState } from "./GameUtils"
+import { getSelectedMosquitoFromPlayer } from "./PlayerBoardUtils"
 
 const { Toucan, Chameleon } = Animal
 
@@ -14,7 +15,7 @@ export function getValidDestinations(game: GameState | GameView, animal: Animal)
 export function getValidDestinationsOfPlayer(game: GameState | GameView, animal: Animal, player: PlayerState | undefined): Coordinates[] {
   if (!player) return []
   const origin = animal === Chameleon ? player.chameleon : player.toucan
-  if (!origin || (!player.chameleonMustMove && player.selectedMosquito == Mosquito.Blue)) {
+  if (!origin || (!player.chameleonMustMove && getSelectedMosquitoFromPlayer(player) == Mosquito.Blue)) {
     const result: Coordinates[] = []
     for (let x = 0; x < 4; x++) {
       for (let y = 0; y < 4; y++) {
@@ -74,7 +75,7 @@ export function isValidDestination(game: GameState | GameView, animal: Animal, {
   const player = game.players.find(p => p.color === game.activePlayer)
   if (!player) return false
   const origin = animal === Chameleon ? player.chameleon : player.toucan
-  if (!origin || (!player.chameleonMustMove && player.selectedMosquito == Mosquito.Blue)) {
+  if (!origin || (!player.chameleonMustMove && getSelectedMosquitoFromPlayer(player) == Mosquito.Blue)) {
     return !getAnimalLocations(game).some(location => location.x === x && location.y === y)
   }
   return getValidDestinations(game, animal).some(destination => destination.x === x && destination.y === y)
@@ -85,7 +86,7 @@ export function canMoveAnimal(game: GameState | GameView, animal: Animal) {
 }
 
 export function canMoveAnimalOfPlayer(game: GameState | GameView, animal: Animal, player: PlayerState) {
-  if(!player){
+  if (!player) {
     return true
   }
   const location = animal === Chameleon ? player.chameleon : player.toucan
@@ -95,7 +96,7 @@ export function canMoveAnimalOfPlayer(game: GameState | GameView, animal: Animal
   if (player.chameleonMustMove) {
     return animal === Chameleon
   }
-  if (player.selectedMosquito === Mosquito.Blue) {
+  if (getSelectedMosquitoFromPlayer(player) === Mosquito.Blue) {
     return true
   }
   if (animal === Chameleon && player.chameleon && (getPondsWithMosquitoAroundChameleonOfPlayer(game, player).length == 0 || getValidChameleonDestinations(player.chameleon, getAnimalLocations(game)).length == 0)) {

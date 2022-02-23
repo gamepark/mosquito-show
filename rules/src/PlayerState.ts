@@ -13,5 +13,5 @@ export default interface PlayerState {
   chameleonMustMove?: boolean
   animalForcedToMove?: Animal
   skippedTurn?: boolean
-  selectedMosquito?: Mosquito
+  selectedMosquitoIndex?: number
 }

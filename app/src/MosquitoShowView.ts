@@ -5,6 +5,7 @@ import { MoveView } from '@gamepark/mosquito-show/moves/MoveView'
 import { revealMosquitoInView } from '@gamepark/mosquito-show/moves/RevealMosquito'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import { canUndo, endOfTurn, gameEndBlock, gameEndGolden, getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
+import { getSelectedMosquitoByIndex } from '@gamepark/mosquito-show/utils/PlayerBoardUtils'
 import { Action, Game, Undo } from '@gamepark/rules-api'
 import LocalGameView from './LocalGameView'
 import { canSelect } from './util/GameUtils'
@@ -57,7 +58,7 @@ export default class MosquitoShowView implements Game<LocalGameView, Move>, Undo
         break
       case MoveType.ChooseMosquitoEffect:
         chooseMosquitoEffect(this.state, move)
-        if (move.mosquito == Mosquito.Blue) {
+        if (getSelectedMosquitoByIndex(this.state, move.mosquitoIndex) == Mosquito.Blue) {
           this.state.selectedAnimal = undefined
         }
         return

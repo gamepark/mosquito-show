@@ -4,7 +4,7 @@ import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
 import { moveAnimalMove, playBlueMosquitoEffectMove } from '@gamepark/mosquito-show/moves'
-import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
+import { getSelectedMosquito } from '@gamepark/mosquito-show/utils/PlayerBoardUtils'
 import { HTMLAttributes } from 'react'
 import { DropTargetMonitor, useDrop } from 'react-dnd'
 import LocalGameView from 'src/LocalGameView'
@@ -24,7 +24,7 @@ export default function JungleSpace({ x, y, game, canMoveHere, ...props }: Props
       canDrop: monitor.canDrop(),
       isOver: monitor.isOver()
     }),
-    drop: ({ animal }: AnimalDragObject) => getActivePlayerState(game)?.selectedMosquito == Mosquito.Blue ? playBlueMosquitoEffectMove(animal, { x, y }) : moveAnimalMove(animal, { x, y })
+    drop: ({ animal }: AnimalDragObject) => getSelectedMosquito(game) == Mosquito.Blue ? playBlueMosquitoEffectMove(animal, { x, y }) : moveAnimalMove(animal, { x, y })
   })
   return (
     <div ref={ref} css={[style(x, y), (props.onClick || canDrop) && !isOver && display, canDrop && isOver && overStyle]} {...props} />

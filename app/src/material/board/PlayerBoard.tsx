@@ -24,9 +24,9 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
   const { t } = useTranslation()
   const playerstate = game.players[playerIndex]
 
-  const onClick = (eatenMosquito: Mosquito) => {
-    if (getActivePlayerState(game) !== undefined && !getActivePlayerState(game)!.selectedMosquito && !getActivePlayerState(game)!.chameleonMustMove) {
-      return () => play(chooseMosquitoEffectMove(eatenMosquito))
+  const onClick = (eatenMosquitoIndex: number) => {
+    if (getActivePlayerState(game) !== undefined && !getActivePlayerState(game)!.selectedMosquitoIndex && !getActivePlayerState(game)!.chameleonMustMove) {
+      return () => play(chooseMosquitoEffectMove(eatenMosquitoIndex))
     }
     return undefined
   }
@@ -41,7 +41,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
       )
     }
     {playerstate.eatenMosquitos.map((eatenMosquito, index) =>
-      <MosquitoToken key={index} mosquito={eatenMosquito} onClick={onClick(eatenMosquito)} css={eatenMosquitoPosition(index)} />
+      <MosquitoToken key={index} mosquito={eatenMosquito} onClick={onClick(index)} css={eatenMosquitoPosition(index)} />
     )
     }
 

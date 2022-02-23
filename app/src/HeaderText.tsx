@@ -5,6 +5,7 @@ import { Move, skipTurnMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import { canMoveAnimal, canMoveAnimalOfPlayer } from '@gamepark/mosquito-show/utils/AnimalUtils'
 import { getActivePlayerState, isPlacementPhase } from '@gamepark/mosquito-show/utils/GameUtils'
+import { getSelectedMosquito, getSelectedMosquitoFromPlayer } from '@gamepark/mosquito-show/utils/PlayerBoardUtils'
 import { usePlay, usePlayerId } from '@gamepark/react-client'
 import { TFunction } from 'i18next'
 import { Trans, useTranslation } from 'react-i18next'
@@ -40,7 +41,7 @@ function getText(t: TFunction, play: (move: Move) => void, game: LocalGameView, 
     }
   } else if (game.selectedAnimal) {
     if (game.selectedAnimal === Chameleon) {
-      if (getActivePlayerState(game)!.selectedMosquito === Blue) {
+      if (getSelectedMosquito(game) === Blue) {
         if (game.activePlayer === playerId) {
           return t('effect.blue.step2')
         } else {
@@ -60,7 +61,7 @@ function getText(t: TFunction, play: (move: Move) => void, game: LocalGameView, 
         }
       }
     } else {
-      if (getActivePlayerState(game)!.selectedMosquito === Blue) {
+      if (getSelectedMosquito(game) === Blue) {
         if (game.activePlayer === playerId) {
           return t('effect.blue.step2')
         } else {
@@ -74,14 +75,14 @@ function getText(t: TFunction, play: (move: Move) => void, game: LocalGameView, 
         }
       }
     }
-  } else if (game.players.some(player => player.eatenMosquitos.length > 0) && !game.players.some(player => player.selectedMosquito !== undefined)) {
+  } else if (game.players.some(player => player.eatenMosquitos.length > 0) && !game.players.some(player => getSelectedMosquitoFromPlayer(player) !== undefined)) {
     if (game.activePlayer === playerId) {
       return t('effect.choose')
     } else {
       return t('effect.choose.other', { player: getPlayerName(game.activePlayer!, t) })
     }
-  } else if (game.players.some(player => player.selectedMosquito !== undefined)) {
-    const selectedMoquito = getActivePlayerState(game)!.selectedMosquito
+  } else if (game.players.some(player => getSelectedMosquitoFromPlayer(player) !== undefined)) {
+    const selectedMoquito = getSelectedMosquito(game)
     if (selectedMoquito === Blue) {
       if (game.activePlayer === playerId) {
         return t('effect.blue.step1')
@@ -129,7 +130,7 @@ function getText(t: TFunction, play: (move: Move) => void, game: LocalGameView, 
       }
     } else {
       if (game.activePlayer === playerId) {
-        return t('animal.select.forced', {animal: forcedAnimal})
+        return t('animal.select.forced', { animal: forcedAnimal })
       } else {
         return t('animal.select.forced.other', { player: getPlayerName(game.activePlayer!, t), animal: forcedAnimal })
       }
@@ -138,20 +139,20 @@ function getText(t: TFunction, play: (move: Move) => void, game: LocalGameView, 
 
   let selectableAnimals = []
   let blockedAnimals = []
-  canMoveAnimal(game, Chameleon)?selectableAnimals.push(Chameleon):blockedAnimals.push(Chameleon)
-  canMoveAnimal(game, Toucan)?selectableAnimals.push(Toucan):blockedAnimals.push(Toucan)
-  
-  if(selectableAnimals.length === 2){
+  canMoveAnimal(game, Chameleon) ? selectableAnimals.push(Chameleon) : blockedAnimals.push(Chameleon)
+  canMoveAnimal(game, Toucan) ? selectableAnimals.push(Toucan) : blockedAnimals.push(Toucan)
+
+  if (selectableAnimals.length === 2) {
     if (game.activePlayer === playerId) {
       return t('animal.select')
     } else {
-      return t('animal.select.other', { player: getPlayerName(game.activePlayer!, t)})
+      return t('animal.select.other', { player: getPlayerName(game.activePlayer!, t) })
     }
   } else {
     if (game.activePlayer === playerId) {
-      return t('animal.select.specific', {animal: selectableAnimals[0], blocked: blockedAnimals[0]})
+      return t('animal.select.specific', { animal: selectableAnimals[0], blocked: blockedAnimals[0] })
     } else {
-      return t('animal.select.specific.other', { player: getPlayerName(game.activePlayer!, t) , animal: selectableAnimals[0], blocked: blockedAnimals[0]})
+      return t('animal.select.specific.other', { player: getPlayerName(game.activePlayer!, t), animal: selectableAnimals[0], blocked: blockedAnimals[0] })
     }
   }
 }

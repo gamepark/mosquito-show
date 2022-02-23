@@ -12,6 +12,7 @@ import PlayerColor from './PlayerColor'
 import { canMoveAnimal, canMoveAnimalOfPlayer, getPondsWithMosquitoAroundChameleon, getValidDestinations } from './utils/AnimalUtils'
 import { createMosquitos, mosquitoToReveal, tokenForcedToReveal } from './utils/BoardUtils'
 import { canUndo, endOfTurn, gameEndBlock, gameEndGolden, getPlayerState, isPlacementPhase } from './utils/GameUtils'
+import { getSelectedMosquitoFromPlayer } from './utils/PlayerBoardUtils'
 
 const { Orange, Blue } = PlayerColor
 const { Toucan, Chameleon } = Animal
@@ -86,14 +87,13 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
           getValidDestinations(this.state, activePlayer.animalForcedToMove).forEach(coordinates => moves.push(moveAnimalMove(activePlayer.animalForcedToMove!, coordinates)))
         }
       }
-    } else if (activePlayer.eatenMosquitos.length && !activePlayer.selectedMosquito) {
-      const uniqueEatenMosquitos = activePlayer.eatenMosquitos.filter((element, index) => { return activePlayer.eatenMosquitos.indexOf(element) === index })
-      uniqueEatenMosquitos.forEach(mosquitoEffect => moves.push(chooseMosquitoEffectMove(mosquitoEffect)))
-    } else if (activePlayer.selectedMosquito) {
-      if (activePlayer.selectedMosquito == Mosquito.White) {
+    } else if (activePlayer.eatenMosquitos.length && activePlayer.selectedMosquitoIndex === undefined) {
+      activePlayer.eatenMosquitos.forEach((_, index) => moves.push(chooseMosquitoEffectMove(index)))
+    } else if (activePlayer.selectedMosquitoIndex !== undefined) {
+      if (getSelectedMosquitoFromPlayer(activePlayer) == Mosquito.White) {
         this.state.mosquitos.map((yz, x) => yz.map((z, y) => z.length ? moves.push(playWhiteMosquitoEffectMove(x, y)) : undefined))
       }
-      if (activePlayer.selectedMosquito == Mosquito.Grey) {
+      if (getSelectedMosquitoFromPlayer(activePlayer) == Mosquito.Grey) {
         const origins: Coordinates[] = []
         this.state.mosquitos.map((yz, x) => yz.map((z, y) => z.length ? origins.push({ x, y }) : undefined))
         origins.forEach(origin => {
@@ -105,11 +105,11 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         }
         )
       }
-      if (activePlayer.selectedMosquito == Mosquito.Blue) {
+      if (getSelectedMosquitoFromPlayer(activePlayer) == Mosquito.Blue) {
         getValidDestinations(this.state, Chameleon).forEach(coordinates => moves.push(playBlueMosquitoEffectMove(Chameleon, coordinates)))
         getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(playBlueMosquitoEffectMove(Toucan, coordinates)))
       }
-      if (activePlayer.selectedMosquito == Mosquito.Red) {
+      if (getSelectedMosquitoFromPlayer(activePlayer) == Mosquito.Red) {
         [Chameleon, Toucan].forEach(animal => moves.push(playRedMosquitoEffectMove(animal)))
       }
     } else if (this.state.turnOver) {

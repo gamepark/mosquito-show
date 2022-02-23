@@ -4,7 +4,7 @@ import Animal from '@gamepark/mosquito-show/animals/Animal'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
 import { moveAnimalMove, playBlueMosquitoEffectMove } from '@gamepark/mosquito-show/moves'
 import { getValidDestinations, isValidDestination } from '@gamepark/mosquito-show/utils/AnimalUtils'
-import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
+import { getSelectedMosquito } from '@gamepark/mosquito-show/utils/PlayerBoardUtils'
 import { usePlay, usePlayerId } from '@gamepark/react-client'
 import { useMemo } from 'react'
 import LocalGameView from '../../LocalGameView'
@@ -14,13 +14,13 @@ import PondSpace from '../fieldelement/PondSpace'
 import Images from '../Images'
 import JungleSpace from './JungleSpace'
 
-const {Toucan, Chameleon} = Animal
+const { Toucan, Chameleon } = Animal
 
 type Props = {
   game: LocalGameView
 }
 
-export default function Board({game, ...props}: Props) {
+export default function Board({ game, ...props }: Props) {
   const playerId = usePlayerId()
   const play = usePlay()
 
@@ -37,22 +37,22 @@ export default function Board({game, ...props}: Props) {
       {[...Array(4)].map((_, x) =>
         [...Array(4)].map((_, y) =>
           <JungleSpace key={x + '_' + y} x={x} y={y}
-                       canMoveHere={animal => isValidDestination(game, animal, {x, y})}
-                       game={game}
-                       onClick={validDestinations.some(destination => destination.x === x && destination.y === y) ?
-                         () => play(getActivePlayerState(game)?.selectedMosquito == Mosquito.Blue ? playBlueMosquitoEffectMove(game.selectedAnimal!, { x, y }) : moveAnimalMove(game.selectedAnimal!, { x, y }))
-                         : undefined}/>
+            canMoveHere={animal => isValidDestination(game, animal, { x, y })}
+            game={game}
+            onClick={validDestinations.some(destination => destination.x === x && destination.y === y) ?
+              () => play(getSelectedMosquito(game) == Mosquito.Blue ? playBlueMosquitoEffectMove(game.selectedAnimal!, { x, y }) : moveAnimalMove(game.selectedAnimal!, { x, y }))
+              : undefined} />
         )
       )}
       {game.players.map(player =>
         [Chameleon, Toucan].map(animal =>
-          <AnimalMini key={player.color + '_' + animal} game={game} owner={player} animal={animal}/>
+          <AnimalMini key={player.color + '_' + animal} game={game} owner={player} animal={animal} />
         )
       )}
 
       {[...Array(3)].map((_, x) =>
         [...Array(3)].map((_, y) =>
-          <PondSpace key={x + '_' + y} game={game} x={x} y={y}/>
+          <PondSpace key={x + '_' + y} game={game} x={x} y={y} />
         )
       )}
     </div>

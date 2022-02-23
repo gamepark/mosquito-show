@@ -8,6 +8,7 @@ import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
 import { chameleonCanEat } from '@gamepark/mosquito-show/utils/AnimalUtils'
 import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
+import { getSelectedMosquito } from '@gamepark/mosquito-show/utils/PlayerBoardUtils'
 import { useAnimation, usePlay, usePlayerId } from '@gamepark/react-client'
 import { useMemo } from 'react'
 import LocalGameView from '../../LocalGameView'
@@ -25,7 +26,7 @@ export default function PondSpace({ game, x, y }: Props) {
   const play = usePlay()
   const canEat = useMemo(() => playerId && chameleonCanEat(game, x, y), [game])
   const mosquitos = game.mosquitos[x][y]
-  const isPondSpaceEmpty = getActivePlayerState(game)?.selectedMosquito == Mosquito.Grey && mosquitos.length == 0
+  const isPondSpaceEmpty = getSelectedMosquito(game) == Mosquito.Grey && mosquitos.length == 0
   const animationGrey = useAnimation<PlayGreyMosquitoEffect>(animation => isPlayGreyMosquitoEffectMove(animation.move)
     && animation.move.origin.x === x
     && animation.move.origin.y === y)
@@ -43,17 +44,17 @@ export default function PondSpace({ game, x, y }: Props) {
   const onMosquitoTokenClick = (mosquitoOnTop: boolean, mosquitoOnBoard: Partial<MosquitoOnBoard>) => {
     const player = game.players.find(p => p.color === game.activePlayer)
     if (!player) return undefined
-    if (getActivePlayerState(game)?.selectedMosquito == Mosquito.White) {
+    if (getSelectedMosquito(game) == Mosquito.White) {
       return () => play(playWhiteMosquitoEffectMove(x, y))
     }
-    if (getActivePlayerState(game)?.selectedMosquito == Mosquito.Grey) {
+    if (getSelectedMosquito(game) == Mosquito.Grey) {
       if (!game.selectedPondSpace) {
         return () => play(selectMosquitoTokenMove(x, y), { local: true })
       } else {
         return game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y ? () => play(playGreyMosquitoEffectMove(game.selectedPondSpace!, { x, y })) : undefined
       }
     }
-    if (getActivePlayerState(game)?.selectedMosquito == Mosquito.Blue) {
+    if (getSelectedMosquito(game) == Mosquito.Blue) {
       return undefined
     }
     if (game.selectedAnimal === Animal.Chameleon && canEat && mosquitoOnTop) {
@@ -63,7 +64,7 @@ export default function PondSpace({ game, x, y }: Props) {
   }
 
   const onPondSpaceClick = () => {
-    if (getActivePlayerState(game)?.selectedMosquito == Mosquito.Grey && mosquitos.length == 0 && game.selectedPondSpace && (game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y)) {
+    if (getSelectedMosquito(game) == Mosquito.Grey && mosquitos.length == 0 && game.selectedPondSpace && (game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y)) {
       play(playGreyMosquitoEffectMove(game.selectedPondSpace!, { x, y }))
     }
     return undefined

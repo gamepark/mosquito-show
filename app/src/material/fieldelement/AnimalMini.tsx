@@ -8,6 +8,7 @@ import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
 import { canMoveAnimal } from '@gamepark/mosquito-show/utils/AnimalUtils'
 import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
+import { getSelectedMosquito } from '@gamepark/mosquito-show/utils/PlayerBoardUtils'
 import { Animation, useAnimation, usePlay, usePlayerId } from '@gamepark/react-client'
 import { Draggable } from '@gamepark/react-components'
 import LocalGameView from '../../LocalGameView'
@@ -15,8 +16,8 @@ import { animalHeight, animalWidth, boardSize, jungleSpaceDelta } from '../../st
 import { canSelect } from '../../util/GameUtils'
 import Images from '../Images'
 
-const {Orange, Blue} = PlayerColor
-const {Toucan, Chameleon} = Animal
+const { Orange, Blue } = PlayerColor
+const { Toucan, Chameleon } = Animal
 
 type AnimalProp = {
   game: LocalGameView
@@ -27,32 +28,32 @@ type AnimalProp = {
 export const ANIMAL = 'ANIMAL'
 export type AnimalDragObject = { animal: Animal }
 
-export default function AnimalMini({game, owner, animal}: AnimalProp) {
+export default function AnimalMini({ game, owner, animal }: AnimalProp) {
   const playerId = usePlayerId<PlayerColor>()
   const animationMove = useAnimation<MoveAnimal>(animation => isMoveAnimalMove(animation.move) && animation.move.animal === animal && game.activePlayer === owner.color)
   const animationBlue = useAnimation<PlayBlueMosquitoEffect>(animation => isPlayBlueMosquitoEffectMove(animation.move) && animation.move.animal === animal && game.activePlayer === owner.color)
   const animation = animationMove ? animationMove : animationBlue
   const play = usePlay()
   const selected = playerId === owner.color && game.selectedAnimal === animal
-  const canMove = (playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal) && (getActivePlayerState(game)?.animalForcedToMove === undefined || getActivePlayerState(game)?.animalForcedToMove === animal) && getActivePlayerState(game)?.selectedMosquito !== Mosquito.Red)
-  const chooseEnemyAnimal = (getActivePlayerState(game)?.selectedMosquito === Mosquito.Red && owner.color != game.activePlayer)
+  const canMove = (playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal) && (getActivePlayerState(game)?.animalForcedToMove === undefined || getActivePlayerState(game)?.animalForcedToMove === animal) && getSelectedMosquito(game) !== Mosquito.Red)
+  const chooseEnemyAnimal = (getSelectedMosquito(game) === Mosquito.Red && owner.color != game.activePlayer)
   const canSelectAnimal = canSelect(game)
 
   const onClick = () => {
     if (canMove) {
-      if(getActivePlayerState(game)?.animalForcedToMove && getActivePlayerState(game)?.animalForcedToMove !== animal){
+      if (getActivePlayerState(game)?.animalForcedToMove && getActivePlayerState(game)?.animalForcedToMove !== animal) {
         return
       }
-      play(selectAnimalMove(animal === game.selectedAnimal ? undefined : animal), {local: true})
-    } else if (chooseEnemyAnimal){
+      play(selectAnimalMove(animal === game.selectedAnimal ? undefined : animal), { local: true })
+    } else if (chooseEnemyAnimal) {
       play(playRedMosquitoEffectMove(animal))
     }
   }
 
-  return <Draggable type={ANIMAL} item={{animal}} canDrag={canSelectAnimal && canMove} drop={play}
-                    css={[style(owner.color, animal), selected ? selectedAnimal : (canSelectAnimal && (canMove || chooseEnemyAnimal)) && filterAnimation, animation && moveAnimation(animation.duration)]}
-                    preTransform={placeAnimal(owner, animal, animation)}
-                    onClick={onClick}/>
+  return <Draggable type={ANIMAL} item={{ animal }} canDrag={canSelectAnimal && canMove} drop={play}
+    css={[style(owner.color, animal), selected ? selectedAnimal : (canSelectAnimal && (canMove || chooseEnemyAnimal)) && filterAnimation, animation && moveAnimation(animation.duration)]}
+    preTransform={placeAnimal(owner, animal, animation)}
+    onClick={onClick} />
 }
 
 const moveAnimation = (duration: number) => css`
@@ -86,7 +87,7 @@ function placeAnimal(player: PlayerState, animal: Animal, animation?: Animation)
   }
 }
 
-const animalPosition = ({x, y}: Coordinates) => `translate(${x * jungleSpaceDelta + 4}em, ${y * jungleSpaceDelta}em)`
+const animalPosition = ({ x, y }: Coordinates) => `translate(${x * jungleSpaceDelta + 4}em, ${y * jungleSpaceDelta}em)`
 
 const animalOutsideBoard = (player: PlayerColor, animal: Animal) =>
   `translate(${(player === Orange ? boardSize + 15 : -15 - animalWidth) + (animal === Toucan ? -10 : 10)}em, 70em)`
