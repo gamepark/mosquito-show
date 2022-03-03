@@ -5,7 +5,7 @@ import GameState from './GameState'
 import GameView from './GameView'
 import { Mosquito } from './material/MosquitoEffect'
 import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
-import { changeActivePlayer, changeActivePlayerMove, chooseMosquitoEffect, chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, moveMosquitoToken, moveMosquitoTokenMove, MoveType, playRedMosquitoEffect, playRedMosquitoEffectMove, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove, skipTurn, skipTurnMove } from './moves'
+import { changeActivePlayer, changeActivePlayerMove, chooseMosquitoEffect, chooseMosquitoEffectMove, discardTokenFromPlayerBoard, discardTokenFromPlayerBoardMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, moveMosquitoToken, moveMosquitoTokenMove, MoveType, playRedMosquitoEffect, playRedMosquitoEffectMove, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove, skipTurn, skipTurnMove } from './moves'
 import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
@@ -116,7 +116,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     } else if (this.state.turnOver) {
       moves.push(changeActivePlayerMove())
     } else if (this.state.handleMosquitoEffectOver) {
-      //moves.push(discardTokenFromPlayerboardMove(activePlayer.selectedMosquitoIndex))
+      moves.push(discardTokenFromPlayerBoardMove())
     } else {
       getPondsWithMosquitoAroundChameleon(this.state).forEach(pond => moves.push(eatMove(tokenForcedToReveal(this.state, pond.x, pond.y), pond.x, pond.y)))
       getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))
@@ -154,6 +154,9 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         changeActivePlayer(this.state, move)
         gameEndBlock(this.state)
         return
+      case MoveType.DiscardTokenFromPlayerBoard:
+        discardTokenFromPlayerBoard(this.state, move)
+        break
     }
     gameEndGolden(this.state)
     endOfTurn(this.state)
@@ -166,7 +169,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       const { y, x } = activePlayer.pendingToucanEat[0]
       return eatMove(tokenForcedToReveal(this.state, x, y), x, y)
     } else if (this.state.handleMosquitoEffectOver) {
-      //return DiscardTokenFromPlayerboard
+      return discardTokenFromPlayerBoardMove()
     } else if (this.state.turnOver) {
       return changeActivePlayerMove()
     } else if (!activePlayer.eatenMosquitos.length && !activePlayer.chameleonMustMove) {

@@ -2,7 +2,7 @@ import Animal from '../animals/Animal'
 import Coordinates from '../fields/Coordinates'
 import GameState from '../GameState'
 import GameView from '../GameView'
-import { getPondsBetween, removeMosquitoFromPlayer } from '../utils/BoardUtils'
+import { getPondsBetween } from '../utils/BoardUtils'
 import { getActivePlayerState } from '../utils/GameUtils'
 import { MoveType } from './MoveType'
 import { MoveView } from './MoveView'
@@ -34,8 +34,6 @@ export const moveAnimal = (game: GameState | GameView, move: MoveAnimal): void =
     delete getActivePlayerState(game)?.animalForcedToMove
   } else {
     game.handleMosquitoEffectOver = true
-    removeMosquitoFromPlayer(game, player.selectedMosquitoIndex)
-    delete getActivePlayerState(game)?.selectedMosquitoIndex
   }
 }
 
