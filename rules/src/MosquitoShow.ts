@@ -5,7 +5,7 @@ import GameState from './GameState'
 import GameView from './GameView'
 import { Mosquito } from './material/MosquitoEffect'
 import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
-import { changeActivePlayer, changeActivePlayerMove, chooseMosquitoEffect, chooseMosquitoEffectMove, discardTokenFromPlayerBoard, discardTokenFromPlayerBoardMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, moveMosquitoToken, moveMosquitoTokenMove, MoveType, playRedMosquitoEffect, playRedMosquitoEffectMove, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove, skipTurn, skipTurnMove } from './moves'
+import { changeActivePlayer, changeActivePlayerMove, chooseMosquitoEffect, chooseMosquitoEffectMove, discardTokenFromBoard, discardTokenFromBoardMove, discardTokenFromPlayerBoard, discardTokenFromPlayerBoardMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, moveMosquitoToken, moveMosquitoTokenMove, MoveType, playRedMosquitoEffect, playRedMosquitoEffectMove, skipTurn, skipTurnMove } from './moves'
 import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
@@ -92,7 +92,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       activePlayer.eatenMosquitos.forEach((_, index) => moves.push(chooseMosquitoEffectMove(index)))
     } else if (activePlayer.selectedMosquitoIndex !== undefined) {
       if (getSelectedMosquitoFromPlayer(activePlayer) == Mosquito.White) {
-        this.state.mosquitos.map((yz, x) => yz.map((z, y) => z.length ? moves.push(playWhiteMosquitoEffectMove(x, y)) : undefined))
+        this.state.mosquitos.map((yz, x) => yz.map((z, y) => z.length ? moves.push(discardTokenFromBoardMove(x, y)) : undefined))
       }
       if (getSelectedMosquitoFromPlayer(activePlayer) == Mosquito.Grey) {
         const origins: Coordinates[] = []
@@ -135,8 +135,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       case MoveType.MoveMosquitoToken:
         moveMosquitoToken(this.state, move)
         break
-      case MoveType.PlayWhiteMosquitoEffect:
-        playWhiteMosquitoEffect(this.state, move)
+      case MoveType.DiscardTokenFromBoard:
+        discardTokenFromBoard(this.state, move)
         break
       case MoveType.PlayRedMosquitoEffect:
         playRedMosquitoEffect(this.state, move)

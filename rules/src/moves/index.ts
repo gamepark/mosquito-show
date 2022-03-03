@@ -1,6 +1,8 @@
 export * from './ChangeActivePlayer';
 export { changeActivePlayer } from './ChangeActivePlayer';
 export * from './ChooseMosquitoEffect';
+export * from './DiscardTokenFromBoard';
+export { discardTokenFromBoard } from './DiscardTokenFromBoard';
 export * from './DiscardTokenFromPlayerBoard';
 export { discardTokenFromPlayerBoard } from './DiscardTokenFromPlayerBoard';
 export * from './Eat';
@@ -12,8 +14,6 @@ export { moveMosquitoToken } from './MoveMosquitoToken';
 export * from './MoveType';
 export * from './PlayRedMosquitoEffect';
 export { playRedMosquitoEffectMove } from './PlayRedMosquitoEffect';
-export * from './PlayWhiteMosquitoEffect';
-export { playWhiteMosquitoEffect } from './PlayWhiteMosquitoEffect';
 export * from './RevealMosquito';
 export * from './SelectAnimal';
 export { selectAnimal } from './SelectAnimal';

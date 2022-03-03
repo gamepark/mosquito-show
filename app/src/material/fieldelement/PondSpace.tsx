@@ -3,7 +3,7 @@ import { css, keyframes } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
 import { Mosquito, MosquitoOnBoard } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { eatMove, EatView, isEatViewMove, isMoveMosquitoTokenMove, isPlayWhiteMosquitoEffectMove, isRevealMosquitoViewMove, MoveMosquitoToken, moveMosquitoTokenMove, PlayWhiteMosquitoEffect, playWhiteMosquitoEffectMove, RevealMosquitoView, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
+import { DiscardTokenFromBoard, discardTokenFromBoardMove, eatMove, EatView, isDiscardTokenFromBoardMove, isEatViewMove, isMoveMosquitoTokenMove, isRevealMosquitoViewMove, MoveMosquitoToken, moveMosquitoTokenMove, RevealMosquitoView, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
 import { chameleonCanEat } from '@gamepark/mosquito-show/utils/AnimalUtils'
@@ -30,7 +30,7 @@ export default function PondSpace({ game, x, y }: Props) {
   const animationGrey = useAnimation<MoveMosquitoToken>(animation => isMoveMosquitoTokenMove(animation.move)
     && animation.move.origin.x === x
     && animation.move.origin.y === y)
-  const animationWhite = useAnimation<PlayWhiteMosquitoEffect>(animation => isPlayWhiteMosquitoEffectMove(animation.move)
+  const animationWhite = useAnimation<DiscardTokenFromBoard>(animation => isDiscardTokenFromBoardMove(animation.move)
     && animation.move.x === x
     && animation.move.y === y)
   const animationEat = useAnimation<EatView>(animation => isEatViewMove(animation.move)
@@ -45,7 +45,7 @@ export default function PondSpace({ game, x, y }: Props) {
     const player = game.players.find(p => p.color === game.activePlayer)
     if (!player) return undefined
     if (getSelectedMosquito(game) == Mosquito.White) {
-      return () => play(playWhiteMosquitoEffectMove(x, y))
+      return () => play(discardTokenFromBoardMove(x, y))
     }
     if (getSelectedMosquito(game) == Mosquito.Grey) {
       if (!game.selectedPondSpace) {
