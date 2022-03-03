@@ -12,13 +12,13 @@ export { moveAnimal } from './MoveAnimal';
 export * from './MoveMosquitoToken';
 export { moveMosquitoToken } from './MoveMosquitoToken';
 export * from './MoveType';
-export * from './PlayRedMosquitoEffect';
-export { playRedMosquitoEffectMove } from './PlayRedMosquitoEffect';
 export * from './RevealMosquito';
 export * from './SelectAnimal';
 export { selectAnimal } from './SelectAnimal';
 export * from './SelectMosquitoToken';
 export { selectMosquitoToken } from './SelectMosquitoToken';
+export * from './SelectOpponentAnimal';
+export { selectOpponentAnimalMove } from './SelectOpponentAnimal';
 export * from './SkipTurn';
 export { skipTurn } from './SkipTurn';
 

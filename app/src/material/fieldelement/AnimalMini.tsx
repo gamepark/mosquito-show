@@ -3,7 +3,7 @@ import { css, keyframes } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { isMoveAnimalMove, MoveAnimal, playRedMosquitoEffectMove, selectAnimalMove } from '@gamepark/mosquito-show/moves'
+import { isMoveAnimalMove, MoveAnimal, selectAnimalMove, selectOpponentAnimalMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
 import { canMoveAnimal } from '@gamepark/mosquito-show/utils/AnimalUtils'
@@ -44,7 +44,7 @@ export default function AnimalMini({ game, owner, animal }: AnimalProp) {
       }
       play(selectAnimalMove(animal === game.selectedAnimal ? undefined : animal), { local: true })
     } else if (chooseEnemyAnimal) {
-      play(playRedMosquitoEffectMove(animal))
+      play(selectOpponentAnimalMove(animal))
     }
   }
 

@@ -1,6 +1,6 @@
 import GameView from '@gamepark/mosquito-show/GameView'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { changeActivePlayer, chooseMosquitoEffect, discardTokenFromBoardInView, discardTokenFromPlayerBoard, eatInView, Move, moveAnimal, moveMosquitoTokenInView, MoveType, playRedMosquitoEffect, skipTurn } from '@gamepark/mosquito-show/moves'
+import { changeActivePlayer, chooseMosquitoEffect, discardTokenFromBoardInView, discardTokenFromPlayerBoard, eatInView, Move, moveAnimal, moveMosquitoTokenInView, MoveType, selectOpponentAnimal, skipTurn } from '@gamepark/mosquito-show/moves'
 import { MoveView } from '@gamepark/mosquito-show/moves/MoveView'
 import { revealMosquitoInView } from '@gamepark/mosquito-show/moves/RevealMosquito'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
@@ -49,8 +49,8 @@ export default class MosquitoShowView implements Game<LocalGameView, Move>, Undo
       case MoveType.DiscardTokenFromBoard:
         discardTokenFromBoardInView(this.state, move)
         break
-      case MoveType.PlayRedMosquitoEffect:
-        playRedMosquitoEffect(this.state, move)
+      case MoveType.SelectOpponentAnimal:
+        selectOpponentAnimal(this.state, move)
         break
       case MoveType.ChooseMosquitoEffect:
         chooseMosquitoEffect(this.state, move)

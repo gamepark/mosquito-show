@@ -1,4 +1,4 @@
-import { ChangeActivePlayer, ChooseMosquitoEffect, Eat, MoveAnimal, MoveMosquitoToken, PlayRedMosquitoEffect, DiscardTokenFromBoard, RevealMosquito, SelectAnimal, SelectMosquitoToken, SkipTurn } from './'
+import { ChangeActivePlayer, ChooseMosquitoEffect, DiscardTokenFromBoard, Eat, MoveAnimal, MoveMosquitoToken, RevealMosquito, SelectAnimal, SelectMosquitoToken, SelectOpponentAnimal, SkipTurn } from './'
 import { DiscardTokenFromPlayerBoard } from './DiscardTokenFromPlayerBoard'
 
-export type Move = Eat | MoveAnimal | RevealMosquito | DiscardTokenFromBoard | ChooseMosquitoEffect | SelectAnimal | SelectMosquitoToken | PlayRedMosquitoEffect | MoveMosquitoToken | SkipTurn | ChangeActivePlayer | DiscardTokenFromPlayerBoard
+export type Move = Eat | MoveAnimal | RevealMosquito | DiscardTokenFromBoard | ChooseMosquitoEffect | SelectAnimal | SelectMosquitoToken | SelectOpponentAnimal | MoveMosquitoToken | SkipTurn | ChangeActivePlayer | DiscardTokenFromPlayerBoard

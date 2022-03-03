@@ -5,7 +5,7 @@ import GameState from './GameState'
 import GameView from './GameView'
 import { Mosquito } from './material/MosquitoEffect'
 import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
-import { changeActivePlayer, changeActivePlayerMove, chooseMosquitoEffect, chooseMosquitoEffectMove, discardTokenFromBoard, discardTokenFromBoardMove, discardTokenFromPlayerBoard, discardTokenFromPlayerBoardMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, moveMosquitoToken, moveMosquitoTokenMove, MoveType, playRedMosquitoEffect, playRedMosquitoEffectMove, skipTurn, skipTurnMove } from './moves'
+import { changeActivePlayer, changeActivePlayerMove, chooseMosquitoEffect, chooseMosquitoEffectMove, discardTokenFromBoard, discardTokenFromBoardMove, discardTokenFromPlayerBoard, discardTokenFromPlayerBoardMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, moveMosquitoToken, moveMosquitoTokenMove, MoveType, selectOpponentAnimal, selectOpponentAnimalMove, skipTurn, skipTurnMove } from './moves'
 import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
@@ -111,7 +111,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))
       }
       if (getSelectedMosquitoFromPlayer(activePlayer) == Mosquito.Red) {
-        [Chameleon, Toucan].forEach(animal => moves.push(playRedMosquitoEffectMove(animal)))
+        [Chameleon, Toucan].forEach(animal => moves.push(selectOpponentAnimalMove(animal)))
       }
     } else if (this.state.turnOver) {
       moves.push(changeActivePlayerMove())
@@ -138,8 +138,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       case MoveType.DiscardTokenFromBoard:
         discardTokenFromBoard(this.state, move)
         break
-      case MoveType.PlayRedMosquitoEffect:
-        playRedMosquitoEffect(this.state, move)
+      case MoveType.SelectOpponentAnimal:
+        selectOpponentAnimal(this.state, move)
         break
       case MoveType.ChooseMosquitoEffect:
         chooseMosquitoEffect(this.state, move)
