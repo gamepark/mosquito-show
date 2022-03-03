@@ -3,7 +3,7 @@ import { css, keyframes } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
 import { Mosquito, MosquitoOnBoard } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { eatMove, EatView, isEatViewMove, isPlayGreyMosquitoEffectMove, isPlayWhiteMosquitoEffectMove, isRevealMosquitoViewMove, PlayGreyMosquitoEffect, playGreyMosquitoEffectMove, PlayWhiteMosquitoEffect, playWhiteMosquitoEffectMove, RevealMosquitoView, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
+import { eatMove, EatView, isEatViewMove, isMoveMosquitoTokenMove, isPlayWhiteMosquitoEffectMove, isRevealMosquitoViewMove, MoveMosquitoToken, moveMosquitoTokenMove, PlayWhiteMosquitoEffect, playWhiteMosquitoEffectMove, RevealMosquitoView, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
 import { chameleonCanEat } from '@gamepark/mosquito-show/utils/AnimalUtils'
@@ -27,7 +27,7 @@ export default function PondSpace({ game, x, y }: Props) {
   const canEat = useMemo(() => playerId && chameleonCanEat(game, x, y), [game])
   const mosquitos = game.mosquitos[x][y]
   const isPondSpaceEmpty = getSelectedMosquito(game) == Mosquito.Grey && mosquitos.length == 0
-  const animationGrey = useAnimation<PlayGreyMosquitoEffect>(animation => isPlayGreyMosquitoEffectMove(animation.move)
+  const animationGrey = useAnimation<MoveMosquitoToken>(animation => isMoveMosquitoTokenMove(animation.move)
     && animation.move.origin.x === x
     && animation.move.origin.y === y)
   const animationWhite = useAnimation<PlayWhiteMosquitoEffect>(animation => isPlayWhiteMosquitoEffectMove(animation.move)
@@ -51,7 +51,7 @@ export default function PondSpace({ game, x, y }: Props) {
       if (!game.selectedPondSpace) {
         return () => play(selectMosquitoTokenMove(x, y), { local: true })
       } else {
-        return game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y ? () => play(playGreyMosquitoEffectMove(game.selectedPondSpace!, { x, y })) : undefined
+        return game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y ? () => play(moveMosquitoTokenMove(game.selectedPondSpace!, { x, y })) : undefined
       }
     }
     if (getSelectedMosquito(game) == Mosquito.Blue) {
@@ -65,7 +65,7 @@ export default function PondSpace({ game, x, y }: Props) {
 
   const onPondSpaceClick = () => {
     if (getSelectedMosquito(game) == Mosquito.Grey && mosquitos.length == 0 && game.selectedPondSpace && (game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y)) {
-      play(playGreyMosquitoEffectMove(game.selectedPondSpace!, { x, y }))
+      play(moveMosquitoTokenMove(game.selectedPondSpace!, { x, y }))
     }
     return undefined
   }

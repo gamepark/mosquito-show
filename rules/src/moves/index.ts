@@ -5,9 +5,9 @@ export * from './Eat';
 export * from './Move';
 export * from './MoveAnimal';
 export { moveAnimal } from './MoveAnimal';
+export * from './MoveMosquitoToken';
+export { moveMosquitoToken } from './MoveMosquitoToken';
 export * from './MoveType';
-export * from './PlayGreyMosquitoEffect';
-export { playGreyMosquitoEffectMove } from './PlayGreyMosquitoEffect';
 export * from './PlayRedMosquitoEffect';
 export { playRedMosquitoEffectMove } from './PlayRedMosquitoEffect';
 export * from './PlayWhiteMosquitoEffect';
@@ -19,3 +19,4 @@ export * from './SelectMosquitoToken';
 export { selectMosquitoToken } from './SelectMosquitoToken';
 export * from './SkipTurn';
 export { skipTurn } from './SkipTurn';
+

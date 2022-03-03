@@ -5,7 +5,7 @@ import GameState from './GameState'
 import GameView from './GameView'
 import { Mosquito } from './material/MosquitoEffect'
 import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
-import { changeActivePlayer, changeActivePlayerMove, chooseMosquitoEffect, chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, MoveType, playGreyMosquitoEffect, playGreyMosquitoEffectMove, playRedMosquitoEffect, playRedMosquitoEffectMove, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove, skipTurn, skipTurnMove } from './moves'
+import { changeActivePlayer, changeActivePlayerMove, chooseMosquitoEffect, chooseMosquitoEffectMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, moveMosquitoToken, moveMosquitoTokenMove, MoveType, playRedMosquitoEffect, playRedMosquitoEffectMove, playWhiteMosquitoEffect, playWhiteMosquitoEffectMove, skipTurn, skipTurnMove } from './moves'
 import { MoveView } from './moves/MoveView'
 import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
@@ -100,7 +100,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         origins.forEach(origin => {
           [...Array(3)].map((_, x) =>
             [...Array(3)].map((_, y) =>
-              origin.x != x || origin.y != y ? moves.push(playGreyMosquitoEffectMove(origin, { x, y })) : undefined
+              origin.x != x || origin.y != y ? moves.push(moveMosquitoTokenMove(origin, { x, y })) : undefined
             )
           )
         }
@@ -132,8 +132,8 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       case MoveType.Eat:
         eat(this.state, move)
         break
-      case MoveType.PlayGreyMosquitoEffect:
-        playGreyMosquitoEffect(this.state, move)
+      case MoveType.MoveMosquitoToken:
+        moveMosquitoToken(this.state, move)
         break
       case MoveType.PlayWhiteMosquitoEffect:
         playWhiteMosquitoEffect(this.state, move)
