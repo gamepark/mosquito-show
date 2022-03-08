@@ -16,6 +16,8 @@ const mosquitoShowAnimations: Animations<LocalGameView, MoveView, PlayerColor> =
             return 1.5
         } else if (move.type === MoveType.RevealMosquito) {
             return 0.5
+        } else if (move.type === MoveType.DiscardTokenFromPlayerBoard) {
+            return 0.5
         }
         return 0
     }

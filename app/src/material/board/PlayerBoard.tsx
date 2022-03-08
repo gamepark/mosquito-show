@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import { css, keyframes } from '@emotion/react'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { chooseMosquitoEffectMove, skipTurnMove } from '@gamepark/mosquito-show/moves'
+import { chooseMosquitoEffectMove, DiscardTokenFromPlayerBoard, isDiscardTokenFromPlayerBoardMove, skipTurnMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import { canMoveAnimal } from '@gamepark/mosquito-show/utils/AnimalUtils'
 import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
-import { usePlay, usePlayerId } from '@gamepark/react-client'
+import { useAnimation, usePlay, usePlayerId } from '@gamepark/react-client'
 import { HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
 import LocalGameView from 'src/LocalGameView'
@@ -23,6 +23,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
   const playerId = usePlayerId()
   const { t } = useTranslation()
   const playerstate = game.players[playerIndex]
+  const animationDiscardTokenFromPlayerBoard = useAnimation<DiscardTokenFromPlayerBoard>(animation => isDiscardTokenFromPlayerBoardMove(animation.move))
 
   const onClick = (eatenMosquitoIndex: number) => {
     if (getActivePlayerState(game) !== undefined && !getActivePlayerState(game)!.selectedMosquitoIndex && !getActivePlayerState(game)!.chameleonMustMove) {
@@ -41,7 +42,9 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
       )
     }
     {playerstate.eatenMosquitos.map((eatenMosquito, index) =>
-      <MosquitoToken key={index} mosquito={eatenMosquito} onClick={onClick(index)} css={eatenMosquitoPosition(index)} />
+      <MosquitoToken key={index} mosquito={eatenMosquito} onClick={onClick(index)} css={[eatenMosquitoPosition(index),
+      animationDiscardTokenFromPlayerBoard && index === playerstate.selectedMosquitoIndex && discardTokenFromPlayerBoardAnimationTranslation(animationDiscardTokenFromPlayerBoard.duration)]
+      } />
     )
     }
 
@@ -52,6 +55,24 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
     </span>
   </div>
 }
+
+const discardTokenFromPlayerBoardAnimationTranslation = (duration: number) => css`
+transition: transform ${duration}s ease-in-out;
+transform: translate(0em, 30em);
+&:before, &:after {
+  animation: ${fadeOut75Keyframes} ${duration}s ease-in-out;
+}
+`
+
+const fadeOut75Keyframes = keyframes`
+from, 75% {
+  opacity: 1;
+}
+to{
+  opacity: 0;
+}
+`
+
 const buttonFont = () => css`
   font-size: medium;
 `
@@ -82,7 +103,6 @@ const eatenMosquitoPosition = (index: number) => css`
   top: ${eatenMosquitoPostionTop}em;
   left: ${playerboardTokenBoarderMargin + index * mosquitoTokenSize + index * playerboardTokenDelta}em;
 `
-//left: ${(playerboardSize - (length * mosquitoTokenSize)) / (length + 1) * (index + 1) + (index * mosquitoTokenSize)}em;
 
 const outbox = (player: PlayerColor, activePlayer?: PlayerColor) => css`
   position: absolute;
