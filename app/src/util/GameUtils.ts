@@ -7,7 +7,7 @@ export function canSelect(state: LocalGameView): boolean {
   if (getActivePlayerState(state)?.chameleonMustMove) {
     return false
   } else if (getActivePlayerState(state) !== undefined && getActivePlayerState(state)!.eatenMosquitos.length > 0
-    && (getActivePlayerState(state)!.selectedMosquitoIndex === undefined || !(getSelectedMosquito(state) == Mosquito.Blue || getSelectedMosquito(state) == Mosquito.Red))) {
+    && (getActivePlayerState(state)!.selectedMosquitoIndex === undefined || !(getSelectedMosquito(state) === Mosquito.Blue || getSelectedMosquito(state) === Mosquito.Red))) {
     return false
   }
   return true

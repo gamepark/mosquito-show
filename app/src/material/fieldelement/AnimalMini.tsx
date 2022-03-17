@@ -49,7 +49,7 @@ export default function AnimalMini({ game, owner, animal }: AnimalProp) {
   }
 
   return <Draggable type={ANIMAL} item={{ animal }} canDrag={canSelectAnimal && canMove} drop={play}
-    css={[style(owner.color, animal), selected ? selectedAnimal : (canSelectAnimal && (canMove || chooseEnemyAnimal)) && filterAnimation, animation && moveAnimation(animation.duration)]}
+    css={[style(owner.color, animal), selected ? selectedAnimal(owner, animal) : (canSelectAnimal && (canMove || chooseEnemyAnimal)) && filterAnimation(owner, animal), animation && moveAnimation(animation.duration)]}
     preTransform={placeAnimal(owner, animal, animation)}
     onClick={onClick} />
 }
@@ -65,7 +65,7 @@ const style = (player: PlayerColor, animal: Animal) => css`
   border-radius: 50%;
   background-image: url(${animalImage(player, animal)});
   background-size: cover;
-  filter: drop-shadow(0 0 0.2em black) drop-shadow(0 0 0.2em black) drop-shadow(0 0 0.2em black);
+  filter: drop-shad ow(0 0 0.2em black) drop-shadow(0 0 0.2em black) drop-shadow(0 0 0.2em black);
 `
 
 function animalImage(player: PlayerColor, animal: Animal) {
@@ -90,19 +90,19 @@ const animalPosition = ({ x, y }: Coordinates) => `translate(${x * jungleSpaceDe
 const animalOutsideBoard = (player: PlayerColor, animal: Animal) =>
   `translate(${(player === Orange ? boardSize + 15 : -15 - animalWidth) + (animal === Toucan ? -10 : 10)}em, 70em)`
 
-const selectedAnimal = css`
-  filter: drop-shadow(0 0 0.2em white) drop-shadow(0 0 0.2em white) drop-shadow(0 0 0.2em white);
+const selectedAnimal = (player: PlayerState, animal: Animal) => css`
+  filter: drop-shadow(0 0 0.2em ${player.animalForcedToMove == animal ? 'red' : 'white'}) drop-shadow(0 0 0.2em ${player.animalForcedToMove == animal ? 'red' : 'white'}) drop-shadow(0 0 0.2em ${player.animalForcedToMove == animal ? 'red' : 'white'});
 `
 
-const filterKeyframe = keyframes`
+const filterKeyframe = (player: PlayerState, animal: Animal) => keyframes`
   from {
-    filter: drop-shadow(0 0 0.2em white);
+    filter: drop-shadow(0 0 0.2em ${player.animalForcedToMove == animal ? 'red' : 'white'});
   }
   to {
-    filter: drop-shadow(0 0 0.4em white) drop-shadow(0 0 0.4em white);
+    filter: drop-shadow(0 0 0.4em ${player.animalForcedToMove == animal ? 'red' : 'white'}) drop-shadow(0 0 0.4em ${player.animalForcedToMove == animal ? 'red' : 'white'});
   }
 `
 
-const filterAnimation = css`
-  animation: ${filterKeyframe} 2s infinite alternate ease-in-out;
+const filterAnimation = (player: PlayerState, animal: Animal) => css`
+  animation: ${filterKeyframe(player, animal)} 2s infinite alternate ease-in-out;
 `
