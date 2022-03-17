@@ -18,7 +18,7 @@ export default class MosquitoShowView implements Game<LocalGameView, Move>, Undo
   }
 
   canUndo(action: Action<Move, PlayerColor>, consecutiveActions: Action<Move, PlayerColor>[]): boolean {
-    return canUndo(action, consecutiveActions)
+    return canUndo(this.state, action, consecutiveActions)
   }
 
   play(move: MoveView): void {

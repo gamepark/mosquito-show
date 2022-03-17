@@ -52,7 +52,12 @@ export function endOfTurn(game: GameState | GameView) {
   }
 }
 
-export function canUndo(action: Action<Move, PlayerColor>, consecutiveActions: Action<Move, PlayerColor>[]): boolean {
+export function isOver(state: GameState | GameView): boolean {
+  return state.activePlayer === undefined
+}
+
+export function canUndo(state: GameState | GameView, action: Action<Move, PlayerColor>, consecutiveActions: Action<Move, PlayerColor>[]): boolean {
+  if (isOver(state)) return false
   if (consecutiveActions.length) {
     return false
   }

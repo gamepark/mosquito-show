@@ -11,7 +11,7 @@ import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
 import PlayerColor from './PlayerColor'
 import { canMoveAnimal, canMoveAnimalOfPlayer, getPondsWithMosquitoAroundChameleon, getValidDestinations } from './utils/AnimalUtils'
 import { createMosquitos, mosquitoToReveal, tokenForcedToReveal } from './utils/BoardUtils'
-import { canUndo, endOfTurn, gameEndBlock, gameEndGolden, getPlayerState, isPlacementPhase } from './utils/GameUtils'
+import { canUndo, endOfTurn, gameEndBlock, gameEndGolden, getPlayerState, isOver, isPlacementPhase } from './utils/GameUtils'
 import { getSelectedMosquitoFromPlayer } from './utils/PlayerBoardUtils'
 
 const { Orange, Blue } = PlayerColor
@@ -37,11 +37,10 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
   }
 
   isOver(): boolean {
-    return this.state.activePlayer === undefined
+    return isOver(this.state)
   }
 
   rankPlayers(playerA: PlayerColor, playerB: PlayerColor): number {
-    console.log('rank')
     for (const player of this.state.players) {
       if (player.goldenMosquitos >= 9) {
         return player.color === playerA ? -1 : 1
@@ -53,12 +52,11 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
   }
 
   getScore(playerId: PlayerColor): number {
-    console.log('score')
     return getPlayerState(this.state, playerId)!.goldenMosquitos
   }
 
   canUndo(action: Action<Move, PlayerColor>, consecutiveActions: Action<Move, PlayerColor>[]): boolean {
-    return canUndo(action, consecutiveActions)
+    return canUndo(this.state, action, consecutiveActions)
   }
 
   getActivePlayer(): PlayerColor | undefined {
