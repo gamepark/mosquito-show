@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react'
-import Animal from '@gamepark/mosquito-show/animals/Animal'
 import { Mosquito, Waterlily } from '@gamepark/mosquito-show/material/MosquitoEffect'
 import { HTMLAttributes } from 'react'
 import { mosquitoTokenSize } from '../../styles'
@@ -10,9 +9,6 @@ type Props = {
   mosquito?: Mosquito
   waterlily?: Waterlily
 } & HTMLAttributes<HTMLDivElement>
-
-export const MOSQUITO_TOKEN = 'MOSQUITO_TOKEN'
-export type mosquitoTokenDragObject = { token: Animal }
 
 export default function MosquitoToken({ mosquito, waterlily, ...props }: Props) {
   return <div css={[style,
