@@ -30,7 +30,7 @@ export type AnimalDragObject = { animal: Animal }
 
 export default function AnimalMini({ game, owner, animal }: AnimalProp) {
   const playerId = usePlayerId<PlayerColor>()
-  const animation = useAnimation<MoveAnimal>(animation => isMoveAnimalMove(animation.move) && animation.move.animal === animal && game.activePlayer === owner.color)
+  const moveAnimalAnimation = useAnimation<MoveAnimal>(animation => isMoveAnimalMove(animation.move) && animation.move.animal === animal && game.activePlayer === owner.color)
   const play = usePlay()
   const selected = playerId === owner.color && game.selectedAnimal === animal
   const canMove = (playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal) && (getActivePlayerState(game)?.animalForcedToMove === undefined || getActivePlayerState(game)?.animalForcedToMove === animal) && getSelectedMosquito(game) !== Mosquito.Red)
@@ -49,12 +49,12 @@ export default function AnimalMini({ game, owner, animal }: AnimalProp) {
   }
 
   return <Draggable type={ANIMAL} item={{ animal }} canDrag={canSelectAnimal && canMove} drop={play}
-    css={[style(owner.color, animal), selected ? selectedAnimal(owner, animal) : (canSelectAnimal && (canMove || chooseEnemyAnimal)) && filterAnimation(owner, animal), animation && moveAnimation(animation.duration)]}
-    preTransform={placeAnimal(owner, animal, animation)}
+    css={[style(owner.color, animal), selected ? selectedAnimal(owner, animal) : (canSelectAnimal && (canMove || chooseEnemyAnimal)) && filterAnimation(owner, animal), moveAnimalAnimation && moveAnimalAnimationTranslation(moveAnimalAnimation.duration)]}
+    preTransform={placeAnimal(owner, animal, moveAnimalAnimation)}
     onClick={onClick} />
 }
 
-const moveAnimation = (duration: number) => css`
+const moveAnimalAnimationTranslation = (duration: number) => css`
   transition: transform ${duration}s ease-in-out;
 `
 

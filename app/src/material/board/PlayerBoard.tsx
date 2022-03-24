@@ -23,7 +23,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
   const playerId = usePlayerId()
   const { t } = useTranslation()
   const playerstate = game.players[playerIndex]
-  const animationDiscardTokenFromPlayerBoard = useAnimation<DiscardTokenFromPlayerBoard>(animation => isDiscardTokenFromPlayerBoardMove(animation.move))
+  const discardTokenFromPlayerBoardAnimation = useAnimation<DiscardTokenFromPlayerBoard>(animation => isDiscardTokenFromPlayerBoardMove(animation.move))
 
   const onClick = (eatenMosquitoIndex: number) => {
     if (getActivePlayerState(game) !== undefined && !getActivePlayerState(game)!.selectedMosquitoIndex && !getActivePlayerState(game)!.chameleonMustMove) {
@@ -43,7 +43,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
     }
     {playerstate.eatenMosquitos.map((eatenMosquito, index) =>
       <MosquitoToken key={index} mosquito={eatenMosquito} onClick={onClick(index)} css={[eatenMosquitoPosition(index),
-      animationDiscardTokenFromPlayerBoard && index === playerstate.selectedMosquitoIndex && discardTokenFromPlayerBoardAnimationTranslation(animationDiscardTokenFromPlayerBoard.duration)]
+      discardTokenFromPlayerBoardAnimation && index === playerstate.selectedMosquitoIndex && discardTokenFromPlayerBoardAnimationTranslation(discardTokenFromPlayerBoardAnimation.duration)]
       } />
     )
     }

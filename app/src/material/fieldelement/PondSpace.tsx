@@ -29,16 +29,16 @@ export default function PondSpace({ game, x, y }: Props) {
   const canEat = useMemo(() => playerId && chameleonCanEat(game, x, y), [game])
   const mosquitos = game.mosquitos[x][y]
   const isPondSpaceEmpty = getSelectedMosquito(game) == Mosquito.Grey && mosquitos.length == 0
-  const animationGrey = useAnimation<MoveMosquitoToken>(animation => isMoveMosquitoTokenMove(animation.move)
+  const moveMosquitoTokenAnimation = useAnimation<MoveMosquitoToken>(animation => isMoveMosquitoTokenMove(animation.move)
     && animation.move.origin.x === x
     && animation.move.origin.y === y)
-  const animationWhite = useAnimation<DiscardTokenFromBoard>(animation => isDiscardTokenFromBoardMove(animation.move)
+  const discardTokenFromBoardAnimation = useAnimation<DiscardTokenFromBoard>(animation => isDiscardTokenFromBoardMove(animation.move)
     && animation.move.x === x
     && animation.move.y === y)
-  const animationEat = useAnimation<EatView>(animation => isEatViewMove(animation.move)
+  const eatAnimation = useAnimation<EatView>(animation => isEatViewMove(animation.move)
     && animation.move.x === x
     && animation.move.y === y)
-  const animationReveal = useAnimation<RevealMosquitoView>(animation => isRevealMosquitoViewMove(animation.move)
+  const revealMosquitoAnimation = useAnimation<RevealMosquitoView>(animation => isRevealMosquitoViewMove(animation.move)
     && animation.move.x === x
     && animation.move.y === y)
 
@@ -90,19 +90,18 @@ export default function PondSpace({ game, x, y }: Props) {
       isPondSpaceEmpty && game.selectedPondSpace && glow]}>
       {mosquitos.map((mosquitoOnBoard, index) =>
         index === mosquitos.length - 1 && getSelectedMosquito(game) == Mosquito.Grey ?
-          <DraggableMosquitoToken key={index} mosquito={mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily} css={[tokenPosition(index), animationGrey && index === mosquitos.length - 1
-            && greyAnimationTranslation(animationGrey.duration, animationGrey.move.origin, animationGrey.move.destination, mosquitoOnBoard.mosquito === undefined, game.mosquitos[animationGrey.move.destination.x][animationGrey.move.destination.y].length - game.mosquitos[animationGrey.move.origin.x][animationGrey.move.origin.y].length)]} onClick={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard)} x={x} y={y} /> :
-          <MosquitoToken key={index} mosquito={(animationEat && index === mosquitos.length - 1 && mosquitoOnBoard.mosquito === undefined) ? animationEat.move.mosquito : (animationReveal && index === mosquitos.length - 1 && mosquitoOnBoard.mosquito === undefined) ? animationReveal.move.mosquito : mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily}
-            css={[tokenPosition(index), animationGrey && index === mosquitos.length - 1
-              && greyAnimationTranslation(animationGrey.duration, animationGrey.move.origin, animationGrey.move.destination, mosquitoOnBoard.mosquito === undefined, game.mosquitos[animationGrey.move.destination.x][animationGrey.move.destination.y].length - game.mosquitos[animationGrey.move.origin.x][animationGrey.move.origin.y].length),
-            animationWhite && index === mosquitos.length - 1
-            && whiteAnimationTranslation(animationWhite.duration, x, y, getActivePlayerState(game)!.color, index, mosquitoOnBoard.mosquito === undefined),
-            animationEat && index === mosquitos.length - 1 && (game.mosquitos[animationEat.move.x][animationEat.move.y][index].mosquito === Mosquito.Golden || animationEat.move.mosquito === Mosquito.Golden)
-            && eatGoldenAnimationTranslation(animationEat.duration, x, y, getActivePlayerState(game)!, index, mosquitoOnBoard.mosquito === undefined),
-            animationEat && index === mosquitos.length - 1 && (game.mosquitos[animationEat.move.x][animationEat.move.y][index].mosquito !== Mosquito.Golden || animationEat.move.mosquito !== Mosquito.Golden)
-            && eatNonGoldenAnimationTranslation(animationEat.duration, x, y, getActivePlayerState(game)!, index, mosquitoOnBoard.mosquito === undefined, getActivePlayerState(game)!.eatenMosquitos.length),
-            animationReveal && index === mosquitos.length - 1
-            && revealMosquitoAnimationTranslation(animationReveal.duration)]}
+          <DraggableMosquitoToken key={index} mosquito={mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily} css={[tokenPosition(index), moveMosquitoTokenAnimation && index === mosquitos.length - 1
+            && moveMosquitoTokenAnimationTranslation(moveMosquitoTokenAnimation.duration, moveMosquitoTokenAnimation.move.origin, moveMosquitoTokenAnimation.move.destination, mosquitoOnBoard.mosquito === undefined, game.mosquitos[moveMosquitoTokenAnimation.move.destination.x][moveMosquitoTokenAnimation.move.destination.y].length - game.mosquitos[moveMosquitoTokenAnimation.move.origin.x][moveMosquitoTokenAnimation.move.origin.y].length)]} onClick={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard)} x={x} y={y} /> :
+          <MosquitoToken key={index} mosquito={(eatAnimation && index === mosquitos.length - 1 && mosquitoOnBoard.mosquito === undefined) ? eatAnimation.move.mosquito : (revealMosquitoAnimation && index === mosquitos.length - 1 && mosquitoOnBoard.mosquito === undefined) ? revealMosquitoAnimation.move.mosquito : mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily}
+            css={[tokenPosition(index),
+            discardTokenFromBoardAnimation && index === mosquitos.length - 1
+            && discardTokenFromBoardAnimationTranslation(discardTokenFromBoardAnimation.duration, x, y, getActivePlayerState(game)!.color, index, mosquitoOnBoard.mosquito === undefined),
+            eatAnimation && index === mosquitos.length - 1 && (game.mosquitos[eatAnimation.move.x][eatAnimation.move.y][index].mosquito === Mosquito.Golden || eatAnimation.move.mosquito === Mosquito.Golden)
+            && eatGoldenAnimationTranslation(eatAnimation.duration, x, y, getActivePlayerState(game)!, index, mosquitoOnBoard.mosquito === undefined),
+            eatAnimation && index === mosquitos.length - 1 && (game.mosquitos[eatAnimation.move.x][eatAnimation.move.y][index].mosquito !== Mosquito.Golden || eatAnimation.move.mosquito !== Mosquito.Golden)
+            && eatNonGoldenAnimationTranslation(eatAnimation.duration, x, y, getActivePlayerState(game)!, index, mosquitoOnBoard.mosquito === undefined, getActivePlayerState(game)!.eatenMosquitos.length),
+            revealMosquitoAnimation && index === mosquitos.length - 1
+            && revealMosquitoAnimationTranslation(revealMosquitoAnimation.duration)]}
             onClick={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard)}
           />
       )}
@@ -152,14 +151,14 @@ to{
 }
 `
 
-const whiteAnimationTranslation = (duration: number, x: number, y: number, player: PlayerColor, index: number, hidden: boolean) => css`
-  animation: ${whiteAnimationKeyframes(x, y, player, index, hidden)} ${duration}s ease-in-out;
+const discardTokenFromBoardAnimationTranslation = (duration: number, x: number, y: number, player: PlayerColor, index: number, hidden: boolean) => css`
+  animation: ${discardFromBoardAnimationKeyframes(x, y, player, index, hidden)} ${duration}s ease-in-out;
   &:before, &:after {
     animation: ${fadeOut75Keyframes} ${duration}s ease-in-out;
   }
 `
 
-const whiteAnimationKeyframes = (x: number, y: number, player: PlayerColor, index: number, hidden: boolean) => keyframes`
+const discardFromBoardAnimationKeyframes = (x: number, y: number, player: PlayerColor, index: number, hidden: boolean) => keyframes`
 from{
   transform: translate(${0 + (index * 0.4)}em, ${0 - (index * 0.4)}em) rotateY(${hidden ? 180 : 0}deg);
 }
@@ -177,7 +176,7 @@ to{
 }
 `
 
-const greyAnimationTranslation = (duration: number, origin: Coordinates, destination: Coordinates, hidden: boolean, indexDelta: number) => css`
+const moveMosquitoTokenAnimationTranslation = (duration: number, origin: Coordinates, destination: Coordinates, hidden: boolean, indexDelta: number) => css`
   z-index:10;
   transition: transform ${duration}s ease-in-out;
   transform: translate(${(destination.x - origin.x) * jungleSpaceDelta + (indexDelta * 0.4)}em, ${(destination.y - origin.y) * jungleSpaceDelta - (indexDelta * 0.4)}em) rotateY(${hidden ? 180 : 0}deg);
