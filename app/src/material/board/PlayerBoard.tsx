@@ -26,7 +26,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
   const discardTokenFromPlayerBoardAnimation = useAnimation<DiscardTokenFromPlayerBoard>(animation => isDiscardTokenFromPlayerBoardMove(animation.move))
 
   const onClick = (eatenMosquitoIndex: number) => {
-    if (getActivePlayerState(game) !== undefined && !getActivePlayerState(game)!.selectedMosquitoIndex && !getActivePlayerState(game)!.chameleonMustMove) {
+    if (getActivePlayerState(game) !== undefined && getActivePlayerState(game)!.selectedMosquitoIndex === undefined && !getActivePlayerState(game)!.chameleonMustMove) {
       return () => play(chooseMosquitoEffectMove(eatenMosquitoIndex))
     }
     return undefined
