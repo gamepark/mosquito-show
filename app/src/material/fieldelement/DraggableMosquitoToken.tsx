@@ -19,7 +19,7 @@ export type MosquitoTokenDragObject = Coordinates
 export default function DraggableMosquitoToken({ mosquito, waterlily, x, y, ...props }: Props) {
     const play = usePlay()
     return <Draggable type={MOSQUITO_TOKEN} css={style} item={{ x, y }} drop={play} {...props}>
-        <MosquitoToken mosquito={mosquito} waterlily={waterlily} />
+        <MosquitoToken mosquito={mosquito} waterlily={waterlily} onClick={props.onClick} />
     </Draggable>
 }
 

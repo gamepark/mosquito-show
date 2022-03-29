@@ -52,21 +52,20 @@ export default function PondSpace({ game, x, y }: Props) {
     drop: (item: MosquitoTokenDragObject) => moveMosquitoTokenMove(item, { x, y })
   })
 
-
   const onMosquitoTokenClick = (mosquitoOnTop: boolean, mosquitoOnBoard: Partial<MosquitoOnBoard>) => {
     const player = game.players.find(p => p.color === game.activePlayer)
     if (!player) return undefined
-    if (getSelectedMosquito(game) == Mosquito.White) {
+    if (getSelectedMosquito(game) === Mosquito.White && mosquitoOnTop) {
       return () => play(discardTokenFromBoardMove(x, y))
     }
-    if (getSelectedMosquito(game) == Mosquito.Grey) {
+    if (getSelectedMosquito(game) === Mosquito.Grey && mosquitoOnTop) {
       if (!game.selectedPondSpace) {
         return () => play(selectMosquitoTokenMove(x, y), { local: true })
       } else {
         return game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y ? () => play(moveMosquitoTokenMove(game.selectedPondSpace!, { x, y })) : undefined
       }
     }
-    if (getSelectedMosquito(game) == Mosquito.Blue) {
+    if (getSelectedMosquito(game) === Mosquito.Blue) {
       return undefined
     }
     if (game.selectedAnimal === Animal.Chameleon && canEat && mosquitoOnTop) {
@@ -76,7 +75,7 @@ export default function PondSpace({ game, x, y }: Props) {
   }
 
   const onPondSpaceClick = () => {
-    if (getSelectedMosquito(game) == Mosquito.Grey && mosquitos.length == 0 && game.selectedPondSpace && (game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y)) {
+    if (getSelectedMosquito(game) === Mosquito.Grey && mosquitos.length === 0 && game.selectedPondSpace && (game.selectedPondSpace!.x != x || game.selectedPondSpace!.y != y)) {
       play(moveMosquitoTokenMove(game.selectedPondSpace!, { x, y }))
     }
     return undefined
