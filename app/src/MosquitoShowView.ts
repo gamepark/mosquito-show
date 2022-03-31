@@ -33,7 +33,7 @@ export default class MosquitoShowView implements Game<LocalGameView, Move>, Undo
         }
         return
       case MoveType.SelectMosquitoToken:
-        this.state.selectedPondSpace = { x: move.x, y: move.y }
+        this.state.selectedPondSpace = move.coordinates
         return
       case MoveType.MoveAnimal:
         moveAnimal(this.state, move)

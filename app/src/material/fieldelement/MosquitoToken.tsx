@@ -8,13 +8,14 @@ import Images from '../Images'
 type Props = {
   mosquito?: Mosquito
   waterlily?: Waterlily
+  clickable: boolean
 } & HTMLAttributes<HTMLDivElement>
 
-export default function MosquitoToken({ mosquito, waterlily, ...props }: Props) {
+export default function MosquitoToken({ mosquito, waterlily, clickable, ...props }: Props) {
   return <div css={[style,
     mosquito ? frontFace(mosquito) : flip,
     waterlily && backFace(waterlily),
-    props.onClick && glow
+    clickable && glow
   ]} {...props} />
 }
 

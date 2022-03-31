@@ -5,10 +5,11 @@ import { MoveType } from './MoveType'
 
 export type SelectMosquitoToken = {
   type: typeof MoveType.SelectMosquitoToken
-} & Coordinates
+  coordinates?: Coordinates
+}
 
-export const selectMosquitoTokenMove = (x: number, y: number): SelectMosquitoToken => ({
-  type: MoveType.SelectMosquitoToken, x, y
+export const selectMosquitoTokenMove = (coordinates?: Coordinates): SelectMosquitoToken => ({
+  type: MoveType.SelectMosquitoToken, coordinates
 })
 
 export function selectMosquitoToken(state: GameView | GameState, move: SelectMosquitoToken) {
