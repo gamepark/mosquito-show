@@ -12,15 +12,16 @@ type Props = {
     mosquito?: Mosquito
     waterlily?: Waterlily
     clickable: boolean
+    selected: boolean
 } & Coordinates & HTMLAttributes<HTMLDivElement>
 
 export const MOSQUITO_TOKEN = 'MOSQUITO_TOKEN'
 export type MosquitoTokenDragObject = Coordinates
 
-export default function DraggableMosquitoToken({ mosquito, waterlily, clickable, x, y, ...props }: Props) {
+export default function DraggableMosquitoToken({ mosquito, waterlily, clickable, selected, x, y, ...props }: Props) {
     const play = usePlay()
     return <Draggable type={MOSQUITO_TOKEN} css={style} item={{ x, y }} drop={play} {...props}>
-        <MosquitoToken mosquito={mosquito} waterlily={waterlily} clickable={clickable} />
+        <MosquitoToken mosquito={mosquito} waterlily={waterlily} clickable={clickable} selected={selected} />
     </Draggable>
 }
 

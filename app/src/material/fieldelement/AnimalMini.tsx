@@ -65,7 +65,7 @@ const style = (player: PlayerColor, animal: Animal) => css`
   border-radius: 50%;
   background-image: url(${animalImage(player, animal)});
   background-size: cover;
-  filter: drop-shad ow(0 0 0.2em black) drop-shadow(0 0 0.2em black) drop-shadow(0 0 0.2em black);
+  filter: drop-shadow(0 0 0.2em black) drop-shadow(0 0 0.2em black) drop-shadow(0 0 0.2em black);
 `
 
 function animalImage(player: PlayerColor, animal: Animal) {

@@ -9,13 +9,14 @@ type Props = {
   mosquito?: Mosquito
   waterlily?: Waterlily
   clickable: boolean
+  selected: boolean
 } & HTMLAttributes<HTMLDivElement>
 
-export default function MosquitoToken({ mosquito, waterlily, clickable, ...props }: Props) {
+export default function MosquitoToken({ mosquito, waterlily, clickable, selected, ...props }: Props) {
   return <div css={[style,
     mosquito ? frontFace(mosquito) : flip,
     waterlily && backFace(waterlily),
-    clickable && glow
+    selected ? selectedToken : clickable && glow
   ]} {...props} />
 }
 
@@ -64,7 +65,7 @@ const backFace = (waterlily: Waterlily) => css`
     top: 0;
     left: 0;
     border-radius: 50%;
-    box-shadow: 0 0 0.3em black, 0 0 0.3em black, 0 0 0.3em black;
+    box-shadow: 0 0 0.4em black, 0 0 0.4em black, 0 0 0.4em black;
     background-image: url(${waterlilyImage[waterlily]});
     background-size: cover;
     backface-visibility: hidden;
@@ -75,13 +76,18 @@ const backFace = (waterlily: Waterlily) => css`
 const flip = css`
   transform: rotateY(180deg);
 `
+const selectedToken = css`
+  &:before, &:after {
+    box-shadow: 0 0 0.4em white, 0 0 0.4em white, 0 0 0.4em white;
+  }
+`
 
 const glowKeyframes = keyframes`
   from {
-    box-shadow: 0 0 0.3em white, 0 0 0.3em white, 0 0 0.3em white;
+    box-shadow: 0 0 0.4em white, 0 0 0.4em white, 0 0 0.4em white;
   }
   to {
-    box-shadow: 0 0 0.6em white, 0 0 0.6em white, 0 0 0.6em white, 0 0 0.6em white, 0 0 0.6em white;
+    box-shadow: 0 0 0.8em white, 0 0 0.8em white, 0 0 0.8em white, 0 0 0.8em white, 0 0 0.8em white;
   }
 `
 
