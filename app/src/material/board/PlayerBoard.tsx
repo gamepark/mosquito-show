@@ -12,6 +12,7 @@ import LocalGameView from 'src/LocalGameView'
 import { eatenMosquitoPostionTop, goldenMosquitoPositionLeft, goldenMosquitoPositionTop, headerHeight, margin, mosquitoTokenSize, playerBoardDelta, playerboardSize, playerboardTokenBoarderMargin, playerboardTokenDelta, playerColorBlue, playerColorOrange } from '../../styles'
 import MosquitoToken from '../fieldelement/MosquitoToken'
 import Button from '../util/Button'
+import { MosquitoAvatar } from './MosquitoAvatar'
 
 type PlayerBoardProps = {
   game: LocalGameView
@@ -33,6 +34,9 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
   }
 
   return <div css={outbox(playerstate.color, game.activePlayer)} {...props}>
+    {
+      <MosquitoAvatar player={getActivePlayerState(game)} playerInfo={1} color={getActivePlayerState(game)?.color}></MosquitoAvatar>
+    }
     {
       [...Array(playerstate.goldenMosquitos)].map((_, index) =>
         <MosquitoToken key={index} mosquito={Mosquito.Golden} clickable={false} selected={false} css={goldenMosquitoPosition(index)}>
