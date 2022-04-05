@@ -21,13 +21,13 @@ const MosquitoAvatar: FC<MosquitoAvatarProps> = ({player, playerInfo, color,  ..
 }
 
 const autoHeight = css`
-    height: auto !important;
+    height: 10em;
 `
 
 export {
     MosquitoAvatar
 }
-//direction: speechBubbleDirection}
+
 
 const playerDefaultImages = new Map<PlayerColor, any>();
 playerDefaultImages.set(PlayerColor.Blue, Images.blueToucan);
