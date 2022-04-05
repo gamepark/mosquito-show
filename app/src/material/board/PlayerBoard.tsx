@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react'
+import Animal from '@gamepark/mosquito-show/animals/Animal'
 import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
 import { chooseMosquitoEffectMove, DiscardTokenFromPlayerBoard, isDiscardTokenFromPlayerBoardMove, skipTurnMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
-import { canMoveAnimal } from '@gamepark/mosquito-show/utils/AnimalUtils'
+import { canMoveAnimal, canMoveAnimalOfPlayer } from '@gamepark/mosquito-show/utils/AnimalUtils'
 import { getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
 import { useAnimation, usePlay, usePlayerId } from '@gamepark/react-client'
 import { HTMLAttributes } from 'react'
@@ -19,12 +20,30 @@ type PlayerBoardProps = {
   playerIndex: number
 } & HTMLAttributes<HTMLDivElement>
 
+const { Toucan, Chameleon } = Animal;
+
 export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoardProps) {
   const play = usePlay()
   const playerId = usePlayerId()
   const { t } = useTranslation()
   const playerstate = game.players[playerIndex]
   const discardTokenFromPlayerBoardAnimation = useAnimation<DiscardTokenFromPlayerBoard>(animation => isDiscardTokenFromPlayerBoardMove(animation.move))
+  
+
+
+  const whoIsLoser = () => {
+    for (const player of game.players) {
+      if (player.goldenMosquitos >= 9) {
+        return player.color === PlayerColor.Blue ? PlayerColor.Orange : PlayerColor.Blue
+      } else if (!canMoveAnimalOfPlayer(game, Toucan, player) && !canMoveAnimalOfPlayer(game, Chameleon, player)) {
+        return player.color
+      }
+    }
+    return undefined
+  }
+
+  const isWinner = whoIsLoser !== undefined && whoIsLoser() !== playerstate.color
+  const isLoser = whoIsLoser !== undefined && whoIsLoser() === playerstate.color
 
   const onClick = (eatenMosquitoIndex: number) => {
     if (getActivePlayerState(game) !== undefined && getActivePlayerState(game)!.selectedMosquitoIndex === undefined && !getActivePlayerState(game)!.chameleonMustMove) {
@@ -33,7 +52,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
     return undefined
   }
 
-  return <div css={(playerstate.color == getActivePlayerState(game)?.color) ? showActivePlayer(playerstate.color, game.activePlayer) :  outbox(playerstate.color, game.activePlayer)} {...props}>
+  return <div css={(playerstate.color == getActivePlayerState(game)?.color) ? showActivePlayer(playerstate.color, game.activePlayer, isWinner, isLoser) :  outbox(playerstate.color, game.activePlayer, isWinner, isLoser)} {...props}>
     {  
       <MosquitoAvatar player={playerstate} playerInfo={1} color={playerstate.color}></MosquitoAvatar>
     }
@@ -108,7 +127,7 @@ const eatenMosquitoPosition = (index: number) => css`
   left: ${playerboardTokenBoarderMargin + index * mosquitoTokenSize + index * playerboardTokenDelta}em;
 `
 
-const outbox = (player: PlayerColor, activePlayer?: PlayerColor) => css`
+const outbox = (player: PlayerColor, activePlayer?: PlayerColor, winner?: boolean, isLoser?: boolean) => css`
   position: absolute;
   top: ${headerHeight + margin}em;
   left: ${(player === PlayerColor.Blue ? 1 : 1 + playerBoardDelta)}em;
@@ -116,9 +135,11 @@ const outbox = (player: PlayerColor, activePlayer?: PlayerColor) => css`
   width: ${playerboardSize}em;
   border-style: ${player === activePlayer ? 'dashed' : 'solid'};
   border-color: ${(player === PlayerColor.Blue ? playerColorBlue : playerColorOrange)};
+  opacity:  ${isLoser? '.1' : '1'};
+  filter: ${(winner !== undefined ? 'brightness(1.25)': 'brightness(1)')};
 `
 
-const showActivePlayer = (player: PlayerColor, activePlayer?: PlayerColor) => css`
+const showActivePlayer = (player: PlayerColor, activePlayer?: PlayerColor, winner?: boolean, isLoser?: boolean) => css`
   position: absolute;
   top: ${headerHeight + margin}em;
   left: ${(player === PlayerColor.Blue ? 1 : 1 + playerBoardDelta)}em;
@@ -127,4 +148,6 @@ const showActivePlayer = (player: PlayerColor, activePlayer?: PlayerColor) => cs
   border-style: ${player === activePlayer ? 'dashed' : 'solid'};
   border-color: ${(player === PlayerColor.Blue ? playerColorBlue : playerColorOrange)};
   background-color: rgba(0, 0, 0, 0.5);
+  opacity:  ${isLoser? '.1' : '1'};
+  filter: ${(winner !== undefined ? 'brightness(1.25)': 'brightness(1)')};
 `

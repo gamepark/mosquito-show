@@ -14,13 +14,13 @@ type MosquitoAvatarProps = {
 
 const MosquitoAvatar: FC<MosquitoAvatarProps> = ({player, playerInfo, color,  ...props}) => {
     if (playerInfo?.avatar) {
-        return <Avatar playerId={player!.color} speechBubbleProps={{direction: SpeechBubbleDirection.TOP_LEFT}} {...props}/>
+        return <Avatar playerId={player!.color} speechBubbleProps={{direction: SpeechBubbleDirection.TOP_RIGHT}} {...props}/>
     } else {
-        return <Picture alt={'Player board'} src={playerDefaultImages.get(color || player!.color)} {...props} css={autoHeight}/>
+        return <Picture alt={'Player board'} src={playerDefaultImages.get(color || player!.color)} {...props} css={avatarSize}/>
     }
 }
 
-const autoHeight = css`
+const avatarSize = css`
     height: 10em;
 `
 
