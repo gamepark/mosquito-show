@@ -33,7 +33,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
     return undefined
   }
 
-  return <div css={outbox(playerstate.color, game.activePlayer)} {...props}>
+  return <div css={(playerstate.color == getActivePlayerState(game)?.color) ? showActivePlayer(playerstate.color, game.activePlayer) :  outbox(playerstate.color, game.activePlayer)} {...props}>
     {  
       <MosquitoAvatar player={playerstate} playerInfo={1} color={playerstate.color}></MosquitoAvatar>
     }
@@ -116,4 +116,15 @@ const outbox = (player: PlayerColor, activePlayer?: PlayerColor) => css`
   width: ${playerboardSize}em;
   border-style: ${player === activePlayer ? 'dashed' : 'solid'};
   border-color: ${(player === PlayerColor.Blue ? playerColorBlue : playerColorOrange)};
+`
+
+const showActivePlayer = (player: PlayerColor, activePlayer?: PlayerColor) => css`
+  position: absolute;
+  top: ${headerHeight + margin}em;
+  left: ${(player === PlayerColor.Blue ? 1 : 1 + playerBoardDelta)}em;
+  height: 45em;
+  width: ${playerboardSize}em;
+  border-style: ${player === activePlayer ? 'dashed' : 'solid'};
+  border-color: ${(player === PlayerColor.Blue ? playerColorBlue : playerColorOrange)};
+  background-color: rgba(0, 0, 0, 0.5);
 `
