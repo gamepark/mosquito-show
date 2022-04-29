@@ -28,7 +28,6 @@ export default function PondSpace({ game, x, y }: Props) {
   const play = usePlay()
   const canEat = useMemo(() => playerId && chameleonCanEat(game, x, y), [game])
   const mosquitos = game.mosquitos[x][y]
-  const isPondSpaceEmpty = getSelectedMosquito(game) == Mosquito.Grey && mosquitos.length == 0
   const moveMosquitoTokenAnimation = useAnimation<MoveMosquitoToken>(animation => isMoveMosquitoTokenMove(animation.move)
     && animation.move.origin.x === x
     && animation.move.origin.y === y)
@@ -42,7 +41,7 @@ export default function PondSpace({ game, x, y }: Props) {
     && animation.move.x === x
     && animation.move.y === y)
 
-  const [, ref] = useDrop({
+  const [{ canDrop, isOver }, ref] = useDrop({
     accept: MOSQUITO_TOKEN,
     canDrop: (item: MosquitoTokenDragObject) => item.x !== x || item.y !== y,
     collect: (monitor: DropTargetMonitor<MosquitoTokenDragObject>) => ({
@@ -87,8 +86,7 @@ export default function PondSpace({ game, x, y }: Props) {
     <div onClick={onPondSpaceClick}
       ref={ref}
       css={[style(x, y),
-      isPondSpaceEmpty && emptyPondSpace,
-      isPondSpaceEmpty && game.selectedPondSpace && glow]}>
+      (onPondSpaceClick || canDrop) && !isOver && display, canDrop && isOver && overStyle]}>
       {mosquitos.map((mosquitoOnBoard, index) =>
         index === mosquitos.length - 1 && getSelectedMosquito(game) == Mosquito.Grey ?
           <DraggableMosquitoToken key={index} mosquito={mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily} clickable={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard) !== undefined} selected={game.selectedPondSpace !== undefined && game.selectedPondSpace!.x === x && game.selectedPondSpace!.y === y} css={[tokenPosition(index), moveMosquitoTokenAnimation && index === mosquitos.length - 1
@@ -187,9 +185,11 @@ const style = (x: number, y: number) => css`
   position: absolute;
   left: ${x * jungleSpaceDelta + 17}em;
   top: ${y * jungleSpaceDelta + 16.5}em;
-  width: ${mosquitoTokenSize}em;
-  height: ${mosquitoTokenSize}em;
+  width: ${mosquitoTokenSize + 3}em;
+  height: ${mosquitoTokenSize + 3}em;
   border-radius: 50%;
+  border: 0.5em solid white;
+  opacity: 0;
 `
 
 const tokenPosition = (index: number) => css`
@@ -197,30 +197,26 @@ const tokenPosition = (index: number) => css`
   left: ${index * 0.4}em;
 `
 
-const emptyPondSpace = css`
-  &:before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    border-radius: 50%;
-  }
+const overStyle = css`
+  border-color: green;
+  opacity: 1;
 `
 
-const glowKeyframes = keyframes`
+const glow = keyframes`
   from {
-    box-shadow: 0 0 0.3em white, 0 0 0.3em white, 0 0 0.3em white;
+    opacity: 0.1;
   }
   to {
-    box-shadow: 0 0 0.6em white, 0 0 0.6em white, 0 0 0.6em white, 0 0 0.6em white, 0 0 0.6em white;
+    opacity: 0.3;
   }
 `
 
-const glow = css`
+const display = css`
   cursor: pointer;
-  &:before, &:after {
-    animation: ${glowKeyframes} 2s infinite alternate ease-in-out;
+  animation: ${glow} 2s alternate infinite ease-in-out;
+  &:hover {
+    border-color: green;
+    opacity: 1;
+    animation: none;
   }
 `
