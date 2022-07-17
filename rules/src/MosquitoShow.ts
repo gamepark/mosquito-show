@@ -160,22 +160,23 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     endOfTurn(this.state)
   }
 
-  getAutomaticMove(): void | Move {
+  getAutomaticMoves(): Move[] {
     const activePlayer = this.state.players.find(player => player.color === this.state.activePlayer)
-    if (!activePlayer) return
+    if (!activePlayer) return []
     if (activePlayer.pendingToucanEat.length) {
       const { y, x } = activePlayer.pendingToucanEat[0]
-      return eatMove(tokenForcedToReveal(this.state, x, y), x, y)
+      return [eatMove(tokenForcedToReveal(this.state, x, y), x, y)]
     } else if (this.state.handleMosquitoEffectOver) {
-      return discardTokenFromPlayerBoardMove()
+      return [discardTokenFromPlayerBoardMove()]
     } else if (this.state.turnOver) {
-      return changeActivePlayerMove()
+      return [changeActivePlayerMove()]
     } else if (!activePlayer.eatenMosquitos.length && !activePlayer.chameleonMustMove) {
       const mosquito = mosquitoToReveal(this.state)
       if (mosquito) {
-        return revealMosquitoMove(mosquito.x, mosquito.y)
+        return [revealMosquitoMove(mosquito.x, mosquito.y)]
       }
     }
+    return []
   }
 
   getView(): GameView {

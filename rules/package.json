@@ -16,11 +16,14 @@
     "build": "tsc",
     "prepublishOnly": "tsc"
   },
-  "dependencies": {
+  "peerDependencies": {
+    "@gamepark/rules-api": "^5.14.0",
     "lodash.shuffle": "^4.2.0"
   },
   "devDependencies": {
-    "@gamepark/rules-api": "~5.8.2",
-    "i18next": "^21.6.10"
+    "@gamepark/rules-api": "~5.14.0",
+    "@types/lodash.shuffle": "^4.2.7",
+    "i18next": "^21.6.10",
+    "lodash.shuffle": "^4.2.0"
   }
 }
