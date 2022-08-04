@@ -24,7 +24,7 @@ const style = css`
   position: absolute;
   width: ${mosquitoTokenSize}em;
   height: ${mosquitoTokenSize}em;
-  transform-style: preserve-3d;
+  transform-style: preserve-3d;ss
 `
 
 const mosquitoImage: { [key in Mosquito]: string } = {

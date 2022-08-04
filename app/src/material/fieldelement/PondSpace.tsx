@@ -85,12 +85,14 @@ export default function PondSpace({ game, x, y }: Props) {
   return (
     <div onClick={onPondSpaceClick}
       ref={ref}
-      css={[style(x, y),
-      (onPondSpaceClick || canDrop) && !isOver && display, canDrop && isOver && overStyle]}>
+      css={[position(x, y)]}>
+        <div css={[style(x, y),(onPondSpaceClick || canDrop) && !isOver && display, canDrop && isOver && overStyle]}/>
       {mosquitos.map((mosquitoOnBoard, index) =>
         index === mosquitos.length - 1 && getSelectedMosquito(game) == Mosquito.Grey ?
           <DraggableMosquitoToken key={index} mosquito={mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily} clickable={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard) !== undefined} selected={game.selectedPondSpace !== undefined && game.selectedPondSpace!.x === x && game.selectedPondSpace!.y === y} css={[tokenPosition(index), moveMosquitoTokenAnimation && index === mosquitos.length - 1
-            && moveMosquitoTokenAnimationTranslation(moveMosquitoTokenAnimation.duration, moveMosquitoTokenAnimation.move.origin, moveMosquitoTokenAnimation.move.destination, false, game.mosquitos[moveMosquitoTokenAnimation.move.destination.x][moveMosquitoTokenAnimation.move.destination.y].length - game.mosquitos[moveMosquitoTokenAnimation.move.origin.x][moveMosquitoTokenAnimation.move.origin.y].length)]} x={x} y={y} onClick={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard)} /> :
+            && moveMosquitoTokenAnimationTranslation(moveMosquitoTokenAnimation.duration, moveMosquitoTokenAnimation.move.origin, moveMosquitoTokenAnimation.move.destination, false, game.mosquitos[moveMosquitoTokenAnimation.move.destination.x][moveMosquitoTokenAnimation.move.destination.y].length - game.mosquitos[moveMosquitoTokenAnimation.move.origin.x][moveMosquitoTokenAnimation.move.origin.y].length)]} x={x} y={y} onClick={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard)}>
+              { (index : number) => { if(index === 0){<div css={[style(x, y),(onPondSpaceClick || canDrop) && !isOver && display, canDrop && isOver && overStyle]}/> }}}
+            </DraggableMosquitoToken> :
           <MosquitoToken key={index} mosquito={(eatAnimation && index === mosquitos.length - 1 && mosquitoOnBoard.mosquito === undefined) ? eatAnimation.move.mosquito : (revealMosquitoAnimation && index === mosquitos.length - 1 && mosquitoOnBoard.mosquito === undefined) ? revealMosquitoAnimation.move.mosquito : mosquitoOnBoard.mosquito} waterlily={mosquitoOnBoard.waterlily} clickable={onMosquitoTokenClick(mosquitos.length === index + 1, mosquitoOnBoard) !== undefined} selected={false}
             css={[tokenPosition(index),
             discardTokenFromBoardAnimation && index === mosquitos.length - 1
@@ -181,15 +183,22 @@ const moveMosquitoTokenAnimationTranslation = (duration: number, origin: Coordin
   transform: translate(${(destination.x - origin.x) * jungleSpaceDelta + (indexDelta * 0.4)}em, ${(destination.y - origin.y) * jungleSpaceDelta - (indexDelta * 0.4)}em) rotateY(${hidden ? 180 : 0}deg);
 `
 
-const style = (x: number, y: number) => css`
+const position = (x: number, y: number) => css`
   position: absolute;
   left: ${x * jungleSpaceDelta + 17}em;
   top: ${y * jungleSpaceDelta + 16.5}em;
   width: ${mosquitoTokenSize + 3}em;
   height: ${mosquitoTokenSize + 3}em;
   border-radius: 50%;
+  opacity: 1;
+`
+
+const style = (x: number, y: number) => css`
+  width: ${mosquitoTokenSize + 3}em;
+  height: ${mosquitoTokenSize + 3}em;
+  border-radius: 50%;
   border: 0.5em solid white;
-  opacity: 0;
+  opacity: 1;
 `
 
 const tokenPosition = (index: number) => css`
@@ -207,7 +216,7 @@ const glow = keyframes`
     opacity: 0.1;
   }
   to {
-    opacity: 0.3;
+    opacity: 0.5;
   }
 `
 
