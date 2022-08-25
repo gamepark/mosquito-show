@@ -6,7 +6,7 @@ import { moveAnimalMove } from '@gamepark/mosquito-show/moves'
 import { HTMLAttributes } from 'react'
 import { DropTargetMonitor, useDrop } from 'react-dnd'
 import LocalGameView from 'src/LocalGameView'
-import { jungleSpaceDelta } from '../../styles'
+import { highlightColorGreen, highlightColorWhite, jungleSpaceDelta } from '../../styles'
 import { ANIMAL, AnimalDragObject } from '../fieldelement/AnimalMini'
 
 type Props = Coordinates & {
@@ -36,21 +36,19 @@ const style = (x: number, y: number) => css`
   width: 16em;
   height: 16em;
   border-radius: 50%;
-  border: 0.5em solid white;
-  opacity: 0;
+  border: 0.5em solid rgba(${highlightColorWhite}, 0);
 `
 
 const overStyle = css`
-  border-color: green;
-  opacity: 1;
+  border-color: rgba(${highlightColorGreen}, 1);
 `
 
 const glow = keyframes`
   from {
-    opacity: 0.1;
+    border-color: rgba(${highlightColorWhite}, .3);
   }
   to {
-    opacity: 0.3;
+    border-color: rgba(${highlightColorWhite}, .6);
   }
 `
 
@@ -58,8 +56,7 @@ const display = css`
   cursor: pointer;
   animation: ${glow} 2s alternate infinite ease-in-out;
   &:hover {
-    border-color: green;
-    opacity: 1;
+    border-color: rgba(${highlightColorGreen}, 1);
     animation: none;
   }
 `

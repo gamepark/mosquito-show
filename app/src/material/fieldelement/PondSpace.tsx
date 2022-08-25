@@ -13,7 +13,7 @@ import { useAnimation, usePlay, usePlayerId } from '@gamepark/react-client'
 import { useMemo } from 'react'
 import { DropTargetMonitor, useDrop } from 'react-dnd'
 import LocalGameView from '../../LocalGameView'
-import { boardSize, eatenMosquitoPostionTop, goldenMosquitoPositionLeft, goldenMosquitoPositionTop, jungleSpaceDelta, mosquitoTokenSize, playerBoardDelta, playerboardSize, playerboardTokenBoarderMargin, playerboardTokenDelta } from '../../styles'
+import { boardSize, eatenMosquitoPostionTop, goldenMosquitoPositionLeft, goldenMosquitoPositionTop, highlightColorGreen, highlightColorWhite, jungleSpaceDelta, mosquitoTokenSize, playerBoardDelta, playerboardSize, playerboardTokenBoarderMargin, playerboardTokenDelta } from '../../styles'
 import DraggableMosquitoToken, { MosquitoTokenDragObject, MOSQUITO_TOKEN } from './DraggableMosquitoToken'
 import MosquitoToken from './MosquitoToken'
 
@@ -83,10 +83,11 @@ export default function PondSpace({ game, x, y }: Props) {
   return (
     <div
       ref={ref}
-      css={[position(x, y)]}>
-      <div
+      onClick={onMosquitoTokenClick(mosquitos.length > 0, mosquitos[mosquitos.length - 1])}
+      css={[position(x, y), (onMosquitoTokenClick(mosquitos.length > 0, mosquitos[mosquitos.length - 1]) || canDrop) && !isOver && display, canDrop && isOver && overStyle]}>
+      {/* <div
         onClick={onMosquitoTokenClick(mosquitos.length > 0, mosquitos[mosquitos.length - 1])}
-        css={[style(x, y), (onMosquitoTokenClick(mosquitos.length > 0, mosquitos[mosquitos.length - 1]) || canDrop) && !isOver && display, canDrop && isOver && overStyle]} />
+        css={[style(x, y), (onMosquitoTokenClick(mosquitos.length > 0, mosquitos[mosquitos.length - 1]) || canDrop) && !isOver && display, canDrop && isOver && overStyle]} /> */}
       {mosquitos.map((mosquitoOnBoard, index) =>
         index === mosquitos.length - 1 && getSelectedMosquito(game) === Mosquito.Grey ?
           <DraggableMosquitoToken
@@ -191,36 +192,24 @@ const position = (x: number, y: number) => css`
   width: ${mosquitoTokenSize + 3}em;
   height: ${mosquitoTokenSize + 3}em;
   border-radius: 50%;
+  border: 0.5em solid rgba(${highlightColorWhite}, 0);
   opacity: 1;
 `
-
-const style = (x: number, y: number) => css`
-  position: absolute;
-  width: ${mosquitoTokenSize + 3}em;
-  height: ${mosquitoTokenSize + 3}em;
-  left: -1.5em;
-  top: -1.5em;
-  border-radius: 50%;
-  border: 0.5em solid white;
-  opacity: 0;
-`
-
 const tokenPosition = (index: number) => css`
   top: ${index * -0.4}em;
   left: ${index * 0.4}em;
 `
 
 const overStyle = css`
-  border-color: green;
-  opacity: 1;
+  border-color: rgba(${highlightColorGreen}, 1);
 `
 
 const glow = keyframes`
   from {
-    opacity: 0.1;
+    border-color: rgba(${highlightColorWhite}, .3);
   }
   to {
-    opacity: 0.5;
+    border-color: rgba(${highlightColorWhite}, .6);
   }
 `
 
@@ -228,8 +217,7 @@ const display = css`
   cursor: pointer;
   animation: ${glow} 2s alternate infinite ease-in-out;
   &:hover {
-    border-color: green;
-    opacity: 1;
+    border-color: rgba(${highlightColorGreen}, 1);
     animation: none;
   }
 `

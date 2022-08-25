@@ -16,3 +16,5 @@ export const jungleSpaceDelta = 23.2
 export const playerColorBlue = '#3e7ad4'
 export const playerColorOrange = '#eb6d41'
 export const playerColorLoser = '#D3D3D3'
+export const highlightColorGreen = '0, 130, 0'
+export const highlightColorWhite = '255, 255, 255'
