@@ -13,6 +13,7 @@ export const animalHeight = 20
 export const animalRatio = 2480 / 3508
 export const animalWidth = animalHeight * animalRatio
 export const jungleSpaceDelta = 23.2
+export const pondSpaceDelta = 23.6
 export const playerColorBlue = '#3e7ad4'
 export const playerColorOrange = '#eb6d41'
 export const playerColorLoser = '#D3D3D3'

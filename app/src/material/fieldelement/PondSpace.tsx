@@ -13,7 +13,7 @@ import { useAnimation, usePlay, usePlayerId } from '@gamepark/react-client'
 import { useMemo } from 'react'
 import { DropTargetMonitor, useDrop } from 'react-dnd'
 import LocalGameView from '../../LocalGameView'
-import { boardSize, eatenMosquitoPostionTop, goldenMosquitoPositionLeft, goldenMosquitoPositionTop, highlightColorGreen, highlightColorWhite, jungleSpaceDelta, mosquitoTokenSize, playerBoardDelta, playerboardSize, playerboardTokenBoarderMargin, playerboardTokenDelta } from '../../styles'
+import { boardSize, eatenMosquitoPostionTop, goldenMosquitoPositionLeft, goldenMosquitoPositionTop, highlightColorGreen, highlightColorWhite, mosquitoTokenSize, playerBoardDelta, playerboardSize, playerboardTokenBoarderMargin, playerboardTokenDelta, pondSpaceDelta } from '../../styles'
 import DraggableMosquitoToken, { MosquitoTokenDragObject, MOSQUITO_TOKEN } from './DraggableMosquitoToken'
 import MosquitoToken from './MosquitoToken'
 
@@ -132,7 +132,7 @@ from{
   transform: translate(${0 + (index * 0.4)}em, ${0 - (index * 0.4)}em) rotateY(${hidden ? 0 : 0}deg);
 }
 to{
-  transform: translate(${(playerState.color === PlayerColor.Blue ? (1 + (playerboardTokenBoarderMargin + currentPosition * mosquitoTokenSize + currentPosition * playerboardTokenDelta)) : (playerBoardDelta + (1 + (playerboardTokenBoarderMargin + currentPosition * mosquitoTokenSize + currentPosition * playerboardTokenDelta)))) - (x * jungleSpaceDelta + 17) - playerboardSize - 1}em, ${eatenMosquitoPostionTop - (y * jungleSpaceDelta + 16.5) + (index * 0.4)}em) rotateY(${hidden ? 0 : 0}deg);
+  transform: translate(${(playerState.color === PlayerColor.Blue ? (-1 + (playerboardTokenBoarderMargin + currentPosition * mosquitoTokenSize + currentPosition * playerboardTokenDelta)) : (playerBoardDelta + (-1 + (playerboardTokenBoarderMargin + currentPosition * mosquitoTokenSize + currentPosition * playerboardTokenDelta)))) - (x * pondSpaceDelta + 15) - playerboardSize - 1}em, ${eatenMosquitoPostionTop - (y * pondSpaceDelta + 14.5) + (index * 0.4) - 1.2}em) rotateY(${hidden ? 0 : 0}deg);
 }
 `
 
@@ -150,7 +150,7 @@ from{
   transform: translate(${0 + (index * 0.4)}em, ${0 - (index * 0.4)}em) rotateY(${hidden ? 0 : 0}deg);
 }
 to{
-  transform: translate(${(playerState.color === PlayerColor.Blue ? 1 + (1 + ((playerState.goldenMosquitos + 1) * goldenMosquitoPositionLeft)) : 1 + (playerBoardDelta + 1 + ((playerState.goldenMosquitos + 1) * goldenMosquitoPositionLeft))) - (x * jungleSpaceDelta + 17) - playerboardSize - mosquitoTokenSize / 2}em, ${goldenMosquitoPositionTop - (y * jungleSpaceDelta + 16.5) + (index * 0.4)}em) rotateY(${hidden ? 0 : 0}deg);
+  transform: translate(${(playerState.color === PlayerColor.Blue ? -1 + (1 + ((playerState.goldenMosquitos + 1) * goldenMosquitoPositionLeft)) : -1 + (playerBoardDelta + 1 + ((playerState.goldenMosquitos + 1) * goldenMosquitoPositionLeft))) - (x * pondSpaceDelta + 15) - playerboardSize - mosquitoTokenSize / 2}em, ${goldenMosquitoPositionTop - (y * pondSpaceDelta + 14.5) + (index * 0.4) - 1.2}em) rotateY(${hidden ? 0 : 0}deg);
 }
 `
 
@@ -166,7 +166,7 @@ from{
   transform: translate(${0 + (index * 0.4)}em, ${0 - (index * 0.4)}em) rotateY(${hidden ? 180 : 0}deg);
 }
 to{
-  transform: translate(${(player === Blue ? ((1 - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)) : (((1 + (100 * 16 / 9 - boardSize) / 2 + boardSize) - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * jungleSpaceDelta + 17)))}em, ${50 - (y * jungleSpaceDelta + 16.5)}em) rotateY(${hidden ? 180 : 0}deg);
+  transform: translate(${(player === Blue ? ((1 - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * pondSpaceDelta + 15)) : (((1 + (100 * 16 / 9 - boardSize) / 2 + boardSize) - playerboardSize / 2 - mosquitoTokenSize / 2) - (x * pondSpaceDelta + 15)))}em, ${50 - (y * pondSpaceDelta + 14.5)}em) rotateY(${hidden ? 180 : 0}deg);
 }
 `
 
@@ -182,22 +182,22 @@ to{
 const moveMosquitoTokenAnimationTranslation = (duration: number, origin: Coordinates, destination: Coordinates, hidden: boolean, indexDelta: number) => css`
   z-index:10;
   transition: transform ${duration}s ease-in-out;
-  transform: translate(${(destination.x - origin.x) * jungleSpaceDelta + (indexDelta * 0.4)}em, ${(destination.y - origin.y) * jungleSpaceDelta - (indexDelta * 0.4)}em) rotateY(${hidden ? 180 : 0}deg);
+  transform: translate(${(destination.x - origin.x) * pondSpaceDelta + (indexDelta * 0.4)}em, ${(destination.y - origin.y) * pondSpaceDelta - (indexDelta * 0.4)}em) rotateY(${hidden ? 180 : 0}deg);
 `
 
 const position = (x: number, y: number) => css`
   position: absolute;
-  left: ${x * jungleSpaceDelta + 17}em;
-  top: ${y * jungleSpaceDelta + 16.5}em;
-  width: ${mosquitoTokenSize + 3}em;
-  height: ${mosquitoTokenSize + 3}em;
+  left: ${x * pondSpaceDelta + 15}em;
+  top: ${y * pondSpaceDelta + 14.5}em;
+  width: ${mosquitoTokenSize + 3.7}em;
+  height: ${mosquitoTokenSize + 3.7}em;
   border-radius: 50%;
   border: 0.5em solid rgba(${highlightColorWhite}, 0);
   opacity: 1;
 `
 const tokenPosition = (index: number) => css`
-  top: ${index * -0.4}em;
-  left: ${index * 0.4}em;
+  top: ${(index * -0.4) + 1.2}em;
+  left: ${(index * 0.4) + 1.2}em;
 `
 
 const overStyle = css`
