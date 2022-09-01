@@ -24,7 +24,7 @@ export default class MosquitoShowView implements Game<LocalGameView, Move>, Undo
   play(move: MoveView): void {
     switch (move.type) {
       case MoveType.SelectAnimal:
-        if (canSelect(this.state)) {
+        if (canSelect(this.state, move.animal)) {
           if (getActivePlayerState(this.state)?.animalForcedToMove) {
             this.state.selectedAnimal = getActivePlayerState(this.state)!.animalForcedToMove
           } else {
