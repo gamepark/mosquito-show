@@ -6,7 +6,7 @@ import { chooseMosquitoEffectMove, DiscardTokenFromPlayerBoard, isDiscardTokenFr
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import { canMoveAnimal, canMoveAnimalOfPlayer } from '@gamepark/mosquito-show/utils/AnimalUtils'
 import { getActivePlayerState, isOver } from '@gamepark/mosquito-show/utils/GameUtils'
-import { useAnimation, usePlay, usePlayerId } from '@gamepark/react-client'
+import { useAnimation, usePlay, usePlayer, usePlayerId } from '@gamepark/react-client'
 import { HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
 import LocalGameView from 'src/LocalGameView'
@@ -23,12 +23,13 @@ type PlayerBoardProps = {
 const { Toucan, Chameleon } = Animal;
 
 export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoardProps) {
+  const playerstate = game.players[playerIndex]
   const play = usePlay()
   const playerId = usePlayerId()
+  const playerInfo = usePlayer(playerstate.color)
   const { t } = useTranslation()
-  const playerstate = game.players[playerIndex]
   const discardTokenFromPlayerBoardAnimation = useAnimation<DiscardTokenFromPlayerBoard>(animation => isDiscardTokenFromPlayerBoardMove(animation.move))
-  
+
 
 
   const whoIsLoser = () => {
@@ -52,9 +53,9 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
     return undefined
   }
 
-  return <div css={(playerstate.color == getActivePlayerState(game)?.color) ? showActivePlayer(playerstate.color, game.activePlayer, isWinner, isLoser) :  outbox(playerstate.color, game.activePlayer, isWinner, isLoser)} {...props}>
-    {  
-      <MosquitoAvatar player={playerstate} playerInfo={1} color={playerstate.color}></MosquitoAvatar>
+  return <div css={(playerstate.color == getActivePlayerState(game)?.color) ? showActivePlayer(playerstate.color, game.activePlayer, isWinner, isLoser) : outbox(playerstate.color, game.activePlayer, isWinner, isLoser)} {...props}>
+    {
+      <MosquitoAvatar player={playerstate} playerInfo={playerInfo} color={playerstate.color}></MosquitoAvatar>
     }
     {
       [...Array(playerstate.goldenMosquitos)].map((_, index) =>
@@ -127,7 +128,7 @@ const eatenMosquitoPosition = (index: number) => css`
   left: ${playerboardTokenBoarderMargin + index * mosquitoTokenSize + index * playerboardTokenDelta}em;
 `
 
-const outbox = (player: PlayerColor, activePlayer?:PlayerColor, winner?: boolean, isLoser?: boolean) => css`
+const outbox = (player: PlayerColor, activePlayer?: PlayerColor, winner?: boolean, isLoser?: boolean) => css`
   position: absolute;
   top: ${headerHeight + margin}em;
   left: ${(player === PlayerColor.Blue ? 1 : 1 + playerBoardDelta)}em;
@@ -135,8 +136,8 @@ const outbox = (player: PlayerColor, activePlayer?:PlayerColor, winner?: boolean
   width: ${playerboardSize}em;
   border-style: ${player === activePlayer ? 'dashed' : 'solid'};
   border-color: ${(player === PlayerColor.Blue ? playerColorBlue : playerColorOrange)};
-  opacity:  ${isLoser? '.1' : '1'};
-  filter: ${(winner? 'brightness(1.25)': 'brightness(1)')};
+  opacity:  ${isLoser ? '.1' : '1'};
+  filter: ${(winner ? 'brightness(1.25)' : 'brightness(1)')};
 `
 
 const showActivePlayer = (player: PlayerColor, activePlayer?: PlayerColor, winner?: boolean, isLoser?: boolean) => css`
@@ -148,6 +149,6 @@ const showActivePlayer = (player: PlayerColor, activePlayer?: PlayerColor, winne
   border-style: ${player === activePlayer ? 'dashed' : 'solid'};
   border-color: ${(player === PlayerColor.Blue ? playerColorBlue : playerColorOrange)};
   background-color: rgba(0, 0, 0, 0.5);
-  opacity:  ${isLoser? '.1' : '1'};
-  filter: ${(winner? 'brightness(1.25)': 'brightness(1)')};
+  opacity:  ${isLoser ? '.1' : '1'};
+  filter: ${(winner ? 'brightness(1.25)' : 'brightness(1)')};
 `
