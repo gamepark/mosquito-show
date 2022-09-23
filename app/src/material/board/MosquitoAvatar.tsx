@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react"
 import { getPlayerName } from "@gamepark/mosquito-show/MosquitoShowOptions"
 import PlayerColor from "@gamepark/mosquito-show/PlayerColor"
@@ -6,6 +7,7 @@ import { Avatar, PlayerTimer, SpeechBubbleDirection } from "@gamepark/react-clie
 import { Picture } from "@gamepark/react-components"
 import { FC, HTMLAttributes } from "react"
 import { useTranslation } from "react-i18next"
+import { playerboardSize, playerColorBlue, playerColorOrange } from "../../styles"
 import Images from "../Images"
 
 type MosquitoAvatarProps = {
@@ -18,27 +20,35 @@ const MosquitoAvatar: FC<MosquitoAvatarProps> = ({ player, playerInfo, color, ..
     const { t } = useTranslation()
     if (playerInfo?.avatar) {
         return (
-            <div>
-                <Avatar playerId={player!.color} speechBubbleProps={{ direction: SpeechBubbleDirection.TOP_RIGHT }} {...props} />
-                <h2 css={nameStyle}>{playerInfo?.name === undefined ? getPlayerName(player!.color, t) : playerInfo?.name}</h2>
+            <div css={userInfoBoard(player!.color)}>
+                <div css={nameStyle}>{playerInfo?.name === undefined ? getPlayerName(player!.color, t) : playerInfo?.name}</div>
+                <Avatar playerId={player!.color} speechBubbleProps={{ direction: SpeechBubbleDirection.TOP_RIGHT }} css={avatarSize} {...props} />
                 <PlayerTimer playerId={player!.color} css={timerStyle} />
             </div>
         )
     } else {
         return (
-            <div>
+            <div css={userInfoBoard(player!.color)}>
+                <div css={nameStyle}>{playerInfo?.name === undefined ? getPlayerName(player!.color, t) : playerInfo?.name} </div>
                 <Picture alt={'Player board'} src={playerDefaultImages.get(color || player!.color)} {...props} css={avatarSize} />
-                <h2 css={nameStyle}>{playerInfo?.name === undefined ? getPlayerName(player!.color, t) : playerInfo?.name}</h2>
                 <PlayerTimer playerId={player!.color} css={timerStyle} />
             </div>
         )
     }
 }
 
-const avatarSize = css`
-    height: 10em;
+const userInfoBoard = (color : PlayerColor) => css`
+   height: 5em;
+   width: ${playerboardSize - 0.5}em;
+   background-color: ${color == PlayerColor.Blue ? playerColorBlue : playerColorOrange} 
 `
 
+const avatarSize = css`
+   position: absolute;
+   left: ${playerboardSize - 6}em;
+   height: 4.5em;
+   width: 4.5em;
+`
 const timerStyle = css`
   position: absolute;
   top: 5em;
@@ -47,17 +57,11 @@ const timerStyle = css`
   padding-top: 0.2em;
 `
 
-const nameStyle = css`
+const nameStyle = css` 
   position: absolute;
-  top: 0.3em;
-  left: 3.1em;
-  max-width: 7.3em;
-  font-size: 2.4em;
-  margin: 0;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  font-family: 'Mulish', sans-serif;
+  top: 0.5em;
+  height: 3em;
+  font-size: 2em;
 `
 
 export {
