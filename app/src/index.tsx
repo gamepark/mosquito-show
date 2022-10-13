@@ -10,8 +10,10 @@ import Images from './material/Images'
 import mosquitoShowAnimations from './MosquitoShowAnimations'
 import MosquitoShowView from './MosquitoShowView'
 import translations from './translations.json'
+import { MosquitoShowTutorial } from './tutorial/MosquitoShowTutorial'
+import { ai } from './tutorial/TutorialAI.worker'
 
-setupTranslation(translations, {debug: false})
+setupTranslation(translations, { debug: false })
 
 const style = css`
   html {
@@ -63,10 +65,16 @@ const style = css`
 
 ReactDOM.render(
   <StrictMode>
-    <GameProvider game="MosquitoShow" Rules={MosquitoShow} RulesView={MosquitoShowView} optionsSpec={MosquitoShowOptionsSpec} animations={mosquitoShowAnimations}>
-      <App/>
+    <GameProvider game="MosquitoShow"
+      Rules={MosquitoShow}
+      RulesView={MosquitoShowView}
+      optionsSpec={MosquitoShowOptionsSpec}
+      animations={mosquitoShowAnimations}
+      tutorial={MosquitoShowTutorial}
+      ai = {ai}>
+      <App />
     </GameProvider>
-    <Global styles={[normalize, style]}/>
+    <Global styles={[normalize, style]} />
   </StrictMode>,
   document.getElementById('root')
 )
