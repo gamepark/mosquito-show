@@ -37,10 +37,10 @@ const MosquitoAvatar: FC<MosquitoAvatarProps> = ({ player, playerInfo, color, ..
     }
 }
 
-const userInfoBoard = (color : PlayerColor) => css`
+const userInfoBoard = (color: PlayerColor) => css`
    height: 5em;
    width: ${playerboardSize - 0.5}em;
-   background-color: ${color == PlayerColor.Blue ? playerColorBlue : playerColorOrange} 
+   background-color: ${color === PlayerColor.Blue ? playerColorBlue : playerColorOrange} 
 `
 
 const avatarSize = css`

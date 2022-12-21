@@ -34,7 +34,7 @@ export default function AnimalMini({ game, owner, animal }: AnimalProp) {
   const play = usePlay()
   const selected = playerId === owner.color && game.selectedAnimal === animal
   const canMove = (playerId === game.activePlayer && playerId === owner.color && canMoveAnimal(game, animal) && (getActivePlayerState(game)?.animalForcedToMove === undefined || getActivePlayerState(game)?.animalForcedToMove === animal) && getSelectedMosquito(game) !== Mosquito.Red)
-  const chooseEnemyAnimal = (getSelectedMosquito(game) === Mosquito.Red && owner.color != game.activePlayer)
+  const chooseEnemyAnimal = (getSelectedMosquito(game) === Mosquito.Red && owner.color !== game.activePlayer)
   const canSelectAnimal = canSelect(game, animal)
 
   const onClick = () => {
@@ -91,15 +91,15 @@ const animalOutsideBoard = (player: PlayerColor, animal: Animal) =>
   `translate(${(player === Orange ? boardSize + 15 : -15 - animalWidth) + (animal === Toucan ? -10 : 10)}em, 70em)`
 
 const selectedAnimal = (player: PlayerState, animal: Animal) => css`
-  filter: drop-shadow(0 0 0.2em ${player.animalForcedToMove == animal ? 'red' : 'white'}) drop-shadow(0 0 0.2em ${player.animalForcedToMove == animal ? 'red' : 'white'}) drop-shadow(0 0 0.2em ${player.animalForcedToMove == animal ? 'red' : 'white'});
+  filter: drop-shadow(0 0 0.2em ${player.animalForcedToMove === animal ? 'red' : 'white'}) drop-shadow(0 0 0.2em ${player.animalForcedToMove === animal ? 'red' : 'white'}) drop-shadow(0 0 0.2em ${player.animalForcedToMove === animal ? 'red' : 'white'});
 `
 
 const filterKeyframe = (player: PlayerState, animal: Animal) => keyframes`
   from {
-    filter: drop-shadow(0 0 0.2em ${player.animalForcedToMove == animal ? 'red' : 'white'});
+    filter: drop-shadow(0 0 0.2em ${player.animalForcedToMove === animal ? 'red' : 'white'});
   }
   to {
-    filter: drop-shadow(0 0 0.4em ${player.animalForcedToMove == animal ? 'red' : 'white'}) drop-shadow(0 0 0.4em ${player.animalForcedToMove == animal ? 'red' : 'white'});
+    filter: drop-shadow(0 0 0.4em ${player.animalForcedToMove === animal ? 'red' : 'white'}) drop-shadow(0 0 0.4em ${player.animalForcedToMove === animal ? 'red' : 'white'});
   }
 `
 

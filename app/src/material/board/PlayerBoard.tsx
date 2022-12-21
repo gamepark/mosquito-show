@@ -53,7 +53,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
     return undefined
   }
 
-  return <div css={(playerstate.color == getActivePlayerState(game)?.color) ? showActivePlayer(playerstate.color, game.activePlayer, isWinner, isLoser) : outbox(playerstate.color, game.activePlayer, isWinner, isLoser)} {...props}>
+  return <div css={(playerstate.color === getActivePlayerState(game)?.color) ? showActivePlayer(playerstate.color, game.activePlayer, isWinner, isLoser) : outbox(playerstate.color, game.activePlayer, isWinner, isLoser)} {...props}>
     {
       <MosquitoAvatar player={playerstate} playerInfo={playerInfo} color={playerstate.color}></MosquitoAvatar>
     }
@@ -73,7 +73,7 @@ export default function PlayerBoard({ game, playerIndex, ...props }: PlayerBoard
     }
 
     <span css={buttonFont}>
-      {playerstate.color == playerId && playerstate.animalForcedToMove && !canMoveAnimal(game, playerstate.animalForcedToMove) ?
+      {playerstate.color === playerId && playerstate.animalForcedToMove && !canMoveAnimal(game, playerstate.animalForcedToMove) ?
         <Button children={t('skip.turn.button')} color={playerstate.color === PlayerColor.Blue ? playerColorBlue : playerColorOrange} onClick={() => play(skipTurnMove())} css={buttonPosition} /> : undefined
       }
     </span>

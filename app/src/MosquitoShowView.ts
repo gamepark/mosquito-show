@@ -54,7 +54,7 @@ export default class MosquitoShowView implements Game<LocalGameView, Move>, Undo
         break
       case MoveType.ChooseMosquitoEffect:
         chooseMosquitoEffect(this.state, move)
-        if (getSelectedMosquitoByIndex(this.state, move.mosquitoIndex) == Mosquito.Blue) {
+        if (getSelectedMosquitoByIndex(this.state, move.mosquitoIndex) === Mosquito.Blue) {
           this.state.selectedAnimal = undefined
         }
         return

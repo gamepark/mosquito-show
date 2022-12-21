@@ -10,8 +10,6 @@ import Images from './material/Images'
 import mosquitoShowAnimations from './MosquitoShowAnimations'
 import MosquitoShowView from './MosquitoShowView'
 import translations from './translations.json'
-import { MosquitoShowTutorial } from './tutorial/MosquitoShowTutorial'
-import { ai } from './tutorial/TutorialAI.worker'
 
 setupTranslation(translations, { debug: false })
 
@@ -69,9 +67,7 @@ ReactDOM.render(
       Rules={MosquitoShow}
       RulesView={MosquitoShowView}
       optionsSpec={MosquitoShowOptionsSpec}
-      animations={mosquitoShowAnimations}
-      tutorial={MosquitoShowTutorial}
-      ai = {ai}>
+      animations={mosquitoShowAnimations}>
       <App />
     </GameProvider>
     <Global styles={[normalize, style]} />
