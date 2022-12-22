@@ -17,13 +17,8 @@ export type EatView = Eat & {
 
 export const eatMove = (revealToken: boolean, x: number, y: number): Eat => ({ type: MoveType.Eat, revealToken: revealToken, x, y })
 
-export function eat(game: GameState, move: Eat) {
-  const mosquito = game.mosquitos[move.x][move.y].pop()!.mosquito
-  takeMosquito(game, mosquito)
-}
-
-export function eatInView(game: GameView, move: EatView) {
-  const mosquito = game.mosquitos[move.x][move.y].pop()!.mosquito ?? move.mosquito!
+export function eat(game: GameState | GameView, move: Eat | EatView) {
+  const mosquito = game.mosquitos[move.x][move.y].pop()!.mosquito ?? (move as EatView).mosquito!
   takeMosquito(game, mosquito)
 }
 

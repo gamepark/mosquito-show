@@ -1,11 +1,11 @@
-import { MoveType } from "@gamepark/mosquito-show/moves";
-import { MoveView } from "@gamepark/mosquito-show/moves/MoveView";
-import PlayerColor from "@gamepark/mosquito-show/PlayerColor";
-import { Animations } from "@gamepark/react-client";
-import LocalGameView from "./LocalGameView";
+import {MoveType} from '@gamepark/mosquito-show/moves'
+import {MoveView} from '@gamepark/mosquito-show/moves/MoveView'
+import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
+import {Animations} from '@gamepark/react-client'
+import GameView from '@gamepark/mosquito-show/GameView'
 
-const mosquitoShowAnimations: Animations<LocalGameView, MoveView, PlayerColor> = {
-    getAnimationDuration(move: MoveView) {
+export default class MosquitoShowAnimations extends Animations<GameView, MoveView, PlayerColor> {
+    override getPreDuration(move: MoveView): number {
         if (move.type === MoveType.MoveAnimal) {
             return 0.5
         } else if (move.type === MoveType.MoveMosquitoToken) {
@@ -22,5 +22,3 @@ const mosquitoShowAnimations: Animations<LocalGameView, MoveView, PlayerColor> =
         return 0
     }
 }
-
-export default mosquitoShowAnimations

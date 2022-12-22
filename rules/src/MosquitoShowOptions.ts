@@ -2,6 +2,7 @@ import { OptionsSpec } from '@gamepark/rules-api'
 import { TFunction } from 'i18next'
 import GameState from './GameState'
 import PlayerColor from './PlayerColor'
+import GameView from './GameView'
 
 /**
  * This is the options for each players in the game.
@@ -19,7 +20,7 @@ export type MosquitoShowOptions = { players: MosquitoShowPlayerOptions[] }
  * @param arg GameState or Game options
  * @return true if arg is a Game options
  */
-export function isGameOptions(arg: GameState | MosquitoShowOptions): arg is MosquitoShowOptions {
+export function isGameOptions(arg: GameState | GameView | MosquitoShowOptions): arg is MosquitoShowOptions {
   return (arg as GameState).mosquitos === undefined
 }
 

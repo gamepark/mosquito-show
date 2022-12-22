@@ -1,28 +1,49 @@
-import { Action, Competitive, IncompleteInformation, SequentialGame, Undo } from '@gamepark/rules-api'
+import {Action, Competitive, IncompleteInformation, Rules, Undo} from '@gamepark/rules-api'
 import Animal from './animals/Animal'
 import Coordinates from './fields/Coordinates'
 import GameState from './GameState'
 import GameView from './GameView'
-import { Mosquito } from './material/MosquitoEffect'
-import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
-import { changeActivePlayer, changeActivePlayerMove, chooseMosquitoEffect, chooseMosquitoEffectMove, discardTokenFromBoard, discardTokenFromBoardMove, discardTokenFromPlayerBoard, discardTokenFromPlayerBoardMove, eat, eatMove, Move, moveAnimal, moveAnimalMove, moveMosquitoToken, moveMosquitoTokenMove, MoveType, selectOpponentAnimal, selectOpponentAnimalMove, skipTurn, skipTurnMove } from './moves'
-import { MoveView } from './moves/MoveView'
-import { revealMosquito, revealMosquitoMove } from './moves/RevealMosquito'
+import {Mosquito} from './material/MosquitoEffect'
+import {isGameOptions, MosquitoShowOptions} from './MosquitoShowOptions'
+import {
+  changeActivePlayer,
+  changeActivePlayerMove,
+  chooseMosquitoEffect,
+  chooseMosquitoEffectMove,
+  discardTokenFromBoard,
+  discardTokenFromBoardMove,
+  discardTokenFromPlayerBoard,
+  discardTokenFromPlayerBoardMove,
+  eat,
+  eatMove,
+  Move,
+  moveAnimal,
+  moveAnimalMove,
+  moveMosquitoToken,
+  moveMosquitoTokenMove,
+  MoveType,
+  selectOpponentAnimal,
+  selectOpponentAnimalMove,
+  skipTurn,
+  skipTurnMove
+} from './moves'
+import {MoveView} from './moves/MoveView'
+import {revealMosquito, revealMosquitoMove} from './moves'
 import PlayerColor from './PlayerColor'
-import { canMoveAnimal, canMoveAnimalOfPlayer, getPondsWithMosquitoAroundChameleon, getValidDestinations } from './utils/AnimalUtils'
-import { createMosquitos, mosquitoToReveal, tokenForcedToReveal } from './utils/BoardUtils'
-import { canUndo, endOfTurn, gameEndBlock, gameEndGolden, getPlayerState, isOver, isPlacementPhase } from './utils/GameUtils'
-import { getSelectedMosquitoFromPlayer } from './utils/PlayerBoardUtils'
+import {canMoveAnimal, canMoveAnimalOfPlayer, getPondsWithMosquitoAroundChameleon, getValidDestinations} from './utils/AnimalUtils'
+import {createMosquitos, mosquitoToReveal, tokenForcedToReveal} from './utils/BoardUtils'
+import {canUndo, endOfTurn, gameEndBlock, gameEndGolden, getPlayerState, isOver, isPlacementPhase} from './utils/GameUtils'
+import {getSelectedMosquitoFromPlayer} from './utils/PlayerBoardUtils'
 
 const { Orange, Blue } = PlayerColor
 const { Toucan, Chameleon } = Animal
 
-export default class MosquitoShow extends SequentialGame<GameState, Move, PlayerColor>
-  implements IncompleteInformation<GameState, GameView, Move, MoveView, PlayerColor>, Undo<GameState, Move, PlayerColor>, Competitive<GameState, Move, PlayerColor> {
+export default class MosquitoShow extends Rules<GameState | GameView, Move | MoveView, PlayerColor>
+  implements IncompleteInformation<GameView, Move, MoveView>, Undo<GameState, Move, PlayerColor>, Competitive<GameState | GameView, Move, PlayerColor> {
 
-  constructor(state: GameState)
+  constructor(state: GameState | GameView)
   constructor(options: MosquitoShowOptions)
-  constructor(arg: GameState | MosquitoShowOptions) {
+  constructor(arg: GameState | GameView | MosquitoShowOptions) {
     if (isGameOptions(arg)) {
       super({
         players: [Blue, Orange].map(color => ({ color, goldenMosquitos: 0, eatenMosquitos: [], pendingToucanEat: [], hasPlayerToMoveAnimal: undefined })),
@@ -122,7 +143,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
     return moves
   }
 
-  play(move: Move): void {
+  play(move: Move | MoveView): (Move | MoveView)[] {
     switch (move.type) {
       case MoveType.MoveAnimal:
         moveAnimal(this.state, move)
@@ -141,7 +162,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
         break
       case MoveType.ChooseMosquitoEffect:
         chooseMosquitoEffect(this.state, move)
-        return
+        return []
       case MoveType.RevealMosquito:
         revealMosquito(this.state, move)
         break
@@ -151,13 +172,14 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       case MoveType.ChangeActivePlayer:
         changeActivePlayer(this.state, move)
         gameEndBlock(this.state)
-        return
+        return []
       case MoveType.DiscardTokenFromPlayerBoard:
         discardTokenFromPlayerBoard(this.state, move)
         break
     }
     gameEndGolden(this.state)
     endOfTurn(this.state)
+    return []
   }
 
   getAutomaticMoves(): Move[] {
@@ -206,7 +228,7 @@ export default class MosquitoShow extends SequentialGame<GameState, Move, Player
       case MoveType.RevealMosquito: {
         const pile = this.state.mosquitos[move.x][move.y]
         const mosquitoOnBoard = pile[pile.length - 1]
-        return { ...move, mosquito: mosquitoOnBoard.mosquito }
+        return { ...move, mosquito: mosquitoOnBoard.mosquito! }
       }
       default:
         return move

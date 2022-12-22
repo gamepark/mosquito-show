@@ -96,7 +96,7 @@ export function mosquitoToReveal(game: GameState | GameView) {
   return
 }
 
-export function tokenForcedToReveal(game: GameState, x: number, y: number) {
+export function tokenForcedToReveal(game: GameState | GameView, x: number, y: number) {
   return !game.mosquitos[x][y][game.mosquitos[x][y].length - 1].revealed
 }
 

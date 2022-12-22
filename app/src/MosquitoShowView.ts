@@ -1,78 +1,58 @@
-import GameView from '@gamepark/mosquito-show/GameView'
-import { Mosquito } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { changeActivePlayer, chooseMosquitoEffect, discardTokenFromBoardInView, discardTokenFromPlayerBoard, eatInView, Move, moveAnimal, moveMosquitoTokenInView, MoveType, selectOpponentAnimal, skipTurn } from '@gamepark/mosquito-show/moves'
-import { MoveView } from '@gamepark/mosquito-show/moves/MoveView'
-import { revealMosquitoInView } from '@gamepark/mosquito-show/moves/RevealMosquito'
-import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
-import { canUndo, endOfTurn, gameEndBlock, gameEndGolden, getActivePlayerState } from '@gamepark/mosquito-show/utils/GameUtils'
-import { getSelectedMosquitoByIndex } from '@gamepark/mosquito-show/utils/PlayerBoardUtils'
-import { Action, Game, Undo } from '@gamepark/rules-api'
+import {Mosquito} from '@gamepark/mosquito-show/material/MosquitoEffect'
+import {Move, MoveType} from '@gamepark/mosquito-show/moves'
+import {MoveView} from '@gamepark/mosquito-show/moves/MoveView'
+import {getActivePlayerState} from '@gamepark/mosquito-show/utils/GameUtils'
+import {getSelectedMosquitoByIndex} from '@gamepark/mosquito-show/utils/PlayerBoardUtils'
+import {canSelect} from './util/GameUtils'
+import MosquitoShow from '@gamepark/mosquito-show/MosquitoShow'
 import LocalGameView from './LocalGameView'
-import { canSelect } from './util/GameUtils'
 
-export default class MosquitoShowView implements Game<LocalGameView, Move>, Undo<LocalGameView, Move, PlayerColor> {
-  state: LocalGameView
+export default class MosquitoShowView extends MosquitoShow {
 
-  constructor(state: GameView) {
-    this.state = state
-  }
-
-  canUndo(action: Action<Move, PlayerColor>, consecutiveActions: Action<Move, PlayerColor>[]): boolean {
-    return canUndo(this.state, action, consecutiveActions)
-  }
-
-  play(move: MoveView): void {
+  play(move: Move | MoveView): (Move | MoveView)[] {
+    const game = this.game as LocalGameView
     switch (move.type) {
       case MoveType.SelectAnimal:
-        if (canSelect(this.state, move.animal)) {
-          if (getActivePlayerState(this.state)?.animalForcedToMove) {
-            this.state.selectedAnimal = getActivePlayerState(this.state)!.animalForcedToMove
+        if (canSelect(game, move.animal)) {
+          if (getActivePlayerState(game)?.animalForcedToMove) {
+            game.selectedAnimal = getActivePlayerState(game)!.animalForcedToMove
           } else {
-            this.state.selectedAnimal = move.animal
+            game.selectedAnimal = move.animal
           }
         }
-        return
-      case MoveType.SelectMosquitoToken:
-        this.state.selectedPondSpace = move.coordinates
-        return
-      case MoveType.MoveAnimal:
-        moveAnimal(this.state, move)
-        delete this.state.selectedAnimal
         break
-      case MoveType.Eat:
-        eatInView(this.state, move)
+      case MoveType.SelectMosquitoToken:
+        game.selectedPondSpace = move.coordinates
+        break
+      case MoveType.MoveAnimal:
+        super.play(move)
+        delete game.selectedAnimal
         break
       case MoveType.MoveMosquitoToken:
-        moveMosquitoTokenInView(this.state, move)
-        delete this.state.selectedPondSpace
-        break
-      case MoveType.DiscardTokenFromBoard:
-        discardTokenFromBoardInView(this.state, move)
-        break
-      case MoveType.SelectOpponentAnimal:
-        selectOpponentAnimal(this.state, move)
+        super.play(move)
+        delete game.selectedPondSpace
         break
       case MoveType.ChooseMosquitoEffect:
-        chooseMosquitoEffect(this.state, move)
-        if (getSelectedMosquitoByIndex(this.state, move.mosquitoIndex) === Mosquito.Blue) {
-          this.state.selectedAnimal = undefined
+        super.play(move)
+        if (getSelectedMosquitoByIndex(game, move.mosquitoIndex) === Mosquito.Blue) {
+          game.selectedAnimal = undefined
         }
-        return
-      case MoveType.RevealMosquito:
-        revealMosquitoInView(this.state, move)
         break
-      case MoveType.SkipTurn:
-        skipTurn(this.state, move)
-        break
-      case MoveType.ChangeActivePlayer:
-        changeActivePlayer(this.state, move)
-        gameEndBlock(this.state)
-        return
-      case MoveType.DiscardTokenFromPlayerBoard:
-        discardTokenFromPlayerBoard(this.state, move)
-        break
+      default:
+        super.play(move)
     }
-    gameEndGolden(this.state)
-    endOfTurn(this.state)
+    return []
+  }
+
+  getAutomaticMoves(): MoveView[] {
+    return this.keepPredictableMoves(super.getAutomaticMoves())
+  }
+
+  keepPredictableMoves(moves: Move[]): (Move & MoveView)[] {
+    return moves.slice(0, moves.findIndex(move => !this.isPredictableMove(move))) as (Move & MoveView)[]
+  }
+
+  isPredictableMove(move: Move): move is Move & MoveView {
+    return move.type !== MoveType.Eat && move.type !== MoveType.RevealMosquito
   }
 }

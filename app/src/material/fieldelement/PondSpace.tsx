@@ -3,7 +3,7 @@ import { css, keyframes } from '@emotion/react'
 import Animal from '@gamepark/mosquito-show/animals/Animal'
 import Coordinates from '@gamepark/mosquito-show/fields/Coordinates'
 import { Mosquito, MosquitoOnBoard } from '@gamepark/mosquito-show/material/MosquitoEffect'
-import { DiscardTokenFromBoard, discardTokenFromBoardMove, eatMove, EatView, isDiscardTokenFromBoardMove, isEatViewMove, isMoveMosquitoTokenMove, isRevealMosquitoViewMove, MoveMosquitoToken, moveMosquitoTokenMove, RevealMosquitoView, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
+import { DiscardTokenFromBoard, discardTokenFromBoardMove, eatMove, EatView, isDiscardTokenFromBoardMove, isEatViewMove, isMoveMosquitoTokenMove, isRevealMosquitoMove, MoveMosquitoToken, moveMosquitoTokenMove, RevealMosquitoView, selectMosquitoTokenMove } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import PlayerState from '@gamepark/mosquito-show/PlayerState'
 import { chameleonCanEat } from '@gamepark/mosquito-show/utils/AnimalUtils'
@@ -37,7 +37,7 @@ export default function PondSpace({ game, x, y }: Props) {
   const eatAnimation = useAnimation<EatView>(animation => isEatViewMove(animation.move)
     && animation.move.x === x
     && animation.move.y === y)
-  const revealMosquitoAnimation = useAnimation<RevealMosquitoView>(animation => isRevealMosquitoViewMove(animation.move)
+  const revealMosquitoAnimation = useAnimation<RevealMosquitoView>(animation => isRevealMosquitoMove(animation.move)
     && animation.move.x === x
     && animation.move.y === y)
 

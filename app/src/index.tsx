@@ -1,16 +1,16 @@
-import { css, Global } from '@emotion/react'
+import {css, Global} from '@emotion/react'
 import MosquitoShow from '@gamepark/mosquito-show/MosquitoShow'
-import { MosquitoShowOptionsSpec } from '@gamepark/mosquito-show/MosquitoShowOptions'
-import { GameProvider, setupTranslation } from '@gamepark/react-client'
+import {MosquitoShowOptionsSpec} from '@gamepark/mosquito-show/MosquitoShowOptions'
+import {GameProvider, setupTranslation} from '@gamepark/react-client'
 import normalize from 'emotion-normalize'
-import { StrictMode } from 'react'
+import {StrictMode} from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import Images from './material/Images'
-import mosquitoShowAnimations from './MosquitoShowAnimations'
+import MosquitoShowAnimations from './MosquitoShowAnimations'
 import MosquitoShowView from './MosquitoShowView'
 import translations from './translations.json'
-import { MosquitoShowTutorial } from './tutorial/MosquitoShowTutorial'
+import {MosquitoShowTutorial} from './tutorial/MosquitoShowTutorial'
 
 setupTranslation(translations, { debug: false })
 
@@ -68,7 +68,7 @@ ReactDOM.render(
       Rules={MosquitoShow}
       RulesView={MosquitoShowView}
       optionsSpec={MosquitoShowOptionsSpec}
-      animations={mosquitoShowAnimations}
+      animations={new MosquitoShowAnimations()}
       tutorial={MosquitoShowTutorial}>
       <App />
     </GameProvider>
