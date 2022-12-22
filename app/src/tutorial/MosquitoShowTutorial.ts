@@ -1,7 +1,7 @@
 import Animal from "@gamepark/mosquito-show/animals/Animal";
 import GameState from "@gamepark/mosquito-show/GameState";
 import { Mosquito, MosquitoOnBoard, Waterlily } from "@gamepark/mosquito-show/material/MosquitoEffect";
-import { moveAnimalMove, selectAnimalMove } from "@gamepark/mosquito-show/moves";
+import { moveAnimalMove } from "@gamepark/mosquito-show/moves";
 import { Move } from "@gamepark/mosquito-show/moves/Move";
 import PlayerColor from "@gamepark/mosquito-show/PlayerColor";
 import TutorialDescription from "@gamepark/react-client/dist/Tutorial/TutorialDescription";
@@ -73,13 +73,11 @@ const MosquitoShowTutorial: TutorialDescription<GameState, Move, PlayerColor> = 
         mosquitos: createMosquitos(),
         turnOver: false,
         handleMosquitoEffectOver: false
-    }, [PlayerColor.Blue, PlayerColor.Orange]],
+    }, [PlayerColor.Blue]],
 
     expectedMoves: () => [
-        selectAnimalMove(Toucan),
         moveAnimalMove(Toucan, { x: 0, y: 0 }),
         moveAnimalMove(Chameleon, { x: 2, y: 2 }),
-        selectAnimalMove(Chameleon),
         moveAnimalMove(Chameleon, { x: 0, y: 2 }),
         moveAnimalMove(Toucan, { x: 1, y: 2 })
     ]

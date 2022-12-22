@@ -16,6 +16,7 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   // const [hideLastTurnInfo, setHideLastTurnInfo] = useState(false)
   // const [hideEndInfo, setHideEndInfo] = useState(false)
   // const dispatch = useDispatch()
+  // const animations = useAnimations()
 
   // const platformUri = process.env.REACT_APP_PLATFORM_URI ?? 'https://game-park.com'
   // const discordUri = 'https://discord.gg/nMSDRag'
