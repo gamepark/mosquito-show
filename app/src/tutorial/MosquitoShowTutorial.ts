@@ -47,21 +47,23 @@ export const createMosquitos = (): MosquitoOnBoard[][][] => {
     const shuffledMosquitosFlower = shuffle(mosquitoFlower)
 
     const result: MosquitoOnBoard[][][] = []
-    const row1: MosquitoOnBoard[][] = []
-    row1.push([shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosFlower.splice(0, 1)[0]])
-    row1.push([shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosFlower.splice(0, 1)[0], { mosquito: Grey, waterlily: WaterLily, revealed: true }])
-    row1.push([{ mosquito: Golden, waterlily: Flower, revealed: false }, { mosquito: Golden, waterlily: WaterLily, revealed: false }, { mosquito: Golden, waterlily: WaterLily, revealed: true }])
-    result.push(row1)
-    const row2: MosquitoOnBoard[][] = []
-    row2.push([{ mosquito: White, waterlily: Flower, revealed: false }, { mosquito: Red, waterlily: WaterLily, revealed: false }, { mosquito: Blue, waterlily: WaterLily, revealed: true }])
-    row2.push([shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosFlower.splice(0, 1)[0]])
-    row2.push([shuffledMosquitosFlower.splice(0, 1)[0], { mosquito: Golden, waterlily: WaterLily, revealed: false }, shuffledMosquitosFlower.splice(0, 1)[0]])
-    result.push(row2)
-    const row3: MosquitoOnBoard[][] = []
-    row3.push([shuffledMosquitosWaterlilly.splice(0, 1)[0], { mosquito: Golden, waterlily: Flower, revealed: false }, { mosquito: Golden, waterlily: WaterLily, revealed: true }])
-    row3.push([shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosWaterlilly.splice(0, 1)[0], { mosquito: Golden, waterlily: WaterLily, revealed: true }])
-    row3.push([shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosFlower.splice(0, 1)[0], { mosquito: Golden, waterlily: WaterLily, revealed: true }])
-    result.push(row3)
+    const column1: MosquitoOnBoard[][] = []
+    column1.push([shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosFlower.splice(0, 1)[0]])
+    column1.push([{ mosquito: White, waterlily: Flower, revealed: false }, { mosquito: Red, waterlily: WaterLily, revealed: false }, { mosquito: Blue, waterlily: WaterLily, revealed: true }])
+    column1.push([shuffledMosquitosWaterlilly.splice(0, 1)[0], { mosquito: Golden, waterlily: Flower, revealed: false }, { mosquito: Golden, waterlily: WaterLily, revealed: true }])
+
+    const column2: MosquitoOnBoard[][] = []
+    column2.push([shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosFlower.splice(0, 1)[0], { mosquito: Grey, waterlily: WaterLily, revealed: true }])
+    column2.push([shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosFlower.splice(0, 1)[0]])
+    column2.push([shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosWaterlilly.splice(0, 1)[0], { mosquito: Golden, waterlily: WaterLily, revealed: true }])
+
+    const column3: MosquitoOnBoard[][] = []
+    column3.push([{ mosquito: Golden, waterlily: Flower, revealed: false }, { mosquito: Golden, waterlily: WaterLily, revealed: false }, { mosquito: Golden, waterlily: WaterLily, revealed: true }])
+    result.push(column1)
+    column3.push([shuffledMosquitosFlower.splice(0, 1)[0], { mosquito: Golden, waterlily: WaterLily, revealed: false }, shuffledMosquitosFlower.splice(0, 1)[0]])
+    result.push(column2)
+    column3.push([shuffledMosquitosWaterlilly.splice(0, 1)[0], shuffledMosquitosFlower.splice(0, 1)[0], { mosquito: Golden, waterlily: WaterLily, revealed: true }])
+    result.push(column3)
     return result
 }
 
