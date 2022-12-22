@@ -73,7 +73,7 @@ const MosquitoShowTutorial: TutorialDescription<GameState, Move, PlayerColor> = 
         mosquitos: createMosquitos(),
         turnOver: false,
         handleMosquitoEffectOver: false
-    }, [PlayerColor.Blue]],
+    }, [PlayerColor.Blue, PlayerColor.Orange]],
 
     expectedMoves: () => [
         moveAnimalMove(Toucan, { x: 0, y: 0 }),

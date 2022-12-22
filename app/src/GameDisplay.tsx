@@ -12,9 +12,9 @@ type Props = {
 }
 
 
-
 export default function GameDisplay({game}: Props) {
   const tutorial = useTutorial()
+
   return (
     <Letterbox css={letterBoxStyle}>
       <div css={display}>
