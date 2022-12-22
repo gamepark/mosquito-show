@@ -1,20 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import GameView from '@gamepark/mosquito-show/GameView'
-import { Tutorial } from '@gamepark/react-client'
-import Dialog from '@gamepark/react-components/dist/Dialog/Dialog'
+import { Move } from '@gamepark/mosquito-show/moves'
+import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
+import { Tutorial, useActions, usePlayerId } from '@gamepark/react-client'
+import { Dialog } from '@gamepark/react-components'
 import { TFunction } from 'i18next'
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 
 const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutorial }) => {
 
-
+  let check = true;
 
   // const { t } = useTranslation()
-  // const playerId = usePlayerId<PlayerColor>()
-  // const actions = useActions<Move, PlayerColor>()
-  // const actionsNumber = actions !== undefined ? actions.filter(action => action.playerId === playerId).length : 0
-  // const previousActionNumber = useRef(actionsNumber)
+  const playerId = usePlayerId<PlayerColor>()
+  const actions = useActions<Move, PlayerColor>()
+  const actionsNumber = actions !== undefined ? actions.filter(action => action.playerId === playerId).length : 0
+  const previousActionNumber = useRef(actionsNumber)
   // const [tutorialIndex, setTutorialIndex] = useState(0)
   const [tutorialDisplay, setTutorialDisplay] = useState(tutorialDescription.length > 0)
   // const [failures] = useFailures()
@@ -61,7 +63,11 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   }
 
   useEffect(() => {
-   setTutorialDisplay(false)
+    console.log(actionsNumber)
+    console.log(previousActionNumber)
+    if (check) {
+      setTutorialDisplay(true)
+    }
   }, [])
 
   // useEffect(() => {
@@ -72,7 +78,7 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   // }, [actionsNumber, failures])
 
 
-   useEffect(() => tutorial.setOpponentsPlayAutomatically(true), [])
+  useEffect(() => tutorial.setOpponentsPlayAutomatically(true), [])
 
   // useEffect(() => {
   //   if (game.deck === 5) {
@@ -90,13 +96,14 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
 
   const currentMessage = tutorialMessage(1)
 
-  const displayPopup = tutorialDisplay 
+  const displayPopup = tutorialDisplay
 
   return (
     <>
 
-      { <Dialog css={[dialogCss, currentMessage ? popupPosition(currentMessage) : css`display: none;`]} backdropCss={backdropCss} open={displayPopup}
-        onBackdropClick={() => {}}>
+      {<Dialog css={[dialogCss, currentMessage ? popupPosition(currentMessage) : css`display: none;`]} backdropCss={backdropCss} open={displayPopup}
+        onBackdropClick={() => { }}>
+        <button onClick={() => { check = false; setTutorialDisplay(false) }}>"Huhu"</button>
       </Dialog>
 
       /*S{
@@ -164,7 +171,7 @@ export function resetTutorial() {
 const backdropCss = css`
   background-color: transparent;
   display: block;
-  padding: 0 calc(50% - ${16/9 * 50}em);
+  padding: 0 calc(50% - ${16 / 9 * 50}em);
   z-index: 1200;
 `
 
