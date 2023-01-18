@@ -1,10 +1,10 @@
-import {Action, Competitive, IncompleteInformation, Rules, Undo} from '@gamepark/rules-api'
+import { Action, Competitive, IncompleteInformation, Rules, Undo } from '@gamepark/rules-api'
 import Animal from './animals/Animal'
 import Coordinates from './fields/Coordinates'
 import GameState from './GameState'
 import GameView from './GameView'
-import {Mosquito} from './material/MosquitoEffect'
-import {isGameOptions, MosquitoShowOptions} from './MosquitoShowOptions'
+import { Mosquito } from './material/MosquitoEffect'
+import { isGameOptions, MosquitoShowOptions } from './MosquitoShowOptions'
 import {
   changeActivePlayer,
   changeActivePlayerMove,
@@ -21,19 +21,17 @@ import {
   moveAnimalMove,
   moveMosquitoToken,
   moveMosquitoTokenMove,
-  MoveType,
-  selectOpponentAnimal,
+  MoveType, revealMosquito, revealMosquitoMove, selectOpponentAnimal,
   selectOpponentAnimalMove,
   skipTurn,
   skipTurnMove
 } from './moves'
-import {MoveView} from './moves/MoveView'
-import {revealMosquito, revealMosquitoMove} from './moves'
+import { MoveView } from './moves/MoveView'
 import PlayerColor from './PlayerColor'
-import {canMoveAnimal, canMoveAnimalOfPlayer, getPondsWithMosquitoAroundChameleon, getValidDestinations} from './utils/AnimalUtils'
-import {createMosquitos, mosquitoToReveal, tokenForcedToReveal} from './utils/BoardUtils'
-import {canUndo, endOfTurn, gameEndBlock, gameEndGolden, getPlayerState, isOver, isPlacementPhase} from './utils/GameUtils'
-import {getSelectedMosquitoFromPlayer} from './utils/PlayerBoardUtils'
+import { canMoveAnimal, canMoveAnimalOfPlayer, getPondsWithMosquitoAroundChameleon, getValidDestinations } from './utils/AnimalUtils'
+import { createMosquitos, mosquitoToReveal, tokenForcedToReveal } from './utils/BoardUtils'
+import { canUndo, endOfTurn, gameEndBlock, gameEndGolden, getPlayerState, isOver, isPlacementPhase } from './utils/GameUtils'
+import { getSelectedMosquitoFromPlayer } from './utils/PlayerBoardUtils'
 
 const { Orange, Blue } = PlayerColor
 const { Toucan, Chameleon } = Animal
@@ -84,10 +82,13 @@ export default class MosquitoShow extends Rules<GameState | GameView, Move | Mov
     return this.state.activePlayer
   }
 
-  getLegalMoves(): Move[] {
+  getLegalMoves(playerId: PlayerColor): Move[] {
     const moves: Move[] = []
     const activePlayer = this.state.players.find(player => player.color === this.state.activePlayer)!
 
+    if (playerId !== activePlayer.color) {
+      return []
+    }
     if (isPlacementPhase(this.state)) {
       if (!activePlayer.toucan) {
         getValidDestinations(this.state, Toucan).forEach(coordinates => moves.push(moveAnimalMove(Toucan, coordinates)))

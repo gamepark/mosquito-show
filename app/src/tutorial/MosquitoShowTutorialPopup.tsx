@@ -3,10 +3,9 @@ import { css } from '@emotion/react'
 import GameView from '@gamepark/mosquito-show/GameView'
 import { Move } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
-import { Tutorial, useActions, usePlayerId } from '@gamepark/react-client'
-import { Dialog } from '@gamepark/react-components'
+import { Tutorial, useActions, useFailures, usePlayerId } from '@gamepark/react-client'
 import { TFunction } from 'i18next'
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useRef } from 'react'
 
 const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutorial }) => {
 
@@ -18,8 +17,8 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   const actionsNumber = actions !== undefined ? actions.filter(action => action.playerId === playerId).length : 0
   const previousActionNumber = useRef(actionsNumber)
   // const [tutorialIndex, setTutorialIndex] = useState(0)
-  const [tutorialDisplay, setTutorialDisplay] = useState(tutorialDescription.length > 0)
-  // const [failures] = useFailures()
+  // const [tutorialDisplay, setTutorialDisplay] = useState(tutorialDescription.length > 0)
+  const [failures] = useFailures()
   // const [hideLastTurnInfo, setHideLastTurnInfo] = useState(false)
   // const [hideEndInfo, setHideEndInfo] = useState(false)
   // const dispatch = useDispatch()
@@ -42,43 +41,55 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   //   }
   // }
 
-  // const resetTutorialDisplay = () => {
-  //   // if (game.phase === Phase.NewDay && game.deck === 0) {
-  //   //   setHideEndInfo(false)
-  //   // } else if (game.deck === 0) {
-  //   //   setHideLastTurnInfo(false)
-  //   // } else {
-  //   //   setTutorialIndex(0)
-  //     setTutorialDisplay(true)
-  //   }
+  const resetTutorialDisplay = () => {
+    // if (game.phase === Phase.NewDay && game.deck === 0) {
+    //   setHideEndInfo(false)
+    // } else if (game.deck === 0) {
+    //   setHideLastTurnInfo(false)
+    // } else {
+    //   setTutorialIndex(0)
+    // setTutorialDisplay(true)
+  }
 
   // }
 
-  const tutorialMessage = (index: number) => {
-    let currentStep = 1
-    while (!tutorialDescription[currentStep]) {
-      currentStep--
-    }
-    return tutorialDescription[currentStep][index]
-  }
+  // const tutorialMessage = (index: number) => {
+  //   let currentStep = 1
+  //   while (!tutorialDescription[currentStep]) {
+  //     currentStep--
+  //   }
+  //   return tutorialDescription[currentStep][index]
+  // }
 
   useEffect(() => {
     console.log(actionsNumber)
     console.log(previousActionNumber)
     if (check) {
-      setTutorialDisplay(true)
+      // setTutorialDisplay(true)
     }
   }, [])
 
-  // useEffect(() => {
-  //   if (failures.length) {
-  //     setTutorialIndex(tutorialDescription[actionsNumber].length - 1)
-  //     setTutorialDisplay(true)
-  //   }
-  // }, [actionsNumber, failures])
+  useEffect(() => {
+    if (previousActionNumber.current > actionsNumber) {
+      // setTutorialDisplay(false)
+    } else if (tutorialDescription[actionsNumber]) {
+      resetTutorialDisplay()
+    }
+    previousActionNumber.current = actionsNumber
+  }, [actionsNumber])
+
+  useEffect(() => {
+    if (failures.length) {
+      // setTutorialIndex(tutorialDescription[actionsNumber].length - 1)
+      // setTutorialDisplay(true)
+    }
+  }, [actionsNumber, failures])
 
 
-  useEffect(() => tutorial.setOpponentsPlayAutomatically(true), [])
+
+  useEffect(() => {
+    tutorial.setOpponentsPlayAutomatically(true)
+  }, [])
 
   // useEffect(() => {
   //   if (game.deck === 5) {
@@ -94,17 +105,18 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   // }, [animation, game])
 
 
-  const currentMessage = tutorialMessage(1)
+  // const currentMessage = tutorialMessage(1)
 
-  const displayPopup = tutorialDisplay
+  // const displayPopup = tutorialDisplay
 
   return (
     <>
 
-      {<Dialog css={[dialogCss, currentMessage ? popupPosition(currentMessage) : css`display: none;`]} backdropCss={backdropCss} open={displayPopup}
+      {
+      /*<Dialog css={[dialogCss]} backdropCss={backdropCss} open={displayPopup}
         onBackdropClick={() => { }}>
-        <button onClick={() => { check = false; setTutorialDisplay(false) }}>"Huhu"</button>
-      </Dialog>
+        <button onClick={() => moveTutorial(1)}>"Huhu"</button>
+      </Dialog>*/
 
       /*S{
         !displayPopup &&
@@ -168,12 +180,12 @@ export function resetTutorial() {
 //   color: black;
 // `
 
-const backdropCss = css`
-  background-color: transparent;
-  display: block;
-  padding: 0 calc(50% - ${16 / 9 * 50}em);
-  z-index: 1200;
-`
+// const backdropCss = css`
+//   background-color: transparent;
+//   display: block;
+//   padding: 0 calc(50% - ${16 / 9 * 50}em);
+//   z-index: 1200;
+// `
 
 // const closePopupStyle = css`
 //   position: relative;
