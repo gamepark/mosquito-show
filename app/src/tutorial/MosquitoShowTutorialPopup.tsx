@@ -7,9 +7,10 @@ import { Tutorial, useActions, useFailures, usePlayerId } from '@gamepark/react-
 import { Dialog } from '@gamepark/react-components'
 import { TFunction } from 'i18next'
 import { FC, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutorial }) => {
-  // const { t } = useTranslation()
+  const { t } = useTranslation()
   const playerId = usePlayerId<PlayerColor>()
   const actions = useActions<Move, PlayerColor>()
   const actionsNumber = actions !== undefined ? actions.filter(action => action.playerId === playerId).length : 0
@@ -51,17 +52,24 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
 
   // }
 
-  // const tutorialMessage = (index: number) => {
-  //   let currentStep = 1
-  //   while (!tutorialDescription[currentStep]) {
-  //     currentStep--
-  //   }
-  //   return tutorialDescription[currentStep][index]
-  // }
+  const tutorialMessage = (index: number) => {
+    let currentStep = actionsNumber
+    while (!tutorialDescription[currentStep]) {
+      currentStep--
+    }
+    return tutorialDescription[currentStep][index]
+  }
 
   useEffect(() => {
     setTutorialDisplay(true)
+    console.log(tutorialIndex)
   }, [])
+
+  useEffect(() => {
+    if (tutorialIndex === 1) {
+      setTutorialDisplay(true)
+    }
+  }, [tutorialIndex])
 
   useEffect(() => {
     if (previousActionNumber.current > actionsNumber) {
@@ -73,33 +81,17 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   }, [actionsNumber])
 
   useEffect(() => {
-    
-      // setTutorialIndex(tutorialDescription[actionsNumber].length - 1)
+
+    setTutorialIndex(tutorialDescription[actionsNumber].length - 1)
     setTutorialDisplay(true)
-    
+
   }, [actionsNumber, failures])
-
-
 
   useEffect(() => {
     tutorial.setOpponentsPlayAutomatically(true)
   }, [])
 
-  // useEffect(() => {
-  //   if (game.deck === 5) {
-  //     if ((game.phase === Phase.Planning && animation?.move.type === MoveType.MoveOnNextPhase)
-  //       || (animation?.move.type === MoveType.TakeBackMeeple && animation.move.meeple === 0 && animation.move.player === PlayerColor.Red)
-  //       || (animation?.move.type === MoveType.ChooseAction && animation.move.player === PlayerColor.Red)
-  //       || (animation?.move.type === MoveType.TakeBackMeeple && animation.move.player === PlayerColor.Red && animation.move.meeple === 2)
-  //       || (animation?.move.type === MoveType.TakeBackMeeple && animation.move.player === PlayerColor.White && animation.move.meeple === 2)
-  //       || (animation?.move.type === MoveType.TakeToken && animation.move.player === PlayerColor.Red)) {
-  //       dispatch(animationPaused(true))
-  //     }
-  //   }
-  // }, [animation, game])
-
-
-  // const currentMessage = tutorialMessage(1)
+  const currentMessage = tutorialMessage(tutorialIndex)
 
   const displayPopup = tutorialDisplay
 
@@ -108,8 +100,8 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
 
       {
         <Dialog css={[dialogCss]} backdropCss={backdropCss} open={displayPopup}
-          onBackdropClick={() => { }}>
-          <button onClick={() => moveTutorial(1)}>"Huhu"</button>
+          onBackdropClick={() => { }}>{currentMessage.text(t)}
+          <button onClick={() => moveTutorial(1)}>{tutorialIndex}</button>
         </Dialog>
 
       /*S{
