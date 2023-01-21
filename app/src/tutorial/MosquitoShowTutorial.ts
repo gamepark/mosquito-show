@@ -1,7 +1,7 @@
 import Animal from "@gamepark/mosquito-show/animals/Animal";
 import GameState from "@gamepark/mosquito-show/GameState";
 import { Mosquito, MosquitoOnBoard, Waterlily } from "@gamepark/mosquito-show/material/MosquitoEffect";
-import { moveAnimalMove } from "@gamepark/mosquito-show/moves";
+import { chooseMosquitoEffectMove, discardTokenFromBoardMove, eatMove, moveAnimalMove, moveMosquitoTokenMove, selectOpponentAnimalMove } from "@gamepark/mosquito-show/moves";
 import { Move } from "@gamepark/mosquito-show/moves/Move";
 import PlayerColor from "@gamepark/mosquito-show/PlayerColor";
 import TutorialDescription from "@gamepark/react-client/dist/Tutorial/TutorialDescription";
@@ -81,7 +81,27 @@ const MosquitoShowTutorial: TutorialDescription<GameState, Move, PlayerColor> = 
         moveAnimalMove(Toucan, { x: 0, y: 0 }),
         moveAnimalMove(Chameleon, { x: 2, y: 2 }),
         moveAnimalMove(Chameleon, { x: 0, y: 2 }),
-        moveAnimalMove(Toucan, { x: 1, y: 2 })
+        moveAnimalMove(Toucan, { x: 1, y: 2 }),
+        eatMove(false, 0, 1),
+        moveAnimalMove(Chameleon, { x: 0, y: 1 }),
+        chooseMosquitoEffectMove(0),
+        moveAnimalMove(Toucan, { x: 0, y: 3 }),
+        eatMove(false, 2, 2),
+        moveAnimalMove(Chameleon, { x: 2, y: 1 }),
+        eatMove(false, 0, 1),
+        moveAnimalMove(Chameleon, { x: 1, y: 1 }),
+        chooseMosquitoEffectMove(0),
+        selectOpponentAnimalMove(Toucan),
+        moveAnimalMove(Toucan, { x: 0, y: 1 }),
+        chooseMosquitoEffectMove(0),
+        discardTokenFromBoardMove(2, 1),
+        eatMove(false, 1, 0),
+        moveAnimalMove(Chameleon, { x: 1, y: 0 }),
+        chooseMosquitoEffectMove(0),
+        moveMosquitoTokenMove({ x: 2, y: 1 }, { x: 1, y: 1 }),
+        eatMove(false, 2, 0),
+        moveAnimalMove(Chameleon, { x: 3, y: 1 }),
+        moveAnimalMove(Toucan, { x: 3, y: 0 })
     ]
 }
 
