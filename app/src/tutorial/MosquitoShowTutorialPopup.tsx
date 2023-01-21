@@ -4,20 +4,18 @@ import GameView from '@gamepark/mosquito-show/GameView'
 import { Move } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import { Tutorial, useActions, useFailures, usePlayerId } from '@gamepark/react-client'
+import { Dialog } from '@gamepark/react-components'
 import { TFunction } from 'i18next'
-import { FC, useEffect, useRef } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 
 const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutorial }) => {
-
-  let check = true;
-
   // const { t } = useTranslation()
   const playerId = usePlayerId<PlayerColor>()
   const actions = useActions<Move, PlayerColor>()
   const actionsNumber = actions !== undefined ? actions.filter(action => action.playerId === playerId).length : 0
   const previousActionNumber = useRef(actionsNumber)
-  // const [tutorialIndex, setTutorialIndex] = useState(0)
-  // const [tutorialDisplay, setTutorialDisplay] = useState(tutorialDescription.length > 0)
+  const [tutorialIndex, setTutorialIndex] = useState(0)
+  const [tutorialDisplay, setTutorialDisplay] = useState(tutorialDescription.length > 0)
   const [failures] = useFailures()
   // const [hideLastTurnInfo, setHideLastTurnInfo] = useState(false)
   // const [hideEndInfo, setHideEndInfo] = useState(false)
@@ -31,15 +29,15 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   // const animation = useAnimation<Move>()
 
 
-  // const moveTutorial = (deltaMessage: number) => {
-  //   setTutorialIndex(tutorialIndex + deltaMessage)
-  //   setTutorialDisplay(true)
-  //   if (deltaMessage > 0) {
-  //     if (currentMessage.resumeAnimations) {
-  //       dispatch(animationPaused(false))
-  //     }
-  //   }
-  // }
+  const moveTutorial = (deltaMessage: number) => {
+    setTutorialIndex(tutorialIndex + deltaMessage)
+    setTutorialDisplay(true)
+    // if (deltaMessage > 0) {
+    //   if (currentMessage.resumeAnimations) {
+    //     dispatch(animationPaused(false))
+    //   }
+    // }
+  }
 
   const resetTutorialDisplay = () => {
     // if (game.phase === Phase.NewDay && game.deck === 0) {
@@ -62,11 +60,7 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   // }
 
   useEffect(() => {
-    console.log(actionsNumber)
-    console.log(previousActionNumber)
-    if (check) {
-      // setTutorialDisplay(true)
-    }
+    setTutorialDisplay(true)
   }, [])
 
   useEffect(() => {
@@ -107,16 +101,16 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
 
   // const currentMessage = tutorialMessage(1)
 
-  // const displayPopup = tutorialDisplay
+  const displayPopup = tutorialDisplay
 
   return (
     <>
 
       {
-      /*<Dialog css={[dialogCss]} backdropCss={backdropCss} open={displayPopup}
-        onBackdropClick={() => { }}>
-        <button onClick={() => moveTutorial(1)}>"Huhu"</button>
-      </Dialog>*/
+        <Dialog css={[dialogCss]} backdropCss={backdropCss} open={displayPopup}
+          onBackdropClick={() => { }}>
+          <button onClick={() => moveTutorial(1)}>"Huhu"</button>
+        </Dialog>
 
       /*S{
         !displayPopup &&
@@ -180,12 +174,12 @@ export function resetTutorial() {
 //   color: black;
 // `
 
-// const backdropCss = css`
-//   background-color: transparent;
-//   display: block;
-//   padding: 0 calc(50% - ${16 / 9 * 50}em);
-//   z-index: 1200;
-// `
+const backdropCss = css`
+  background-color: transparent;
+  display: block;
+  padding: 0 calc(50% - ${16 / 9 * 50}em);
+  z-index: 1200;
+`
 
 // const closePopupStyle = css`
 //   position: relative;
