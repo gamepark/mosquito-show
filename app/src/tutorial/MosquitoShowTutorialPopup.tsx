@@ -31,7 +31,7 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
 
   const moveTutorial = (deltaMessage: number) => {
     setTutorialIndex(tutorialIndex + deltaMessage)
-    setTutorialDisplay(true)
+    setTutorialDisplay(false)
     // if (deltaMessage > 0) {
     //   if (currentMessage.resumeAnimations) {
     //     dispatch(animationPaused(false))
@@ -73,10 +73,10 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   }, [actionsNumber])
 
   useEffect(() => {
-    if (failures.length) {
+    
       // setTutorialIndex(tutorialDescription[actionsNumber].length - 1)
-      // setTutorialDisplay(true)
-    }
+    setTutorialDisplay(true)
+    
   }, [actionsNumber, failures])
 
 
