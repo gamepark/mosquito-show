@@ -228,57 +228,47 @@ type TutorialStepDescription = {
 }
 
 const tutorialDescription: TutorialStepDescription[][] = [
-  [
+  [ // 1
     {
       title: (t: TFunction) => t('tuto.welcome'),
-      text: (t: TFunction) => t('tuto.turns'),
-      boxTop: 40,
+      text: (t: TFunction) => t('tuto.player'),
+      boxTop: 50,
       boxLeft: 50,
       boxWidth: 50
     },
     {
-      text: (t: TFunction) => t('tuto.prince.goal'),
-      boxTop: 47,
-      boxLeft: 65,
-      boxWidth: 50,
-      arrow: {
-        angle: 0,
-        top: 34,
-        left: 66
-      }
-    },
-    {
-      text: (t: TFunction) => t('tuto.thief.goal'),
-      boxTop: 65,
-      boxLeft: 65,
+      text: (t: TFunction) => t('tuto.wincondition'),
+      boxTop: 50,
+      boxLeft: 50,
       boxWidth: 50
     },
-    {
-      text: (t: TFunction) => t('tuto.thief.you'),
-      boxTop: 47,
-      boxLeft: 50,
+    { 
+      title: (t: TFunction) => t('tuto.place.title'),
+      text: (t: TFunction) => t('tuto.place.t'),
+      boxTop: 45,
+      boxLeft: 65,
       boxWidth: 50,
       arrow: {
-        angle: 0,
-        top: 34,
-        left: 51
-      }
-    },
-    {
-      text: (t: TFunction) => t('tuto.meeple1'),
-      boxTop: 75,
-      boxLeft: 49.5,
-      boxWidth: 50,
-      arrow: {
-        angle: -90,
-        top: 68,
-        left: 11
+        angle: 315,
+        top: 20,
+        left: 25
       }
     }
   ],
-  [
+  [ // 2
     {
-      text: (t: TFunction) => t('tuto.meeple2'),
+      text: (t: TFunction) => t('tuto.place.opp.c'),
+      boxTop: 35,
+      boxLeft: 45,
+      boxWidth: 40,
+      arrow: {
+        angle: -90,
+        top: 28,
+        left: 11
+      }
+    },
+    {
+      text: (t: TFunction) => t('tuto.place.c'),
       boxTop: 35,
       boxLeft: 45,
       boxWidth: 40,
@@ -289,9 +279,9 @@ const tutorialDescription: TutorialStepDescription[][] = [
       }
     }
   ],
-  [
+  [ // 3
     {
-      text: (t: TFunction) => t('tuto.meeple3'),
+      text: (t: TFunction) => t('tuto.place.opp.t'),
       boxTop: 47,
       boxLeft: 36,
       boxWidth: 40,
@@ -300,11 +290,10 @@ const tutorialDescription: TutorialStepDescription[][] = [
         top: 34,
         left: 28
       }
-    }
-  ],
-  [
+    },
     {
-      text: (t: TFunction) => t('tuto.token.info'),
+      title: (t: TFunction) => t('tuto.move.title'),
+      text: (t: TFunction) => t('tuto.place.t'),
       boxTop: 40,
       boxLeft: 53,
       boxWidth: 40,
@@ -315,7 +304,29 @@ const tutorialDescription: TutorialStepDescription[][] = [
       }
     },
     {
-      text: (t: TFunction) => t('tuto.token.play'),
+      text: (t: TFunction) => t('tuto.move.rules'),
+      boxTop: 35,
+      boxLeft: 45,
+      boxWidth: 40,
+      arrow: {
+        angle: -90,
+        top: 28,
+        left: 11
+      }
+    },
+    {
+      text: (t: TFunction) => t('tuto.move.rules2'),
+      boxTop: 35,
+      boxLeft: 45,
+      boxWidth: 40,
+      arrow: {
+        angle: -90,
+        top: 28,
+        left: 11
+      }
+    },
+    {
+      text: (t: TFunction) => t('tuto.move.rules.c'),
       boxTop: 35,
       boxLeft: 45,
       boxWidth: 40,
@@ -568,12 +579,12 @@ const tutorialEndGame = {
 
 export const dialogCss = css`
   position: relative;
-  background-color: beige;
+  background-color: #d9cc58;
   text-align: center;
   padding: 5em;
   color: black;
   border-radius: 3em;
-  box-shadow: 0 0 0.5em black, 0 0 0.5em black, 0 0 0.5em black;
+  box-shadow: 0 0 3em black, 0 0 0.5em black, 0 0 0.5em black;
   max-width: 100em;
 
   & > h2 {
