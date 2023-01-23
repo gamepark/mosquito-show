@@ -1,13 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import GameView from '@gamepark/mosquito-show/GameView'
 import { Move } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
-import { Tutorial, useActions, useFailures, usePlayerId } from '@gamepark/react-client'
-import { Dialog } from '@gamepark/react-components'
+import { isOver } from '@gamepark/mosquito-show/utils/GameUtils'
+import { animationPaused, Tutorial, useActions, useFailures, usePlayerId } from '@gamepark/react-client'
+import { Dialog, Picture } from '@gamepark/react-components'
 import { TFunction } from 'i18next'
 import { FC, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
+import Arrow from '../tutorial/tutorial-arrow-white.png'
+import Button from '../util/Button'
 
 const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutorial }) => {
   const { t } = useTranslation()
@@ -18,39 +24,29 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   const [tutorialIndex, setTutorialIndex] = useState(0)
   const [tutorialDisplay, setTutorialDisplay] = useState(tutorialDescription.length > 0)
   const [failures] = useFailures()
-  // const [hideLastTurnInfo, setHideLastTurnInfo] = useState(false)
-  // const [hideEndInfo, setHideEndInfo] = useState(false)
-  // const dispatch = useDispatch()
-  // const animations = useAnimations()
-
-  // const platformUri = process.env.REACT_APP_PLATFORM_URI ?? 'https://game-park.com'
-  // const discordUri = 'https://discord.gg/nMSDRag'
-
-  // //const play = usePlay<Move>()
-  // const animation = useAnimation<Move>()
-
+  const dispatch = useDispatch()
+  const [hideEndInfo, setHideEndInfo] = useState(false)
+  const platformUri = process.env.REACT_APP_PLATFORM_URI ?? 'https://game-park.com'
+  const discordUri = 'https://discord.gg/nMSDRag'
 
   const moveTutorial = (deltaMessage: number) => {
     setTutorialIndex(tutorialIndex + deltaMessage)
-    setTutorialDisplay(false)
-    // if (deltaMessage > 0) {
-    //   if (currentMessage.resumeAnimations) {
-    //     dispatch(animationPaused(false))
-    //   }
-    // }
+    setTutorialDisplay(true)
+    if (deltaMessage > 0) {
+      if (currentMessage.resumeAnimations) {
+        dispatch(animationPaused(false))
+      }
+    }
   }
 
   const resetTutorialDisplay = () => {
-    // if (game.phase === Phase.NewDay && game.deck === 0) {
-    //   setHideEndInfo(false)
-    // } else if (game.deck === 0) {
-    //   setHideLastTurnInfo(false)
-    // } else {
-    //   setTutorialIndex(0)
-    // setTutorialDisplay(true)
+    if (isOver(game)) {
+      setHideEndInfo(false)
+    } else {
+      setTutorialIndex(0)
+      setTutorialDisplay(true)
+    }
   }
-
-  // }
 
   const tutorialMessage = (index: number) => {
     let currentStep = actionsNumber
@@ -73,7 +69,7 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
 
   useEffect(() => {
     if (previousActionNumber.current > actionsNumber) {
-      // setTutorialDisplay(false)
+      setTutorialDisplay(false)
     } else if (tutorialDescription[actionsNumber]) {
       resetTutorialDisplay()
     }
@@ -81,10 +77,10 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   }, [actionsNumber])
 
   useEffect(() => {
-
-    setTutorialIndex(tutorialDescription[actionsNumber].length - 1)
-    setTutorialDisplay(true)
-
+    if (failures.length) {
+      setTutorialIndex(tutorialDescription[actionsNumber].length - 1)
+      setTutorialDisplay(true)
+    }
   }, [actionsNumber, failures])
 
   useEffect(() => {
@@ -97,16 +93,18 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
 
   return (
     <>
+      <Dialog css={[dialogCss, currentMessage ? popupPosition(currentMessage) : css`display: none;`]} backdropCss={backdropCss} open={displayPopup}
+        onBackdropClick={() => setTutorialDisplay(false)}>
+        <div css={closePopupStyle} onClick={() => setTutorialDisplay(false)}><FontAwesomeIcon icon={faTimes} /></div>
+        {currentMessage?.title && <h2>{currentMessage.title(t)}</h2>}
+        {currentMessage && <p>{currentMessage.text(t)}</p>}
+        {tutorialIndex > 0 && <Button css={buttonTutoStyle} playerColor={PlayerColor.Blue} onClick={() => moveTutorial(-1)}>{'<<'}</Button>}
+        <Button css={buttonTutoStyle} playerColor={PlayerColor.Blue} onClick={() => moveTutorial(1)}>{t('OK')}</Button>
+      </Dialog>
 
       {
-        <Dialog css={[dialogCss]} backdropCss={backdropCss} open={displayPopup}
-          onBackdropClick={() => { }}>{currentMessage.text(t)}
-          <button onClick={() => moveTutorial(1)}>{tutorialIndex}</button>
-        </Dialog>
-
-      /*S{
         !displayPopup &&
-        <Button css={[buttonTutoStyle, resetStyle]} playerColor={PlayerColor.Green} onClick={() => resetTutorialDisplay()}>{t('Show Tutorial')}</Button>
+        <Button css={[buttonTutoStyle, resetStyle]} playerColor={PlayerColor.Blue} onClick={() => resetTutorialDisplay()}>{t('Show Tutorial')}</Button>
       }
 
       {
@@ -116,30 +114,18 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
       }
 
       {
-        game.phase !== Phase.NewDay && game.deck === 0 && !hideLastTurnInfo &&
-        <Dialog css={[dialogCss, popupPosition(lastTurnInfo)]} backdropCss={backdropCss} open={!hideLastTurnInfo}
-          onBackdropClick={() => setHideLastTurnInfo(true)}>
-          <div css={closePopupStyle} onClick={() => setHideLastTurnInfo(true)}><FontAwesomeIcon icon={faTimes} /></div>
-          <h2>{lastTurnInfo.title(t)}</h2>
-          <p>{lastTurnInfo.text(t)}</p>
-          <Button css={buttonTutoStyle} playerColor={PlayerColor.Green} onClick={() => setHideLastTurnInfo(true)}>{t('OK')}</Button>
-        </Dialog>
-      }
-
-      {
-        game.phase === Phase.NewDay && game.deck === 0 && !hideEndInfo &&
-        <Dialog css={[dialogCss, popupPosition(tutorialEndGame)]} backdropCss={backdropCss} open={!hideEndInfo}
-          onBackdropClick={() => setHideEndInfo(true)}>
+        isOver(game) && !hideEndInfo &&
+        <Dialog css={[dialogCss, popupPosition(tutorialEndGame)]} backdropCss={backdropCss} open={!hideEndInfo} onBackdropClick={() => setHideEndInfo(true)}>
           <div css={closePopupStyle} onClick={() => setHideEndInfo(true)}><FontAwesomeIcon icon={faTimes} /></div>
           <h2 css={textEndStyle}>{tutorialEndGame.title(t)}</h2>
           <p css={textEndStyle}>{tutorialEndGame.text(t)}</p>
-          <Button css={[buttonTutoStyle, endSize]} playerColor={PlayerColor.Green} onClick={() => resetTutorial()}>{t('Restart the tutorial')}</Button>
-          <Button css={[buttonTutoStyle, endSize]} playerColor={PlayerColor.Green}
+          <Button css={[buttonTutoStyle, endSize]} playerColor={PlayerColor.Blue} onClick={() => resetTutorial()}>{t('Restart the tutorial')}</Button>
+          <Button css={[buttonTutoStyle, endSize]} playerColor={PlayerColor.Blue}
             onClick={() => window.location.href = platformUri}>{t('Play with friends')}</Button>
-          <Button css={[buttonTutoStyle, endSize]} playerColor={PlayerColor.Green}
+          <Button css={[buttonTutoStyle, endSize]} playerColor={PlayerColor.Blue}
             onClick={() => window.location.href = discordUri}>{t('Find players')}</Button>
         </Dialog>
-      } */}
+      }
 
     </>
   )
@@ -147,24 +133,24 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
 }
 
 export function resetTutorial() {
-  localStorage.removeItem('brigands')
+  localStorage.removeItem('MosquitoShow')
   window.location.reload()
 }
 
-// const buttonTutoStyle = css`
-//   width: 5em;
-//   height: 1.5em;
-//   margin-right: 1em;
-// `
+const buttonTutoStyle = css`
+  width: 5em;
+  height: 1.5em;
+  margin-right: 1em;
+`
 
-// const endSize = css`
-//   width: auto;
-//   margin-top: 1em;
-// `
+const endSize = css`
+  width: auto;
+  margin-top: 1em;
+`
 
-// const textEndStyle = css`
-//   color: black;
-// `
+const textEndStyle = css`
+  color: black;
+`
 
 const backdropCss = css`
   background-color: transparent;
@@ -173,20 +159,20 @@ const backdropCss = css`
   z-index: 1200;
 `
 
-// const closePopupStyle = css`
-//   position: relative;
-//   float: right;
-//   text-align: center;
-//   margin-top: -2%;
-//   margin-right: -0%;
-//   font-size: 4em;
-//   color: black;
+const closePopupStyle = css`
+  position: relative;
+  float: right;
+  text-align: center;
+  margin-top: -2%;
+  margin-right: -0%;
+  font-size: 4em;
+  color: black;
 
-//   &:hover {
-//     cursor: pointer;
-//     transform: scale(1.1);
-//   }
-// `
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+`
 
 export const popupPosition = ({ boxWidth, boxTop, boxLeft, arrow }: TutorialStepDescription) => css`
   transition-property: width, top, left, transform;
@@ -198,34 +184,34 @@ export const popupPosition = ({ boxWidth, boxTop, boxLeft, arrow }: TutorialStep
   transform: translate(-50%, ${!arrow || arrow.angle % 180 !== 0 ? '-50%' : arrow.angle % 360 === 0 ? '0%' : '-100%'}) translateZ(30em);
 `
 
-// const arrowStyle = (angle: number) => css`
-//   position: absolute;
-//   transform: rotate(${angle}deg) translateZ(30em);
-//   will-change: transform;
-//   z-index: 2000;
-//   transition-property: top, left, transform;
-//   transition-duration: 0.7s;
-//   transition-timing-function: ease-in-out;
-// `
+const arrowStyle = (angle: number) => css`
+  position: absolute;
+  transform: rotate(${angle}deg) translateZ(30em);
+  will-change: transform;
+  z-index: 2000;
+  transition-property: top, left, transform;
+  transition-duration: 0.7s;
+  transition-timing-function: ease-in-out;
+`
 
-// const showArrowStyle = (top: number, left: number) => css`
-//   top: ${top}%;
-//   left: ${left}%;
-//   width: 20%;
-// `
+const showArrowStyle = (top: number, left: number) => css`
+  top: ${top}%;
+  left: ${left}%;
+  width: 20%;
+`
 
-// const hideArrowStyle = css`
-//   display: none;
-// `
+const hideArrowStyle = css`
+  display: none;
+`
 
-// const resetStyle = css`
-//   position: absolute;
-//   text-align: center;
-//   top: 44%;
-//   right: 0;
-//   font-size: 4em;
-//   width: auto;
-// `
+const resetStyle = css`
+  position: absolute;
+  text-align: center;
+  top: 44%;
+  right: 0;
+  font-size: 4em;
+  width: auto;
+`
 
 type TutorialStepDescription = {
   title?: (t: TFunction) => string
@@ -572,38 +558,13 @@ const tutorialDescription: TutorialStepDescription[][] = [
   ]
 ]
 
-// const lastTurnInfo = {
-//   title: (t: TFunction) => t('Last turn'),
-//   text: (t: TFunction) => t('tuto.last.turn'),
-//   boxTop: 50,
-//   boxLeft: 50,
-//   boxWidth: 70
-// }
-
-// const tutorialEndGame = {
-//   title: (t: TFunction) => t('Congratulations'),
-//   text: (t: TFunction) => t('tuto.over'),
-//   boxTop: 50,
-//   boxLeft: 50,
-//   boxWidth: 120
-// }
-
-
-// const lastTurnInfo = {
-//   title: (t: TFunction) => t('Last turn'),
-//   text: (t: TFunction) => t('tuto.last.turn'),
-//   boxTop: 50,
-//   boxLeft: 50,
-//   boxWidth: 70
-// }
-
-// const tutorialEndGame = {
-//   title: (t: TFunction) => t('Congratulations'),
-//   text: (t: TFunction) => t('tuto.over'),
-//   boxTop: 50,
-//   boxLeft: 50,
-//   boxWidth: 120
-// }
+const tutorialEndGame = {
+  title: (t: TFunction) => t('Congratulations'),
+  text: (t: TFunction) => t('tuto.over'),
+  boxTop: 50,
+  boxLeft: 50,
+  boxWidth: 120
+}
 
 export const dialogCss = css`
   position: relative;
