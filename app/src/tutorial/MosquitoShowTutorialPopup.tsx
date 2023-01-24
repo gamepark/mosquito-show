@@ -58,7 +58,6 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
 
   useEffect(() => {
     setTutorialDisplay(true)
-    console.log(tutorialIndex)
   }, [])
 
   useEffect(() => {
@@ -228,330 +227,217 @@ type TutorialStepDescription = {
 }
 
 const tutorialDescription: TutorialStepDescription[][] = [
-  [
+  [ // 1
     {
       title: (t: TFunction) => t('tuto.welcome'),
-      text: (t: TFunction) => t('tuto.turns'),
-      boxTop: 40,
-      boxLeft: 50,
-      boxWidth: 50
-    },
-    {
-      text: (t: TFunction) => t('tuto.prince.goal'),
-      boxTop: 47,
-      boxLeft: 65,
-      boxWidth: 50,
-      arrow: {
-        angle: 0,
-        top: 34,
-        left: 66
-      }
-    },
-    {
-      text: (t: TFunction) => t('tuto.thief.goal'),
-      boxTop: 65,
-      boxLeft: 65,
-      boxWidth: 50
-    },
-    {
-      text: (t: TFunction) => t('tuto.thief.you'),
-      boxTop: 47,
-      boxLeft: 50,
-      boxWidth: 50,
-      arrow: {
-        angle: 0,
-        top: 34,
-        left: 51
-      }
-    },
-    {
-      text: (t: TFunction) => t('tuto.meeple1'),
-      boxTop: 75,
-      boxLeft: 49.5,
-      boxWidth: 50,
-      arrow: {
-        angle: -90,
-        top: 68,
-        left: 11
-      }
-    }
-  ],
-  [
-    {
-      text: (t: TFunction) => t('tuto.meeple2'),
-      boxTop: 35,
-      boxLeft: 45,
-      boxWidth: 40,
-      arrow: {
-        angle: -90,
-        top: 28,
-        left: 11
-      }
-    }
-  ],
-  [
-    {
-      text: (t: TFunction) => t('tuto.meeple3'),
-      boxTop: 47,
-      boxLeft: 36,
-      boxWidth: 40,
-      arrow: {
-        angle: 0,
-        top: 34,
-        left: 28
-      }
-    }
-  ],
-  [
-    {
-      text: (t: TFunction) => t('tuto.token.info'),
-      boxTop: 40,
-      boxLeft: 53,
-      boxWidth: 40,
-      arrow: {
-        angle: 0,
-        top: 27,
-        left: 46
-      }
-    },
-    {
-      text: (t: TFunction) => t('tuto.token.play'),
-      boxTop: 35,
-      boxLeft: 45,
-      boxWidth: 40,
-      arrow: {
-        angle: -90,
-        top: 28,
-        left: 11
-      }
-    }
-  ],
-  [
-    {
-      text: (t: TFunction) => t('tuto.simultaneous'),
+      text: (t: TFunction) => t('tuto.player'),
       boxTop: 50,
       boxLeft: 50,
-      boxWidth: 40
+      boxWidth: 50
     },
     {
-      text: (t: TFunction) => t('tuto.validate'),
-      boxTop: 19,
+      text: (t: TFunction) => t('tuto.wincondition'),
+      boxTop: 50,
+      boxLeft: 50,
+      boxWidth: 50
+    },
+    { 
+      title: (t: TFunction) => t('tuto.place.title'),
+      text: (t: TFunction) => t('tuto.place.t'),
+      boxTop: 45,
+      boxLeft: 65,
+      boxWidth: 50,
+      arrow: {
+        angle: 315,
+        top: 20,
+        left: 25
+      }
+    }
+  ],
+  [ // 2
+    {
+      text: (t: TFunction) => t('tuto.place.opp.c'),
+      boxTop: 45,
       boxLeft: 55,
       boxWidth: 40,
       arrow: {
-        angle: 0,
-        top: 6,
+        angle: 180,
+        top: 43,
         left: 47
       }
+    },
+    {
+      text: (t: TFunction) => t('tuto.place.c'),
+      boxTop: 60,
+      boxLeft: 65,
+      boxWidth: 40,
+      arrow: {
+        angle: -90,
+        top: 57,
+        left: 30
+      }
     }
   ],
-  [
+  [ // 3
     {
-      text: (t: TFunction) => t('tuto.resolve'),
-      boxTop: 50,
-      boxLeft: 50,
-      boxWidth: 40
-    },
-    {
-      text: (t: TFunction) => t('tuto.resolve.order'),
-      boxTop: 74,
-      boxLeft: 50,
-      boxWidth: 50,
-      arrow: {
-        angle: -90,
-        top: 68,
-        left: 11
-      }
-    },
-    {
-      text: (t: TFunction) => t('tuto.townHall'),
-      boxTop: 74,
-      boxLeft: 50,
-      boxWidth: 50,
-      arrow: {
-        angle: -90,
-        top: 68,
-        left: 11
-      },
-      resumeAnimations: true
-    },
-    {
-      text: (t: TFunction) => t('tuto.patrol.palace'),
-      boxTop: 54,
+      text: (t: TFunction) => t('tuto.place.opp.t'),
+      boxTop: 73,
       boxLeft: 42,
-      boxWidth: 40,
-      arrow: {
-        angle: -90,
-        top: 47,
-        left: 8
-      },
-      resumeAnimations: true
-    },
-    {
-      text: (t: TFunction) => t('tuto.token.both'),
-      boxTop: 31,
-      boxLeft: 48,
-      boxWidth: 40,
-      arrow: {
-        angle: -90,
-        top: 25,
-        left: 14
-      }
-    },
-    {
-      text: (t: TFunction) => t('tuto.action.wheel'),
-      boxTop: 70,
-      boxLeft: 35,
-      boxWidth: 40,
-      arrow: {
-        angle: 90,
-        top: 63,
-        left: 49
-      }
-    },
-    {
-      text: (t: TFunction) => t('tuto.action.order'),
-      boxTop: 70,
-      boxLeft: 45,
-      boxWidth: 40,
-      arrow: {
-        angle: 90,
-        top: 63,
-        left: 59
-      }
-    },
-    {
-      text: (t: TFunction) => t('tuto.action.choice'),
-      boxTop: 77,
-      boxLeft: 56,
-      boxWidth: 40,
-      arrow: {
-        angle: 90,
-        top: 71,
-        left: 70
-      }
-    }
-  ],
-  [
-    {
-      text: (t: TFunction) => t('tuto.red.choice'),
-      boxTop: 40,
-      boxLeft: 50,
-      boxWidth: 40
-    },
-    {
-      text: (t: TFunction) => t('tuto.actions.resolution'),
-      boxTop: 40,
-      boxLeft: 50,
-      boxWidth: 40,
-      resumeAnimations: true
-    },
-    {
-      text: (t: TFunction) => t('tuto.district.after.actions'),
-      boxTop: 15,
-      boxLeft: 50,
-      boxWidth: 40
-    },
-    {
-      text: (t: TFunction) => t('tuto.tavern'),
-      boxTop: 15,
-      boxLeft: 50,
-      boxWidth: 40
-    }
-  ],
-  [
-    {
-      text: (t: TFunction) => t('tuto.patrol'),
-      boxTop: 56,
-      boxLeft: 36,
       boxWidth: 40,
       arrow: {
         angle: 0,
-        top: 43,
-        left: 27
-      },
-      resumeAnimations: true
+        top: 72,
+        left: 33
+      }
     },
     {
-      text: (t: TFunction) => t('tuto.jail.patrol'),
-      boxTop: 52,
-      boxLeft: 60,
+      title: (t: TFunction) => t('tuto.move.title'),
+      text: (t: TFunction) => t('tuto.move.rules'),
+      boxTop: 40,
+      boxLeft: 50,
+      boxWidth: 40
+    },
+    {
+      text: (t: TFunction) => t('tuto.move.rules2'),
+      boxTop: 40,
+      boxLeft: 50,
+      boxWidth: 40
+    },
+    {
+      text: (t: TFunction) => t('tuto.move.rules.c'),
+      boxTop: 35,
+      boxLeft: 65,
+      boxWidth: 40,
+      arrow: {
+        angle: -135,
+        top: 36,
+        left: 33
+      }
+    }
+  ],
+  [ // 4
+    {
+      text: (t: TFunction) => t('tuto.move.rule.c2'),
+      boxTop: 45,
+      boxLeft: 63,
       boxWidth: 40,
       arrow: {
         angle: -90,
-        top: 46,
-        left: 26
-      },
-      resumeAnimations: true
+        top: 36,
+        left: 29
+      }
+    }
+  ],
+  [ // 5
+    {
+      text: (t: TFunction) => t('tuto.move.rule.blue'),
+      boxTop: 43,
+      boxLeft: 38,
+      boxWidth: 40,
+      arrow: {
+        angle: -90,
+        top: 32,
+        left: 4
+      }
+    }
+  ],
+  [ // 6
+    {
+      text: (t: TFunction) => t('tuto.move.effect.blue'),
+      boxTop: 58,
+      boxLeft: 60,
+      boxWidth: 40,
+      arrow: {
+        angle: -135,
+        top: 70,
+        left: 27
+      }
+    }
+  ],
+  [ // 7
+    {
+      text: (t: TFunction) => t('tuto.move.flip'),
+      boxTop: 90,
+      boxLeft: 50,
+      boxWidth: 40
     },
     {
-      text: (t: TFunction) => t('tuto.jail.choice'),
-      boxTop: 20,
+      text: (t: TFunction) => t('tuto.move.effect.golden'),
+      boxTop: 90,
+      boxLeft: 50,
+      boxWidth: 40
+    },
+    {
+      text: (t: TFunction) => t('tuto.move.noflip'),
+      boxTop: 90,
+      boxLeft: 50,
+      boxWidth: 40
+    },
+    {
+      text: (t: TFunction) => t('tuto.move.effect.red'),
+      boxTop: 90,
       boxLeft: 50,
       boxWidth: 40
     }
   ],
-  [
+  [ // 8
     {
-      text: (t: TFunction) => t('tuto.new.day'),
-      boxTop: 81,
-      boxLeft: 25,
-      boxWidth: 40,
-      arrow: {
-        angle: -180,
-        top: 81,
-        left: 14
-      },
-      resumeAnimations: true
+      text: (t: TFunction) => t('tuto.move.rule.red'),
+      boxTop: 90,
+      boxLeft: 50,
+      boxWidth: 40
+    }
+  ],
+  [ // 9
+    {
+      text: (t: TFunction) => t('tuto.move.rules.t'),
+      boxTop: 90,
+      boxLeft: 50,
+      boxWidth: 40
+    }
+  ],
+  [ // 10
+    {
+      text: (t: TFunction) => t('tuto.move.effect.white'),
+      boxTop: 90,
+      boxLeft: 50,
+      boxWidth: 40
+    }
+  ],
+  [ // 11
+    {
+      text: (t: TFunction) => t('tuto.move.block'),
+      boxTop: 90,
+      boxLeft: 50,
+      boxWidth: 40
+    }
+  ],
+  [ // 12
+    {
+      text: (t: TFunction) => t('tuto.move.effect.grey'),
+      boxTop: 90,
+      boxLeft: 50,
+      boxWidth: 40
+    }
+  ],
+  [ // 13
+    {
+      text: (t: TFunction) => t('tuto.move.effect.golden2'),
+      boxTop: 90,
+      boxLeft: 50,
+      boxWidth: 40
+    }
+  ],
+  [ // 14
+    {
+      text: (t: TFunction) => t('tuto.move.t'),
+      boxTop: 90,
+      boxLeft: 50,
+      boxWidth: 40
     },
     {
-      text: (t: TFunction) => t('tuto.day.card'),
-      boxTop: 81,
-      boxLeft: 29,
-      boxWidth: 40,
-      arrow: {
-        angle: -180,
-        top: 81,
-        left: 19
-      },
-      resumeAnimations: true
-    },
-    {
-      text: (t: TFunction) => t('tuto.last.day.card'),
-      boxTop: 61,
-      boxLeft: 27,
-      boxWidth: 40,
-      arrow: {
-        angle: -180,
-        top: 61,
-        left: 17
-      }
-    },
-    {
-      text: (t: TFunction) => t('tuto.district.effects'),
-      boxTop: 23,
-      boxLeft: 42,
-      boxWidth: 40,
-      arrow: {
-        angle: -90,
-        top: 17,
-        left: 8
-      }
-    },
-    {
-      text: (t: TFunction) => t('tuto.prince.skills'),
-      boxTop: 56,
-      boxLeft: 60,
-      boxWidth: 40,
-      arrow: {
-        angle: -180,
-        top: 56,
-        left: 51
-      }
-    },
-    {
-      text: (t: TFunction) => t('tuto.you.play'),
-      boxTop: 40,
+      text: (t: TFunction) => t('tuto.over'),
+      boxTop: 90,
       boxLeft: 50,
       boxWidth: 40
     }
@@ -568,12 +454,12 @@ const tutorialEndGame = {
 
 export const dialogCss = css`
   position: relative;
-  background-color: beige;
+  background-color: #d9cc58;
   text-align: center;
   padding: 5em;
   color: black;
   border-radius: 3em;
-  box-shadow: 0 0 0.5em black, 0 0 0.5em black, 0 0 0.5em black;
+  box-shadow: 0 0 3em black, 0 0 0.5em black, 0 0 0.5em black;
   max-width: 100em;
 
   & > h2 {
