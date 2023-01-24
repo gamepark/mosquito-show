@@ -229,7 +229,7 @@ type TutorialStepDescription = {
 const tutorialDescription: TutorialStepDescription[][] = [
   [ // 1
     {
-      title: (t: TFunction) => t('tuto.welcome'),
+      title: (t: TFunction) => t('tuto.title'),
       text: (t: TFunction) => t('tuto.player'),
       boxTop: 50,
       boxLeft: 50,
@@ -244,8 +244,8 @@ const tutorialDescription: TutorialStepDescription[][] = [
     { 
       title: (t: TFunction) => t('tuto.place.title'),
       text: (t: TFunction) => t('tuto.place.t'),
-      boxTop: 45,
-      boxLeft: 65,
+      boxTop: 48,
+      boxLeft: 63,
       boxWidth: 50,
       arrow: {
         angle: 315,
@@ -305,8 +305,8 @@ const tutorialDescription: TutorialStepDescription[][] = [
     },
     {
       text: (t: TFunction) => t('tuto.move.rules.c'),
-      boxTop: 35,
-      boxLeft: 65,
+      boxTop: 32,
+      boxLeft: 66,
       boxWidth: 40,
       arrow: {
         angle: -135,
@@ -383,48 +383,48 @@ const tutorialDescription: TutorialStepDescription[][] = [
   [ // 8
     {
       text: (t: TFunction) => t('tuto.move.rule.red'),
-      boxTop: 90,
-      boxLeft: 50,
+      boxTop: 75,
+      boxLeft: 75,
       boxWidth: 40
     }
   ],
   [ // 9
     {
       text: (t: TFunction) => t('tuto.move.rules.t'),
-      boxTop: 90,
-      boxLeft: 50,
+      boxTop: 75,
+      boxLeft: 75,
       boxWidth: 40
     }
   ],
   [ // 10
     {
       text: (t: TFunction) => t('tuto.move.effect.white'),
-      boxTop: 90,
-      boxLeft: 50,
+      boxTop: 75,
+      boxLeft: 75,
       boxWidth: 40
     }
   ],
   [ // 11
     {
       text: (t: TFunction) => t('tuto.move.block'),
-      boxTop: 90,
-      boxLeft: 50,
+      boxTop: 75,
+      boxLeft: 75,
       boxWidth: 40
     }
   ],
   [ // 12
     {
       text: (t: TFunction) => t('tuto.move.effect.grey'),
-      boxTop: 90,
-      boxLeft: 50,
+      boxTop: 75,
+      boxLeft: 75,
       boxWidth: 40
     }
   ],
   [ // 13
     {
       text: (t: TFunction) => t('tuto.move.effect.golden2'),
-      boxTop: 90,
-      boxLeft: 50,
+      boxTop: 75,
+      boxLeft: 75,
       boxWidth: 40
     }
   ],
