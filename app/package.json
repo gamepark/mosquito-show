@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/mosquito-show-app",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "React application",
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
