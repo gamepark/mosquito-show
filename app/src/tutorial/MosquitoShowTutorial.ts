@@ -78,30 +78,36 @@ const MosquitoShowTutorial: TutorialDescription<GameState, Move, PlayerColor> = 
     }, [PlayerColor.Blue, PlayerColor.Orange]],
 
     expectedMoves: () => [
+        //Placement Phase
         moveAnimalMove(Toucan, { x: 0, y: 0 }),
         moveAnimalMove(Chameleon, { x: 2, y: 2 }),
         moveAnimalMove(Chameleon, { x: 0, y: 2 }),
         moveAnimalMove(Toucan, { x: 1, y: 2 }),
+        // Player: Eat blue
         eatMove(false, 0, 1),
         moveAnimalMove(Chameleon, { x: 0, y: 1 }),
         chooseMosquitoEffectMove(0),
         moveAnimalMove(Toucan, { x: 0, y: 3 }),
+        // Opponent: Eat Golden
         eatMove(false, 2, 2),
         moveAnimalMove(Chameleon, { x: 2, y: 1 }),
+        // Player: Eat Red
         eatMove(false, 0, 1),
         moveAnimalMove(Chameleon, { x: 1, y: 1 }),
         chooseMosquitoEffectMove(0),
         selectOpponentAnimalMove(Toucan),
+        // Opponent: Move Toucan, Eat Whita
         moveAnimalMove(Toucan, { x: 0, y: 1 }),
         chooseMosquitoEffectMove(0),
         discardTokenFromBoardMove(2, 1),
+        // Player: Eat Grey
         eatMove(false, 1, 0),
         moveAnimalMove(Chameleon, { x: 1, y: 0 }),
         chooseMosquitoEffectMove(0),
         moveMosquitoTokenMove({ x: 2, y: 1 }, { x: 1, y: 1 }),
+        // Opponent: Eat Golden
         eatMove(false, 2, 0),
-        moveAnimalMove(Chameleon, { x: 3, y: 1 }),
-        moveAnimalMove(Toucan, { x: 3, y: 0 })
+        moveAnimalMove(Chameleon, { x: 3, y: 1 })
     ]
 }
 

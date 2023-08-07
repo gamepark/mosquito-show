@@ -6,7 +6,7 @@ import GameView from '@gamepark/mosquito-show/GameView'
 import { Move } from '@gamepark/mosquito-show/moves'
 import PlayerColor from '@gamepark/mosquito-show/PlayerColor'
 import { isOver } from '@gamepark/mosquito-show/utils/GameUtils'
-import { animationPaused, Tutorial, useActions, useFailures, usePlayerId } from '@gamepark/react-client'
+import { animationPaused, Tutorial, useActions, useFailures } from '@gamepark/react-client'
 import { Dialog, Picture } from '@gamepark/react-components'
 import { TFunction } from 'i18next'
 import { FC, useEffect, useRef, useState } from 'react'
@@ -17,9 +17,8 @@ import Button from '../util/Button'
 
 const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutorial }) => {
   const { t } = useTranslation()
-  const playerId = usePlayerId<PlayerColor>()
   const actions = useActions<Move, PlayerColor>()
-  const actionsNumber = actions !== undefined ? actions.filter(action => action.playerId === playerId).length : 0
+  const actionsNumber = (actions || []).filter(action => !action.delayed).length;
   const previousActionNumber = useRef(actionsNumber)
   const [tutorialIndex, setTutorialIndex] = useState(0)
   const [tutorialDisplay, setTutorialDisplay] = useState(tutorialDescription.length > 0)
@@ -30,9 +29,13 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   const discordUri = 'https://discord.gg/nMSDRag'
 
   const moveTutorial = (deltaMessage: number) => {
+    let currentStep = actionsNumber;
+    if (tutorialDescription[currentStep] && tutorialDescription[currentStep][tutorialIndex] && tutorialDescription[currentStep][tutorialDescription[currentStep].length - 1].opponentAction) {
+      tutorial.playNextMoves(tutorialDescription[currentStep][tutorialIndex].opponentAction)
+    }
     setTutorialIndex(tutorialIndex + deltaMessage)
     setTutorialDisplay(true)
-    if (deltaMessage > 0) {
+    if (false && deltaMessage > 0) {
       if (currentMessage.resumeAnimations) {
         dispatch(animationPaused(false))
       }
@@ -61,12 +64,19 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
   }, [])
 
   useEffect(() => {
-    if (tutorialIndex === 1) {
-      setTutorialDisplay(true)
+    if (actionsNumber === 0 || !tutorialDescription[actionsNumber - 1]) {
+      return;
     }
-  }, [tutorialIndex])
+
+    if (tutorialDescription[actionsNumber - 1][tutorialDescription[actionsNumber - 1].length - 1]?.opponentAction) {
+      tutorial.playNextMoves(tutorialDescription[actionsNumber - 1][tutorialDescription[actionsNumber - 1].length - 1]?.opponentAction);
+    }
+  }, [game.activePlayer])
 
   useEffect(() => {
+    if (actionsNumber >= tutorialDescription.length) {
+      tutorial.setOpponentsPlayAutomatically(true)
+    }
     if (previousActionNumber.current > actionsNumber) {
       setTutorialDisplay(false)
     } else if (tutorialDescription[actionsNumber]) {
@@ -80,15 +90,11 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
       setTutorialIndex(tutorialDescription[actionsNumber].length - 1)
       setTutorialDisplay(true)
     }
-  }, [actionsNumber, failures])
-
-  useEffect(() => {
-    tutorial.setOpponentsPlayAutomatically(true)
-  }, [])
+  }, [failures])
 
   const currentMessage = tutorialMessage(tutorialIndex)
 
-  const displayPopup = tutorialDisplay
+  const displayPopup = tutorialDisplay && currentMessage && !failures.length
 
   return (
     <>
@@ -102,7 +108,7 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
       </Dialog>
 
       {
-        !displayPopup &&
+        !displayPopup && actionsNumber < tutorialDescription.length &&
         <Button css={[buttonTutoStyle, resetStyle]} playerColor={PlayerColor.Blue} onClick={() => resetTutorialDisplay()}>{t('Show Tutorial')}</Button>
       }
 
@@ -215,6 +221,7 @@ const resetStyle = css`
 type TutorialStepDescription = {
   title?: (t: TFunction) => string
   text: (t: TFunction) => string
+  opponentAction?: number,
   boxTop: number
   boxLeft: number
   boxWidth: number
@@ -227,7 +234,7 @@ type TutorialStepDescription = {
 }
 
 const tutorialDescription: TutorialStepDescription[][] = [
-  [ // 1
+  [
     {
       title: (t: TFunction) => t('tuto.title'),
       text: (t: TFunction) => t('tuto.player'),
@@ -241,9 +248,10 @@ const tutorialDescription: TutorialStepDescription[][] = [
       boxLeft: 50,
       boxWidth: 50
     },
-    { 
+    {
       title: (t: TFunction) => t('tuto.place.title'),
       text: (t: TFunction) => t('tuto.place.t'),
+      opponentAction: 1,
       boxTop: 48,
       boxLeft: 63,
       boxWidth: 50,
@@ -254,7 +262,8 @@ const tutorialDescription: TutorialStepDescription[][] = [
       }
     }
   ],
-  [ // 2
+  [],
+  [
     {
       text: (t: TFunction) => t('tuto.place.opp.c'),
       boxTop: 45,
@@ -268,6 +277,7 @@ const tutorialDescription: TutorialStepDescription[][] = [
     },
     {
       text: (t: TFunction) => t('tuto.place.c'),
+      opponentAction: 1,
       boxTop: 60,
       boxLeft: 65,
       boxWidth: 40,
@@ -278,7 +288,8 @@ const tutorialDescription: TutorialStepDescription[][] = [
       }
     }
   ],
-  [ // 3
+  [],
+  [
     {
       text: (t: TFunction) => t('tuto.place.opp.t'),
       boxTop: 73,
@@ -315,7 +326,7 @@ const tutorialDescription: TutorialStepDescription[][] = [
       }
     }
   ],
-  [ // 4
+  [
     {
       text: (t: TFunction) => t('tuto.move.rule.c2'),
       boxTop: 45,
@@ -328,7 +339,7 @@ const tutorialDescription: TutorialStepDescription[][] = [
       }
     }
   ],
-  [ // 5
+  [
     {
       text: (t: TFunction) => t('tuto.move.rule.blue'),
       boxTop: 43,
@@ -341,7 +352,7 @@ const tutorialDescription: TutorialStepDescription[][] = [
       }
     }
   ],
-  [ // 6
+  [
     {
       text: (t: TFunction) => t('tuto.move.effect.blue'),
       boxTop: 58,
@@ -354,19 +365,25 @@ const tutorialDescription: TutorialStepDescription[][] = [
       }
     }
   ],
-  [ // 7
+  [
     {
       text: (t: TFunction) => t('tuto.move.flip'),
+      opponentAction: 1,
       boxTop: 90,
       boxLeft: 50,
       boxWidth: 40
-    },
+    }
+  ],
+  [
     {
       text: (t: TFunction) => t('tuto.move.effect.golden'),
+      opponentAction: 1,
       boxTop: 90,
       boxLeft: 50,
       boxWidth: 40
-    },
+    }
+  ],
+  [
     {
       text: (t: TFunction) => t('tuto.move.noflip'),
       boxTop: 90,
@@ -380,7 +397,8 @@ const tutorialDescription: TutorialStepDescription[][] = [
       boxWidth: 40
     }
   ],
-  [ // 8
+  [],
+  [
     {
       text: (t: TFunction) => t('tuto.move.rule.red'),
       boxTop: 75,
@@ -388,23 +406,27 @@ const tutorialDescription: TutorialStepDescription[][] = [
       boxWidth: 40
     }
   ],
-  [ // 9
+  [],
+  [
     {
       text: (t: TFunction) => t('tuto.move.rules.t'),
+      opponentAction: 1,
       boxTop: 75,
       boxLeft: 75,
       boxWidth: 40
     }
   ],
-  [ // 10
+  [
     {
       text: (t: TFunction) => t('tuto.move.effect.white'),
+      opponentAction: 2,
       boxTop: 75,
       boxLeft: 75,
       boxWidth: 40
     }
   ],
-  [ // 11
+  [],
+  [
     {
       text: (t: TFunction) => t('tuto.move.block'),
       boxTop: 75,
@@ -412,7 +434,8 @@ const tutorialDescription: TutorialStepDescription[][] = [
       boxWidth: 40
     }
   ],
-  [ // 12
+  [],
+  [
     {
       text: (t: TFunction) => t('tuto.move.effect.grey'),
       boxTop: 75,
@@ -420,23 +443,33 @@ const tutorialDescription: TutorialStepDescription[][] = [
       boxWidth: 40
     }
   ],
-  [ // 13
+  [],
+  [
     {
-      text: (t: TFunction) => t('tuto.move.effect.golden2'),
+      text: (t: TFunction) => t('tuto.move.block2'),
+      opponentAction: 2,
       boxTop: 75,
       boxLeft: 75,
       boxWidth: 40
     }
   ],
-  [ // 14
+  [],
+  [
     {
-      text: (t: TFunction) => t('tuto.move.t'),
+      text: (t: TFunction) => t('tuto.move.effect.golden2'),
+      boxTop: 75,
+      boxLeft: 75,
+      boxWidth: 40
+    },
+    {
+      text: (t: TFunction) => t('tuto.move.over'),
       boxTop: 90,
       boxLeft: 50,
       boxWidth: 40
     },
     {
-      text: (t: TFunction) => t('tuto.over'),
+      title: (t: TFunction) => t('tuto.hint.title'),
+      text: (t: TFunction) => t('tuto.hint'),
       boxTop: 90,
       boxLeft: 50,
       boxWidth: 40
@@ -445,8 +478,8 @@ const tutorialDescription: TutorialStepDescription[][] = [
 ]
 
 const tutorialEndGame = {
-  title: (t: TFunction) => t('Congratulations'),
-  text: (t: TFunction) => t('tuto.over'),
+  title: (t: TFunction) => t('tuto.end.title'),
+  text: (t: TFunction) => t('tuto.end'),
   boxTop: 50,
   boxLeft: 50,
   boxWidth: 120
