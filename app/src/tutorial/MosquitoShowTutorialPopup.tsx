@@ -12,6 +12,7 @@ import { TFunction } from 'i18next'
 import { FC, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import Images from '../material/Images'
 import Arrow from '../tutorial/tutorial-arrow-white.png'
 import Button from '../util/Button'
 
@@ -98,7 +99,7 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
 
   return (
     <>
-      <Dialog css={[dialogCss, currentMessage ? popupPosition(currentMessage) : css`display: none;`]} backdropCss={backdropCss} open={displayPopup}
+      <Dialog css={[popupStyle, popupLightStyle, currentMessage ? popupPosition(currentMessage) : css`display: none;`]} backdropCss={backdropCss} open={displayPopup}
         onBackdropClick={() => setTutorialDisplay(false)}>
         <div css={closePopupStyle} onClick={() => setTutorialDisplay(false)}><FontAwesomeIcon icon={faTimes} /></div>
         {currentMessage?.title && <h2>{currentMessage.title(t)}</h2>}
@@ -120,7 +121,7 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
 
       {
         isOver(game) && !hideEndInfo &&
-        <Dialog css={[dialogCss, popupPosition(tutorialEndGame)]} backdropCss={backdropCss} open={!hideEndInfo} onBackdropClick={() => setHideEndInfo(true)}>
+        <Dialog css={[popupStyle, popupLightStyle, popupPosition(tutorialEndGame)]} backdropCss={backdropCss} open={!hideEndInfo} onBackdropClick={() => setHideEndInfo(true)}>
           <div css={closePopupStyle} onClick={() => setHideEndInfo(true)}><FontAwesomeIcon icon={faTimes} /></div>
           <h2 css={textEndStyle}>{tutorialEndGame.title(t)}</h2>
           <p css={textEndStyle}>{tutorialEndGame.text(t)}</p>
@@ -141,82 +142,6 @@ export function resetTutorial() {
   localStorage.removeItem('MosquitoShow')
   window.location.reload()
 }
-
-const buttonTutoStyle = css`
-  width: 5em;
-  height: 1.5em;
-  margin-right: 1em;
-`
-
-const endSize = css`
-  width: auto;
-  margin-top: 1em;
-`
-
-const textEndStyle = css`
-  color: black;
-`
-
-const backdropCss = css`
-  background-color: transparent;
-  display: block;
-  padding: 0 calc(50% - ${16 / 9 * 50}em);
-  z-index: 1200;
-`
-
-const closePopupStyle = css`
-  position: relative;
-  float: right;
-  text-align: center;
-  margin-top: -2%;
-  margin-right: -0%;
-  font-size: 4em;
-  color: black;
-
-  &:hover {
-    cursor: pointer;
-    transform: scale(1.1);
-  }
-`
-
-export const popupPosition = ({ boxWidth, boxTop, boxLeft, arrow }: TutorialStepDescription) => css`
-  transition-property: width, top, left, transform;
-  transition-duration: 0.7s;
-  transition-timing-function: ease-in-out;
-  width: ${boxWidth}%;
-  top: ${boxTop}%;
-  left: ${boxLeft}%;
-  transform: translate(-50%, ${!arrow || arrow.angle % 180 !== 0 ? '-50%' : arrow.angle % 360 === 0 ? '0%' : '-100%'}) translateZ(30em);
-`
-
-const arrowStyle = (angle: number) => css`
-  position: absolute;
-  transform: rotate(${angle}deg) translateZ(30em);
-  will-change: transform;
-  z-index: 2000;
-  transition-property: top, left, transform;
-  transition-duration: 0.7s;
-  transition-timing-function: ease-in-out;
-`
-
-const showArrowStyle = (top: number, left: number) => css`
-  top: ${top}%;
-  left: ${left}%;
-  width: 20%;
-`
-
-const hideArrowStyle = css`
-  display: none;
-`
-
-const resetStyle = css`
-  position: absolute;
-  text-align: center;
-  top: 44%;
-  right: 0;
-  font-size: 4em;
-  width: auto;
-`
 
 type TutorialStepDescription = {
   title?: (t: TFunction) => string
@@ -485,34 +410,120 @@ const tutorialEndGame = {
   boxWidth: 120
 }
 
-export const dialogCss = css`
-  position: relative;
-  background-color: #d9cc58;
+export const popupStyle = css`
+  position: absolute;
   text-align: center;
-  padding: 5em;
-  color: black;
-  border-radius: 3em;
-  box-shadow: 0 0 3em black, 0 0 0.5em black, 0 0 0.5em black;
-  max-width: 100em;
+  max-height: 70%;
+  z-index: 102;
+  border-radius: 1em;
+  box-sizing: border-box;
+  align-self: center;
+  padding: 2%;
+  margin: 0 2%;
+  outline: none;
+  box-shadow: 1em 2em 2.5em -1.5em hsla(0, 0%, 0%, 0.2);
+  border-radius: 40em 3em 40em 3em/3em 40em 3em 40em;
+
+  &:hover {
+    box-shadow: 2em 4em 5em -3em hsla(0, 0%, 0%, .5);
+  }
 
   & > h2 {
-    position: relative;
     font-size: 5em;
-    margin: 0 1em 0.5em;
-    text-align: center;
+    margin: 0;
+    letter-spacing: 0.04em;
   }
 
   & > p {
-    position: relative;
-    text-align: left;
-    white-space: break-spaces;
-    font-size: 3em;
-    margin: 0.8em auto;
+    font-size: 4em;
+    margin: 2% 0;
   }
 
   & > button {
-    font-size: 3.5em;
+    font-size: 4em;
   }
 `
 
+export const popupLightStyle = css`
+  background-color: #e9e9e9;
+  background: url(${Images.BoardBack});
+  color: white;
+  border: solid 1em white;
+`
+const buttonTutoStyle = css`
+  width: 5em;
+  height: 1.5em;
+  margin-right: 1em;
+`
+
+const endSize = css`
+  width: auto;
+  margin-top: 1em;
+`
+
+const textEndStyle = css`
+  color: black;
+`
+
+const backdropCss = css`
+  background-color: transparent;
+  display: block;
+  padding: 0 calc(50% - ${16 / 9 * 50}em);
+  z-index: 1200;
+`
+
+const closePopupStyle = css`
+  position: relative;
+  float: right;
+  text-align: center;
+  margin-top: -2%;
+  margin-right: -0%;
+  font-size: 4em;
+  color: white;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+`
+
+export const popupPosition = ({ boxWidth, boxTop, boxLeft, arrow }: TutorialStepDescription) => css`
+  transition-property: width, top, left, transform;
+  transition-duration: 0.7s;
+  transition-timing-function: ease-in-out;
+  width: ${boxWidth}%;
+  top: ${boxTop}%;
+  left: ${boxLeft}%;
+  transform: translate(-50%, ${!arrow || arrow.angle % 180 !== 0 ? '-50%' : arrow.angle % 360 === 0 ? '0%' : '-100%'}) translateZ(30em);
+`
+
+const arrowStyle = (angle: number) => css`
+  position: absolute;
+  transform: rotate(${angle}deg) translateZ(30em);
+  will-change: transform;
+  z-index: 2000;
+  transition-property: top, left, transform;
+  transition-duration: 0.7s;
+  transition-timing-function: ease-in-out;
+`
+
+const showArrowStyle = (top: number, left: number) => css`
+  top: ${top}%;
+  left: ${left}%;
+  width: 10%;
+  height: 10%;
+`
+
+const hideArrowStyle = css`
+  display: none;
+`
+
+const resetStyle = css`
+  position: absolute;
+  text-align: center;
+  top: 44%;
+  right: 0;
+  font-size: 4em;
+  width: auto;
+`
 export default TutorialPopup
