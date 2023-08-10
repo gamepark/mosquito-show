@@ -178,13 +178,13 @@ const tutorialDescription: TutorialStepDescription[][] = [
       title: (t: TFunction) => t('tuto.place.title'),
       text: (t: TFunction) => t('tuto.place.t'),
       opponentAction: 1,
-      boxTop: 48,
-      boxLeft: 63,
+      boxTop: 44,
+      boxLeft: 59,
       boxWidth: 50,
       arrow: {
         angle: 315,
-        top: 20,
-        left: 25
+        top: 18,
+        left: 29
       }
     }
   ],
@@ -192,25 +192,25 @@ const tutorialDescription: TutorialStepDescription[][] = [
   [
     {
       text: (t: TFunction) => t('tuto.place.opp.c'),
-      boxTop: 45,
+      boxTop: 47,
       boxLeft: 55,
       boxWidth: 40,
       arrow: {
         angle: 180,
-        top: 43,
-        left: 47
+        top: 46,
+        left: 51
       }
     },
     {
       text: (t: TFunction) => t('tuto.place.c'),
       opponentAction: 1,
       boxTop: 60,
-      boxLeft: 65,
+      boxLeft: 58.5,
       boxWidth: 40,
       arrow: {
         angle: -90,
         top: 57,
-        left: 30
+        left: 33
       }
     }
   ],
@@ -218,13 +218,13 @@ const tutorialDescription: TutorialStepDescription[][] = [
   [
     {
       text: (t: TFunction) => t('tuto.place.opp.t'),
-      boxTop: 73,
-      boxLeft: 42,
+      boxTop: 36,
+      boxLeft: 66,
       boxWidth: 40,
       arrow: {
-        angle: 0,
-        top: 72,
-        left: 33
+        angle: 225,
+        top: 50,
+        left: 42
       }
     },
     {
@@ -242,11 +242,24 @@ const tutorialDescription: TutorialStepDescription[][] = [
     },
     {
       text: (t: TFunction) => t('tuto.move.rules.c'),
-      boxTop: 32,
-      boxLeft: 66,
+      boxTop: 25,
+      boxLeft: 61,
       boxWidth: 40,
       arrow: {
         angle: -135,
+        top: 40,
+        left: 37
+      }
+    }
+  ],
+  [
+    {
+      text: (t: TFunction) => t('tuto.move.rule.c2'),
+      boxTop: 32,
+      boxLeft: 65.5,
+      boxWidth: 54,
+      arrow: {
+        angle: -90,
         top: 36,
         left: 33
       }
@@ -254,40 +267,27 @@ const tutorialDescription: TutorialStepDescription[][] = [
   ],
   [
     {
-      text: (t: TFunction) => t('tuto.move.rule.c2'),
-      boxTop: 45,
-      boxLeft: 63,
-      boxWidth: 40,
-      arrow: {
-        angle: -90,
-        top: 36,
-        left: 29
-      }
-    }
-  ],
-  [
-    {
       text: (t: TFunction) => t('tuto.move.rule.blue'),
-      boxTop: 43,
-      boxLeft: 38,
+      boxTop: 40,
+      boxLeft: 32,
       boxWidth: 40,
       arrow: {
         angle: -90,
-        top: 32,
-        left: 4
+        top: 33,
+        left: 6
       }
     }
   ],
   [
     {
       text: (t: TFunction) => t('tuto.move.effect.blue'),
-      boxTop: 58,
-      boxLeft: 60,
+      boxTop: 59,
+      boxLeft: 55,
       boxWidth: 40,
       arrow: {
         angle: -135,
-        top: 70,
-        left: 27
+        top: 72,
+        left: 31
       }
     }
   ],
@@ -295,8 +295,8 @@ const tutorialDescription: TutorialStepDescription[][] = [
     {
       text: (t: TFunction) => t('tuto.move.flip'),
       opponentAction: 1,
-      boxTop: 90,
-      boxLeft: 50,
+      boxTop: 78,
+      boxLeft: 52,
       boxWidth: 40
     }
   ],
@@ -304,22 +304,22 @@ const tutorialDescription: TutorialStepDescription[][] = [
     {
       text: (t: TFunction) => t('tuto.move.effect.golden'),
       opponentAction: 1,
-      boxTop: 90,
-      boxLeft: 50,
+      boxTop: 34,
+      boxLeft: 43,
       boxWidth: 40
     }
   ],
   [
     {
       text: (t: TFunction) => t('tuto.move.noflip'),
-      boxTop: 90,
-      boxLeft: 50,
+      boxTop: 74,
+      boxLeft: 37,
       boxWidth: 40
     },
     {
       text: (t: TFunction) => t('tuto.move.effect.red'),
-      boxTop: 90,
-      boxLeft: 50,
+      boxTop: 72,
+      boxLeft: 66,
       boxWidth: 40
     }
   ],
@@ -327,7 +327,7 @@ const tutorialDescription: TutorialStepDescription[][] = [
   [
     {
       text: (t: TFunction) => t('tuto.move.rule.red'),
-      boxTop: 75,
+      boxTop: 55,
       boxLeft: 75,
       boxWidth: 40
     }
@@ -337,18 +337,18 @@ const tutorialDescription: TutorialStepDescription[][] = [
     {
       text: (t: TFunction) => t('tuto.move.rules.t'),
       opponentAction: 1,
-      boxTop: 75,
-      boxLeft: 75,
-      boxWidth: 40
+      boxTop: 55,
+      boxLeft: 70,
+      boxWidth: 50
     }
   ],
   [
     {
       text: (t: TFunction) => t('tuto.move.effect.white'),
       opponentAction: 2,
-      boxTop: 75,
-      boxLeft: 75,
-      boxWidth: 40
+      boxTop: 74,
+      boxLeft: 67,
+      boxWidth: 50
     }
   ],
   [],
@@ -364,9 +364,15 @@ const tutorialDescription: TutorialStepDescription[][] = [
   [
     {
       text: (t: TFunction) => t('tuto.move.effect.grey'),
-      boxTop: 75,
-      boxLeft: 75,
-      boxWidth: 40
+      boxTop: 50,
+      boxLeft: 48,
+      boxWidth: 45
+    },
+    {
+      text: (t: TFunction) => t('tuto.move.effect.grey2'),
+      boxTop: 74,
+      boxLeft: 51,
+      boxWidth: 45
     }
   ],
   [],
@@ -375,7 +381,7 @@ const tutorialDescription: TutorialStepDescription[][] = [
       text: (t: TFunction) => t('tuto.move.block2'),
       opponentAction: 2,
       boxTop: 75,
-      boxLeft: 75,
+      boxLeft: 72,
       boxWidth: 40
     }
   ],
@@ -389,15 +395,15 @@ const tutorialDescription: TutorialStepDescription[][] = [
     },
     {
       text: (t: TFunction) => t('tuto.move.over'),
-      boxTop: 90,
-      boxLeft: 50,
+      boxTop: 55,
+      boxLeft: 48,
       boxWidth: 40
     },
     {
       title: (t: TFunction) => t('tuto.hint.title'),
       text: (t: TFunction) => t('tuto.hint'),
-      boxTop: 90,
-      boxLeft: 50,
+      boxTop: 55,
+      boxLeft: 48,
       boxWidth: 40
     }
   ]
@@ -407,8 +413,8 @@ const tutorialEndGame = {
   title: (t: TFunction) => t('tuto.end.title'),
   text: (t: TFunction) => t('tuto.end'),
   boxTop: 50,
-  boxLeft: 50,
-  boxWidth: 120
+  boxLeft: 48,
+  boxWidth: 50
 }
 
 export const popupStyle = css`
@@ -459,7 +465,7 @@ const endSize = css`
 `
 
 const textEndStyle = css`
-  color: rgba(0,0,0,1);
+  color: rgba(255,255,255,0.8);
 `
 
 const backdropCss = css`
