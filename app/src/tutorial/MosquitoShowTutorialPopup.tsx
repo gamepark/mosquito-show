@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import Images from '../material/Images'
 import Arrow from '../tutorial/tutorial-arrow-white.png'
-import Button from '../util/Button'
+import TutorialButton from './TutorialButton'
 
 const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutorial }) => {
   const { t } = useTranslation()
@@ -104,13 +104,14 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
         <div css={closePopupStyle} onClick={() => setTutorialDisplay(false)}><FontAwesomeIcon icon={faTimes} /></div>
         {currentMessage?.title && <h2>{currentMessage.title(t)}</h2>}
         {currentMessage && <p>{currentMessage.text(t)}</p>}
-        {tutorialIndex > 0 && <Button css={buttonTutoStyle} playerColor={PlayerColor.Blue} onClick={() => moveTutorial(-1)}>{'<<'}</Button>}
-        <Button css={buttonTutoStyle} playerColor={PlayerColor.Blue} onClick={() => moveTutorial(1)}>{t('OK')}</Button>
+        {tutorialIndex > 0 &&
+          <TutorialButton css={buttonTutoStyle} onClick={() => moveTutorial(-1)}>{'<<'}</TutorialButton>}
+        <TutorialButton css={buttonTutoStyle} onClick={() => moveTutorial(1)}>{t('OK')}</TutorialButton>
       </Dialog>
 
       {
         !displayPopup && actionsNumber < tutorialDescription.length &&
-        <Button css={[buttonTutoStyle, resetStyle]} playerColor={PlayerColor.Blue} onClick={() => resetTutorialDisplay()}>{t('Show Tutorial')}</Button>
+        <TutorialButton css={[buttonTutoStyle, resetStyle]} onClick={() => resetTutorialDisplay()}>{t('Show Tutorial')}</TutorialButton>
       }
 
       {
@@ -125,11 +126,11 @@ const TutorialPopup: FC<{ game: GameView, tutorial: Tutorial }> = ({ game, tutor
           <div css={closePopupStyle} onClick={() => setHideEndInfo(true)}><FontAwesomeIcon icon={faTimes} /></div>
           <h2 css={textEndStyle}>{tutorialEndGame.title(t)}</h2>
           <p css={textEndStyle}>{tutorialEndGame.text(t)}</p>
-          <Button css={[buttonTutoStyle, endSize]} playerColor={PlayerColor.Blue} onClick={() => resetTutorial()}>{t('Restart the tutorial')}</Button>
-          <Button css={[buttonTutoStyle, endSize]} playerColor={PlayerColor.Blue}
-            onClick={() => window.location.href = platformUri}>{t('Play with friends')}</Button>
-          <Button css={[buttonTutoStyle, endSize]} playerColor={PlayerColor.Blue}
-            onClick={() => window.location.href = discordUri}>{t('Find players')}</Button>
+          <TutorialButton css={[buttonTutoStyle, endSize]} onClick={() => resetTutorial()}>{t('Restart the tutorial')}</TutorialButton>
+          <TutorialButton css={[buttonTutoStyle, endSize]}
+            onClick={() => window.location.href = platformUri}>{t('Play with friends')}</TutorialButton>
+          <TutorialButton css={[buttonTutoStyle, endSize]}
+            onClick={() => window.location.href = discordUri}>{t('Find players')}</TutorialButton>
         </Dialog>
       }
 
@@ -424,10 +425,6 @@ export const popupStyle = css`
   box-shadow: 1em 2em 2.5em -1.5em hsla(0, 0%, 0%, 0.2);
   border-radius: 40em 3em 40em 3em/3em 40em 3em 40em;
 
-  &:hover {
-    box-shadow: 2em 4em 5em -3em hsla(0, 0%, 0%, .5);
-  }
-
   & > h2 {
     font-size: 5em;
     margin: 0;
@@ -447,12 +444,12 @@ export const popupStyle = css`
 export const popupLightStyle = css`
   background-color: #e9e9e9;
   background: url(${Images.BoardBack});
-  color: white;
-  border: solid 1em white;
+  color: rgba(255,255,255,0.8);
+  border: solid 1em rgba(255,255,255,0.8);
 `
 const buttonTutoStyle = css`
-  width: 5em;
-  height: 1.5em;
+  width: 3em;
+  height: 1.2em;
   margin-right: 1em;
 `
 
@@ -462,7 +459,7 @@ const endSize = css`
 `
 
 const textEndStyle = css`
-  color: black;
+  color: rgba(0,0,0,1);
 `
 
 const backdropCss = css`
@@ -479,7 +476,7 @@ const closePopupStyle = css`
   margin-top: -2%;
   margin-right: -0%;
   font-size: 4em;
-  color: white;
+  color: rgba(255,255,255,0.8);
 
   &:hover {
     cursor: pointer;
@@ -521,7 +518,7 @@ const hideArrowStyle = css`
 const resetStyle = css`
   position: absolute;
   text-align: center;
-  top: 44%;
+  top: 51%;
   right: 0;
   font-size: 4em;
   width: auto;
